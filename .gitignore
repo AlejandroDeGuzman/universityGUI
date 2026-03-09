@@ -1,0 +1,30 @@
+# Dependencies
+head-wind/node_modules/
+
+# Build output
+head-wind/build/
+head-wind/dist/
+
+# Environment variables
+head-wind/.env
+head-wind/.env.local
+head-wind/.env.development.local
+head-wind/.env.test.local
+head-wind/.env.production.local
+
+# Logs
+head-wind/npm-debug.log*
+head-wind/yarn-debug.log*
+head-wind/yarn-error.log*
+head-wind/pnpm-debug.log*
+
+# Test coverage
+head-wind/coverage/
+
+# Editor folders
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
