@@ -1,10 +1,14 @@
 function Header() {
   return (
     <header>
-      <div class="topnav">
-        <nav>
-          <ul>
-            <li><h2>HeadWind</h2></li>
+      <nav class="navbar">
+        <div class="nav-container">
+
+          <div class="logo">
+            <h2>HeadWind</h2>
+          </div>
+
+          <ul class="nav-links">
 
             <li>
               <a href="">Home</a>
@@ -18,10 +22,10 @@ function Header() {
               <a href="">About</a>
             </li>
           </ul>
-        </nav>
+        </div>
+      </nav>
 
-      </div>
-    </header>
+    </header >
   );
 }
 
