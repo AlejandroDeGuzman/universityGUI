@@ -5,31 +5,15 @@ import { WeatherCard } from "./WeatherCard";
 import Header from './Header';
 
 function App() {
+  const [count, setCount] = useState(0)
+
 
   return (
-    <Header></Header>
+    <div>
+      {Header()}
+      {WeatherCard()}
+    </div>
   );
-
-  // const [count, setCount] = useState(0)
-
-  // // Header bar //
-  // const navigation = () => {
-  //   return (
-  //     <div className='header'>
-  //       <div className='rectangle'>
-  //         <h1>Headwind</h1>
-  //       </div>
-  //     </div>
-  //   )
-  // };
-  //
-  //
-  // return (
-  //   <div>
-  //     {navigation()}
-  //     {WeatherCard()}
-  //   </div>
-  // );
 }
 
 export default App
