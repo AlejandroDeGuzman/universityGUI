@@ -1,6 +1,7 @@
 /* Header Navbar CSS */
 .navbar {
   background-color: #02274C;
+  width: 100%;
 }
 
 .logo {

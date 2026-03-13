@@ -3,9 +3,9 @@ import "./Header.css";
 function Header() {
   return (
     <header>
-      <nav class="navbar">
-        <div class="nav-container">
-          <ul class="nav-links">
+      <nav className="navbar">
+        <div className="nav-container">
+          <ul className="nav-links">
             <li>
               <a href="">Home</a>
             </li>
@@ -19,8 +19,8 @@ function Header() {
             </li>
           </ul>
 
-          <div class="logo">
-            <h1>HeadWind</h1>
+          <div className="logo">
+            <h2>HeadWind</h2>
           </div>
         </div>
       </nav>
