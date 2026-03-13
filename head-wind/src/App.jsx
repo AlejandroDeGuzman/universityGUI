@@ -2,7 +2,7 @@ import { useState } from 'react'
 import headwindIcon from "./assets/headwind_icon.png";
 import './App.css'
 import { WeatherCard } from "./WeatherCard";
-import Header from './Header';
+import Header from './components/headerNavBar/Header';
 
 function App() {
   const [count, setCount] = useState(0)
