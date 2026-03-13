@@ -5,13 +5,7 @@ function Header() {
     <header>
       <nav class="navbar">
         <div class="nav-container">
-
-          <div class="logo">
-            <h2>HeadWind</h2>
-          </div>
-
           <ul class="nav-links">
-
             <li>
               <a href="">Home</a>
             </li>
@@ -24,6 +18,10 @@ function Header() {
               <a href="">About</a>
             </li>
           </ul>
+
+          <div class="logo">
+            <h1>HeadWind</h1>
+          </div>
         </div>
       </nav>
 

@@ -1,21 +1,54 @@
 /* Header Navbar CSS */
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #333333;
+.navbar {
+  background-color: #02274C;
+}
+
+.logo {
+  background-color: grey;
+}
+
+.nav-container {
+  align-items: center;
   display: flex;
-  justify-content: left;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-ul li a {
+.nav-links {
+  background-color: white;
+  list-style: none;
+  display: flex;
+  margin: 0px;
+  padding: 0px;
+}
+
+.nav-links li a {
   display: block;
-  color: white;
-  padding: 14px 16px;
-  text-decoration: none;
+  padding: 1vh 3vh;
 }
 
-ul li a:hover {
-  background-color: #111111;
+.nav-links li {
+  /* background-color: grey; */
 }
+
+/* ul { */
+/*   list-style-type: none; */
+/*   margin: 0; */
+/*   padding: 0; */
+/*   background-color: #333333; */
+/*   display: flex; */
+/*   justify-content: left; */
+/* } */
+/**/
+/* ul li a { */
+/*   display: block; */
+/*   color: white; */
+/*   padding: 14px 16px; */
+/*   text-decoration: none; */
+/* } */
+/**/
+/* ul li a:hover { */
+/*   background-color: #111111; */
+/* } */
 
