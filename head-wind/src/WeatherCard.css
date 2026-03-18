@@ -1,14 +1,17 @@
 .weather-card {
     display: flex;
     flex-direction: column;
-    margin: 2rem auto;
+    margin: 1.5rem auto;
+    width: 85%;
 }
 
 .weather-card .location {
     display: flex;
+    align-items: center;
     font-size: 1.5rem;
     margin-left: 5rem;
     margin-right: auto;
+    margin-top: 2rem;
     margin-bottom: 1.5rem;
     text-align: right;
 }
@@ -65,7 +68,7 @@
     justify-content: center;
     height: 100px;
     width: 200px;
-    border: 1px solid black;
+    border: 0.5px solid white;
     border-radius: 1rem;
 }
 
@@ -80,4 +83,8 @@
 
 .running-condition {
     flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
