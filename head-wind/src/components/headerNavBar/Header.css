@@ -1,0 +1,58 @@
+/* Header Navbar CSS */
+.navbar {
+  background-color: #02274C;
+  width: 100%;
+}
+
+.logo {
+  align-items: center;
+  gap: 5px;
+  padding-left: 20px;
+  display: flex;
+  /* background-color: grey; */
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.hamburger {
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* cursor: pointer; */
+}
+
+.hamburger img {
+  /* background-color: grey; */
+  padding: 10px;
+  padding-left: 30px;
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+.nav-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  /* justify-content: space-between; */
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0px;
+  padding: 0px;
+}
+
+.nav-links li a {
+  display: block;
+  padding: 1vh 3vh;
+}
+
+.nav-links li a:hover {
+  background-color: #535bf2;
+}
