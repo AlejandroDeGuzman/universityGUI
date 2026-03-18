@@ -1,0 +1,15 @@
+.img-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; 
+}
+
+.img-text img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.img-text span {
+    font-size: 0.9rem;
+}
