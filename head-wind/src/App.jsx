@@ -4,6 +4,7 @@ import { useState } from 'react'
 import headwindIcon from "./assets/headwind_icon.png";
 import './App.css'
 import { WeatherCard } from "./WeatherCard";
+import { ForecastCard } from './ForecastCard';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -24,6 +25,10 @@ function App() {
     <div>
       {navigation()}
       {WeatherCard()}
+      <br />
+      <hr></hr>
+      <br />
+      {ForecastCard()}
     </div>
   );
 }
