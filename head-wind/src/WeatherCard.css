@@ -1,18 +1,30 @@
 .weather-card {
     display: flex;
     flex-direction: column;
+    margin: 2rem auto;
 }
 
 .weather-card .location {
+    display: flex;
     font-size: 1.5rem;
-    margin-bottom: 1rem;
-    margin: 1rem auto;
+    margin-left: 5rem;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
+    text-align: right;
+}
+
+.weather-card .location .location-icon {
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0.2rem;
+    margin-right: 1rem;
+    border: solid 1px black;
 }
 
 .weather-card_main {
     display: flex;
     flex-direction: row;
-    gap: 5rem;
+    gap: 3rem;
 }
 
 .current-weather{
@@ -20,13 +32,26 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .current-weather h1{
     font-size: 6rem;
+    margin: 0.2rem;
 }
 
+.current_weather_condition {
+    margin: 1.5rem;
+    padding: 0;
+}
+
+.feels-like {
+    margin: 1rem;
+    padding: 0.5rem;
+}   
+
 .weather-details {
+    margin: auto auto;
     display: grid;
     grid-template-columns: repeat(2, 200px);
     grid-auto-rows: 100px;
@@ -45,6 +70,14 @@
 }
 
 
-.current-weather, .weather-details, .running-condition {
+.current-weather {
     flex: 2;
+}
+
+.weather-details {
+    flex: 1.2;
+}
+
+.running-condition {
+    flex: 3;
 }

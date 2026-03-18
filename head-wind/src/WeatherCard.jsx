@@ -2,6 +2,7 @@
 // import humidityIcon from "./image-4.png";
 // import visibilityIcon from "./image-5.png";
 // import windIcon from "./tailwind.svg";
+import locationIcon from "./assets/location_icon.png";
 import "./WeatherCard.css";
 
 
@@ -66,6 +67,7 @@ const weatherDetails = ({headwind_value, tailwind_value, humidity_value, visibil
     )
 };
 
+// to be modified 
 const runningCondition = (current_condition) =>{
     if (current_condition === 'Mostly cloudy') {
         return 'Good';
@@ -80,11 +82,22 @@ const runningCondition = (current_condition) =>{
 export function WeatherCard() {
     return (
         <div className="weather-card">
-            <div className="location">{currentLocation(weatherData)}</div>
+            <div className="location">
+                <img className="location-icon" alt="Location" src={locationIcon} />
+                {currentLocation(weatherData)}
+                </div>
             <div className = "weather-card_main">
                 {currentWeather(weatherData)}
                 {weatherDetails(weatherData)}
-                <div className="running-condition">Running Condition: {runningCondition(weatherData)}</div>
+                <div className="running-condition">
+                    <h3>Running Condition:</h3> 
+                    <h2>{runningCondition(weatherData)}</h2>
+                    <ul>
+                        <li>Good: Clear, mostly clear, partly cloudy</li>
+                        <li>Bad: Rain, snow, thunderstorms</li>
+                        <li>Unknown: Other conditions</li>
+                    </ul>
+                    </div>
             </div>
         </div>
     )
