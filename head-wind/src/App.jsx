@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import headwindIcon from "./assets/headwind_icon.png";
 import './App.css'
 // import { WeatherCard } from "./WeatherCard";
 import ForecastCard from './components/forecastCard/ForecastCard';
