@@ -22,10 +22,10 @@ const weatherData = {
 
 const currentLocation = ({current_location}) => {
     return (
-        <div className="current-location">
-            {/* <img className="location-icon" alt="Location" src={locationIcon} /> */}
+        <>
+            <img className="location-icon" alt="Location" src={locationIcon} />
             {current_location}
-        </div>
+        </>
     )
 };
 
@@ -35,7 +35,9 @@ const currentWeather = ({current_weather, current_condition, feels_like_value}) 
         <div className="current-weather">
             <h1 className="current_temperature">{current_weather}</h1>
             <div className="current_weather_condition">{current_condition}</div>
-            <button className="feels_like">Feels like {feels_like_value}</button>
+            <div className="feels_like">
+                <button className="feels_like_button">Feels like {feels_like_value}</button>
+            </div>
         </div>
     )
 };
@@ -83,7 +85,7 @@ export function WeatherCard() {
     return (
         <div className="weather-card">
             <div className="location">
-                <img className="location-icon" alt="Location" src={locationIcon} />
+                {/* <img className="location-icon" alt="Location" src={locationIcon} /> */}
                 {currentLocation(weatherData)}
                 </div>
             <div className = "weather-card_main">
