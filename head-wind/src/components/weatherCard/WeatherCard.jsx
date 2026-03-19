@@ -1,8 +1,8 @@
-// import { Group } from "./Group";
-// import humidityIcon from "./image-4.png";
-// import visibilityIcon from "./image-5.png";
-// import windIcon from "./tailwind.svg";
-import locationIcon from "./assets/location_icon.png";
+import headwindIcon from "../../assets/headwind.png";
+import tailwindIcon from "../../assets/tailwind.png";
+import humidityIcon from "../../assets/humidity.png";
+import visibilityIcon from "../../assets/visibility.png";
+import locationIcon from "../../assets/location_icon.png";
 import "./WeatherCard.css";
 
 
@@ -20,6 +20,7 @@ const weatherData = {
 };
  
 
+// current location section
 const currentLocation = ({current_location}) => {
     return (
         <>
@@ -30,6 +31,7 @@ const currentLocation = ({current_location}) => {
 };
 
 
+// current temperature and feels-like section
 const currentWeather = ({current_weather, current_condition, feels_like_value}) => {
     return (
         <div className="current-weather">
@@ -42,27 +44,36 @@ const currentWeather = ({current_weather, current_condition, feels_like_value}) 
     )
 };
 
+// weather details section with headwind, tailwind, humidity, and visibility
 const weatherDetails = ({headwind_value, tailwind_value, humidity_value, visibility_value}) => {
     return (
         <div className="weather-details">
             <div className="headwind-detail">
-                {/* <img className="headwind-icon" alt="Headwind" src={windIcon} /> */}
-                <div className="weather-detail__label">Headwind</div>
+                <div className="headwind_label">
+                    <img className="headwind-icon" alt="Headwind" src={headwindIcon} />
+                    <div className="weather-detail__label">Headwind</div>
+                </div>
                 <div className="weather-detail__value">{headwind_value}</div>
             </div>
             <div className="tailwind-detail">
-                {/* <img className="tailwind-icon" alt="Tailwind" src={windIcon} /> */}
-                <div className="weather-detail__label">Tailwind</div>
+                <div className="tailwind_label">
+                    <img className="tailwind-icon" alt="Tailwind" src={tailwindIcon} />
+                    <div className="weather-detail__label">Tailwind</div>
+                </div>
                 <div className="weather-detail__value">{tailwind_value}</div>
             </div>
             <div className="humidity-detail">
-                {/* <img className="humidity-icon" alt="Humidity" src={humidityIcon} /> */}
-                <div className="weather-detail__label">Humidity</div>
+                <div className="humidity_label">
+                    <img className="humidity-icon" alt="Humidity" src={humidityIcon} />
+                    <div className="weather-detail__label">Humidity</div>
+                </div>
                 <div className="weather-detail__value">{humidity_value}</div>
             </div>
             <div className="visibility-detail">
-                {/* <img className="visibility-icon" alt="Visibility" src={visibilityIcon} /> */}
-                <div className="weather-detail__label">Visibility</div>
+                <div className="visibility_label">
+                    <img className="visibility-icon" alt="Visibility" src={visibilityIcon} />
+                    <div className="weather-detail__label">Visibility</div>
+                </div>
                 <div className="weather-detail__value">{visibility_value}</div>
             </div>
         </div>
