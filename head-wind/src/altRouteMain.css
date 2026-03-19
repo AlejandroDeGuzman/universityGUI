@@ -1,0 +1,28 @@
+.alt_route_main{
+    margin: 3rem auto;
+    width: 85%;
+}
+
+.start_session_button .start_session_icon {
+    height: 30px;
+    width: 30px;
+}
+
+.home_button_container{
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.home_button{
+    margin: 0 auto;
+    padding: 0.7em;
+    width: 25rem;
+    border-radius: 1.6rem;
+    font-size: 18px;
+}
+
+.home_button:hover {
+    background-color: #646cff;
+    color: white;
+    cursor: pointer;
+}

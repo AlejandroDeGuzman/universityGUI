@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import headwindIcon from "../../assets/headwind.png";
 import tailwindIcon from "../../assets/tailwind.png";
 import humidityIcon from "../../assets/humidity.png";
@@ -112,6 +113,9 @@ export function WeatherCard() {
                     </ul>
                     </div>
             </div>
+            <Link className="explore-alternate-routes" to="/test-page">Explore alternate routes</Link>
         </div>
     )
 };
+
+export default WeatherCard;
