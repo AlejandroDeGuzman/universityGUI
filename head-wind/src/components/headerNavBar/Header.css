@@ -2,6 +2,15 @@
 .navbar {
   background-color: #02274C;
   width: 100%;
+  position: relative;
+  height: 70px;
+  /* border: 2px solid red; */
+}
+
+.nav-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
 }
 
 .logo {
@@ -9,7 +18,6 @@
   gap: 5px;
   padding-left: 20px;
   display: flex;
-  /* background-color: grey; */
 }
 
 .logo img {
@@ -18,14 +26,8 @@
   display: block;
 }
 
-.hamburger {
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* cursor: pointer; */
-}
-
+/* hamburger menu */
 .hamburger img {
-  /* background-color: grey; */
   padding: 10px;
   padding-left: 30px;
   height: 30px;
@@ -33,26 +35,37 @@
   display: block;
 }
 
-.nav-container {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  /* flex-wrap: wrap; */
-  /* justify-content: space-between; */
-}
-
-.nav-links {
+.nav-menu {
+  position: fixed;
+  top: 70px;                
+  left: 0;
+  height: 100vh;
+  width: 175px;
+  background: #02264b;
   list-style: none;
-  display: flex;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding-left: 30px;
+  padding-top: 15px;
+
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
-.nav-links li a {
+.nav-menu.show {
+  transform: translateX(0);
+}
+
+.nav-menu li a {
+  font-size: 20px;
+  text-decoration: none;
+  color: white;
   display: block;
-  padding: 1vh 3vh;
+  padding: 0.25vh ;
+  padding: 10px;
 }
 
-.nav-links li a:hover {
-  background-color: #535bf2;
+.nav-menu li a:hover {
+  font-weight: bold;
+  transition: 0.2s;
 }
