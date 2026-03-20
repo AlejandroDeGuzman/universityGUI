@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import headwindIcon from "../../assets/headwind.png";
 import tailwindIcon from "../../assets/tailwind.png";
 import humidityIcon from "../../assets/humidity.png";
