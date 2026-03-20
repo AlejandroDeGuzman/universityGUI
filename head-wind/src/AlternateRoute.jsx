@@ -22,11 +22,10 @@ const altRouteData = {
 }
 
 // Home button component
-const HomeButton =() => {
+const AltRouteHeader =() => {
     return (
-        <div className="home_button_container">
-            <button className="home_button">Home</button>
-        </div>
+        // <button className="home_button">Home</button>
+        <h1>Alternate Routes</h1>
     )
 }
 
@@ -34,38 +33,38 @@ const HomeButton =() => {
 const RouteSideBar = () => {
     const { route1, route2, route3 } = altRouteData;
     return (
-        <div className="route_sidebar">
+        <>
             <div className="route1">
                 <div className="route1_header">
                     Route 1 
                     {route1.distance}
                 </div>
-                <div className="route1_details">
+                {/* <div className="route1_details">
                     <div className="route1_detail_item">Estimated Time: {route1.estimatedTime}</div>
                     <div className="route1_detail_item">Headwind: {route1.headwind}</div>
-                </div>
+                </div> */}
             </div>
             <div className="route2">
                 <div className="route2_header">
                     Route 2
                     {route2.distance}
                 </div>
-                <div className="route2_details">
+                {/* <div className="route2_details">
                     <div className="route2_detail_item">Estimated Time: {route2.estimatedTime}</div>
                     <div className="route2_detail_item">Headwind: {route2.headwind}</div>
-                </div>
+                </div> */}
             </div>
             <div className="route3">
                 <div className="route3_header">
                     Route 3
                     {route3.distance}
                 </div>
-                <div className="route3_details">
+                {/* <div className="route3_details">
                     <div className="route3_detail_item">Estimated Time: {route3.estimatedTime}</div>
                     <div className="route3_detail_item">Headwind: {route3.headwind}</div>
-                </div>
+                </div> */}
             </div>
-        </div>
+        </>
     )
 }
 
@@ -83,7 +82,11 @@ const StartSession = () => {
 const RouteMap = () => {
     return (
         <div className="route_map">
-            <div className="map-placeholder">Map Placeholder</div>
+            <div className="map_header">
+                <div className="selected_route">Route 1</div>
+                <div className="timestamp">00:00:00</div>
+            </div>
+            <div className="map_placeholder">Map Placeholder</div>
         </div>
     )
 }
@@ -93,13 +96,13 @@ const AltRouteMain = () => {
     return (
         <div className="alternate_route_container">
             <div className="home_button_container">
-                <HomeButton />
+                <AltRouteHeader />
             </div>
             <div className="start_session_container">
                 <StartSession />
-            </div>
-            <div className="alternate_route_main">
                 <RouteSideBar />
+            </div>
+            <div className="map_placeholder_container">
                 <RouteMap />
             </div> 
         </div>
