@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import headwindIcon from "../../assets/headwind.png";
 import tailwindIcon from "../../assets/tailwind.png";
 import humidityIcon from "../../assets/humidity.png";
@@ -19,10 +19,10 @@ const weatherData = {
     visibility_value: '9.5 km',
     // running_condition: 'Mostly cloudy'
 };
- 
+
 
 // current location section
-const currentLocation = ({current_location}) => {
+const currentLocation = ({ current_location }) => {
     return (
         <>
             <img className="location-icon" alt="Location" src={locationIcon} />
@@ -33,7 +33,7 @@ const currentLocation = ({current_location}) => {
 
 
 // current temperature and feels-like section
-const currentWeather = ({current_weather, current_condition, feels_like_value}) => {
+const currentWeather = ({ current_weather, current_condition, feels_like_value }) => {
     return (
         <div className="current-weather">
             <h1 className="current_temperature">{current_weather}</h1>
@@ -46,7 +46,7 @@ const currentWeather = ({current_weather, current_condition, feels_like_value}) 
 };
 
 // weather details section with headwind, tailwind, humidity, and visibility
-const weatherDetails = ({headwind_value, tailwind_value, humidity_value, visibility_value}) => {
+const weatherDetails = ({ headwind_value, tailwind_value, humidity_value, visibility_value }) => {
     return (
         <div className="weather-details">
             <div className="headwind-detail">
@@ -82,7 +82,7 @@ const weatherDetails = ({headwind_value, tailwind_value, humidity_value, visibil
 };
 
 // to be modified 
-const runningCondition = (current_condition) =>{
+const runningCondition = (current_condition) => {
     if (current_condition === 'Mostly cloudy') {
         return 'Good';
     } else if (current_condition === 'Rainy') {
@@ -99,21 +99,21 @@ export function WeatherCard() {
             <div className="location">
                 {/* <img className="location-icon" alt="Location" src={locationIcon} /> */}
                 {currentLocation(weatherData)}
-                </div>
-            <div className = "weather-card_main">
+            </div>
+            <div className="weather-card_main">
                 {currentWeather(weatherData)}
                 {weatherDetails(weatherData)}
                 <div className="running-condition">
-                    <h3>Running Condition:</h3> 
+                    <h3>Running Condition:</h3>
                     <h2>{runningCondition(weatherData)}</h2>
                     <ul>
                         <li>Good: Clear, mostly clear, partly cloudy</li>
                         <li>Bad: Rain, snow, thunderstorms</li>
                         <li>Unknown: Other conditions</li>
                     </ul>
-                    </div>
+                </div>
             </div>
-            <Link className="explore-alternate-routes" to="/test-page">Explore alternate routes</Link>
+            {/* <Link className="explore-alternate-routes" to="/test-page">Explore alternate routes</Link> */}
         </div>
     )
 };

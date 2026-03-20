@@ -22,7 +22,7 @@ const altRouteData = {
 }
 
 // Home button component
-const AltRouteHeader =() => {
+const AltRouteHeader = () => {
     return (
         // <button className="home_button">Home</button>
         <h1>Alternate Routes</h1>
@@ -72,7 +72,7 @@ const RouteSideBar = () => {
 const StartSession = () => {
     return (
         <button className="start_session_button">
-            <img className="start_session_icon" alt="Start Session Button" src={startButton}/>
+            <img className="start_session_icon" alt="Start Session Button" src={startButton} />
             Start Session
         </button>
     )
@@ -106,7 +106,7 @@ const AlternateRoute = () => {
             </div>
             <div className="map_placeholder_container">
                 <RouteMap />
-            </div> 
+            </div>
         </div>
     )
 }
