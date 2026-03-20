@@ -1,6 +1,9 @@
-.alt_route_main{
-    margin: 0.1rem auto;
+.alternate_route_container{
+    margin: 1.8rem auto;
     width: 85%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
 }
 
 h1{
@@ -8,7 +11,7 @@ h1{
 }
 
 .home_button_container{
-    margin: 1rem auto;
+    margin: 0 auto;
     text-align: center;
 }
 
@@ -26,18 +29,6 @@ h1{
     cursor: pointer;
 }
 
-.alternate_route_container{
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-}
-
-.alternate_route_main{
-    display: flex;
-    flex-direction: row;
-    gap: 5rem;
-}
-
 .start_session_container{
     display: flex;
     flex-direction: row;
@@ -49,7 +40,7 @@ h1{
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.1rem 0.5rem;
+    padding: 0.6rem;
     width: 15rem;
     border-radius: 1.7rem;
     font-size: 15px;
@@ -61,6 +52,12 @@ h1{
     margin-left: 1.7rem;
 }
 
+.start_session_button:hover{
+    background-color: #268534;
+    color: white;
+    cursor: pointer;
+}
+
 .route_sidebar {
     gap: 0.2rem;
     border-radius: 1.8rem;
@@ -69,14 +66,14 @@ h1{
     flex-direction: row;
 }
 
-.route1, .route2, .route3 {
+.route1_header, .route2_header, .route3_header {
     display: flex;
-    flex-direction: column;
-    padding: 0.8rem;
-    text-align: center;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+    width: 12rem;
     border: solid 0.7px white;
     border-radius: 0.9rem;
-    width: 10rem;
 }
 
 .map_placeholder {
@@ -87,11 +84,10 @@ h1{
 
 .route_map{
     border-radius: 1.8rem;
-    flex: 2;
 }
 
 .map_placeholder_container{
-    width: 85%;
+    width: 80%;
     margin: 0 auto;
 }
 
@@ -101,4 +97,5 @@ h1{
     margin: 0.7rem;
     font-weight: bold;
     font-size: 18px;
+    gap: 2rem;
 }

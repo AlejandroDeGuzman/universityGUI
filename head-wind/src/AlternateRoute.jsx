@@ -5,7 +5,7 @@ import "./altRouteMain.css";
 // alternate route value placeholders //
 const altRouteData = {
     route1: {
-        distance: "5 km",
+        distance: "5km",
         estimatedTime: "20 mins",
         headwind: "10 km/h"
     },
@@ -36,8 +36,8 @@ const RouteSideBar = () => {
         <>
             <div className="route1">
                 <div className="route1_header">
-                    Route 1 
-                    {route1.distance}
+                    <p className="route1_name">Route 1</p>
+                    <p className="route1_distance">{route1.distance}</p>
                 </div>
                 {/* <div className="route1_details">
                     <div className="route1_detail_item">Estimated Time: {route1.estimatedTime}</div>
@@ -46,8 +46,8 @@ const RouteSideBar = () => {
             </div>
             <div className="route2">
                 <div className="route2_header">
-                    Route 2
-                    {route2.distance}
+                    <p className="route2_name" >Route 2</p>
+                    <p className="route2_distance">{route2.distance}</p>
                 </div>
                 {/* <div className="route2_details">
                     <div className="route2_detail_item">Estimated Time: {route2.estimatedTime}</div>
@@ -56,8 +56,8 @@ const RouteSideBar = () => {
             </div>
             <div className="route3">
                 <div className="route3_header">
-                    Route 3
-                    {route3.distance}
+                    <p className="route3_name">Route 3</p>
+                    <p className="route3_distance">{route3.distance}</p>
                 </div>
                 {/* <div className="route3_details">
                     <div className="route3_detail_item">Estimated Time: {route3.estimatedTime}</div>
@@ -91,8 +91,10 @@ const RouteMap = () => {
     )
 }
 
-// Main component for alternate route page
-const AltRouteMain = () => {
+
+// MAIN COMPONENT RENDERING //
+const AlternateRoute = () => {
+    const [count, setCount] = useState(0)
     return (
         <div className="alternate_route_container">
             <div className="home_button_container">
@@ -107,19 +109,6 @@ const AltRouteMain = () => {
             </div> 
         </div>
     )
-}
-
-
-/// MAIN COMPONENT ///
-function AlternateRoute() {
-  const [count, setCount] = useState(0)
-
-
-  return (
-    <div className="alt_route_main">
-        <AltRouteMain />
-    </div>
-  );
 }
 
 export default AlternateRoute;
