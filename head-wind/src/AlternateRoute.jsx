@@ -46,11 +46,15 @@ const AltRouteHeader = () => {
 }
 
 // Route selection sidebar component
-const RouteSideBar = () => {
+const RouteSideBar = ({ selectedRoute, setSelectedRoute}) => {
    // extended menu with route details
     const RouteItem = ({ routeKey, routeNum, data }) => {
+        const isSelected = selectedRoute === routeKey;
+
         return (
-            <div className="route_item">
+            <div className={`route_item ${isSelected ? "route_selected" : ""}`}
+                onClick={() => setSelectedRoute(isSelected ? null : routeKey)}
+            >
                 <div className="route_header">
                     <div className="route_header_left">
                         <p className="route_name">Route {routeNum}</p>
@@ -93,22 +97,14 @@ const RouteSideBar = () => {
     );
 }
 
-// start session button component
-// const StartSession = () => {
-//     return (
-//         <button className="start_session_button">
-//             <img className="start_session_icon" alt="Start Session Button" src={startButton} />
-//             Start Session
-//         </button>
-//     )
-// }
-
 // route map component (placeholder for now)
-const RouteMap = () => {
+const RouteMap = ({selectedRoute}) => {
     return (
         <div className="route_map">
             <div className="map_header">
-                <div className="selected_route">Route 1</div>
+                <div className="selected_route">
+                    {selectedRoute ? `Route ${selectedRoute.slice(-1)}` : "Route 1"}
+                </div>
             </div>
             <div className="map_placeholder">Map Placeholder</div>
         </div>
@@ -118,17 +114,18 @@ const RouteMap = () => {
 
 // MAIN COMPONENT RENDERING //
 const AlternateRoute = () => {
-    const [count, setCount] = useState(0)
+    const [selectedRoute, setSelectedRoute] = useState("route1");
     return (
         <div className="alternate_route_container">
             <div className="home_button_container">
                 <AltRouteHeader />
             </div>
             <div className="route_navbar">
-                <RouteSideBar />
+                <RouteSideBar selectedRoute={selectedRoute} setSelectedRoute={setSelectedRoute} />
             </div>
             <div className="map_placeholder_container">
-                <RouteMap />
+                <RouteMap selectedRoute={selectedRoute} />
+
             </div>
         </div>
     )

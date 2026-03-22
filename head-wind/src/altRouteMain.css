@@ -36,34 +36,6 @@ h1{
     gap: 3rem;
 }
 
-/* .start_session_container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 2rem;
-} */
-
-/* .start_session_button{
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem;
-    width: 15rem;
-    border-radius: 1.7rem;
-    font-size: 15px;
-}
-
-.start_session_icon{
-    height: 30px;
-    width: 30px;
-    margin-left: 1.7rem;
-}
-
-.start_session_button:hover{
-    background-color: #268534;
-    color: white;
-    cursor: pointer; */
-
 .route_sidebar{
     gap: 0.2rem;
     border-radius: 1.8rem;
@@ -185,6 +157,12 @@ h1{
     font-weight: 500;
 }
 
+.route_selected .route_header, .route_item:active .route_header{
+    background-color:#8bb196;
+    border-color: #64c046;
+    box-shadow: 0 0 10px #3b5a3e;
+    color: rgb(0, 22, 2);
+}
 
 /**** Map ****/
 .map_placeholder {
