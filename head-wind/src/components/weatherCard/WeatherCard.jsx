@@ -168,9 +168,11 @@ export function WeatherCard() {
                     <h3>Running Condition:</h3>
                     <h2>{getRunningCondition(weatherAPIData.temp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition)}</h2>
                     <ul>
-                        <li>Good: Clear, mostly clear, partly cloudy</li>
-                        <li>Bad: Rain, snow, thunderstorms</li>
-                        <li>Unknown: Other conditions</li>
+                        <li><strong>Excellent:</strong> Clear, cool, light wind</li>
+                        <li><strong>Good:</strong> Partly cloudy, mild conditions</li>
+                        <li><strong>Moderate:</strong> Cloudy, warm, or breezy</li>
+                        <li><strong>Poor:</strong> Rain, strong wind, low visibility</li>
+                        <li><strong>Very Poor:</strong> Snow, storms, extreme temps</li>
                     </ul>
                 </div>
             </div>
