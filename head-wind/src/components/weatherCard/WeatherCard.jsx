@@ -154,7 +154,6 @@ export function WeatherCard() {
         wind_dir_value: degreesToCompass16(weatherAPIData.windDeg) + ", " + weatherAPIData.windDeg + "°",
         humidity_value: weatherAPIData.humidity + "%",
         visibility: weatherAPIData.visibility / 1000 + "km",
-        // running_condition: 'Mostly cloudy'
     };
 
     return (
