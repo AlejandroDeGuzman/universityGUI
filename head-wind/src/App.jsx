@@ -3,11 +3,11 @@ import './App.css'
 import { WeatherCard } from "./components/weatherCard/WeatherCard";
 import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
+import ForecastCard from "./components/forecastCard/ForecastCard"
 
 /* testing react router */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
-
 
 function App() {
     const [postcode, setPostcode] = useState("RG4");
@@ -20,6 +20,7 @@ function App() {
                     <Route path="/" element={
                         <>
                             <WeatherCard postcode={postcode} />
+                            <ForecastCard />
                             <TodayTemp postcode={postcode} />
                         </>
                     }
