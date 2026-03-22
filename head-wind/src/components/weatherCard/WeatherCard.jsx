@@ -151,7 +151,7 @@ export function WeatherCard() {
         current_condition: weatherAPIData.currentWeather + ", " + weatherAPIData.currentCondition,
         feels_like_value: Math.round(weatherAPIData.feelsLikeTemp) + "°C",
         wind_speed_value: weatherAPIData.windSpeed + "m/s",
-        wind_dir_value: weatherAPIData.windDeg + "°, " + degreesToCompass16(weatherAPIData.windDeg),
+        wind_dir_value: degreesToCompass16(weatherAPIData.windDeg) + ", " + weatherAPIData.windDeg + "°",
         humidity_value: weatherAPIData.humidity + "%",
         visibility: weatherAPIData.visibility / 1000 + "km",
         // running_condition: 'Mostly cloudy'
