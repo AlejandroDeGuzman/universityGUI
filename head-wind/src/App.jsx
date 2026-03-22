@@ -7,7 +7,7 @@ import TodayTemp from './components/todayTemp/TodayTemp';
 
 
 /* testing react router */
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
 
 
@@ -15,23 +15,11 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-<<<<<<< HEAD
-    <BrowserRouter>
-      <div>
-        <Header />
-        <Routes>
-          <Route path="/" element={<WeatherCard />} />
-          <Route path="/test-page" element={<AlternateRoute />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
-=======
     <div>
       <Header />
       <WeatherCard />
       <TodayTemp />
     </div>
->>>>>>> main
   );
 }
 
