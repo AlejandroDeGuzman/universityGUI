@@ -2,6 +2,8 @@ import { useState } from 'react'
 import './App.css'
 import { WeatherCard } from "./components/weatherCard/WeatherCard";
 import Header from './components/headerNavBar/Header';
+import TodayTemp from './components/todayTemp/TodayTemp';
+
 
 
 /* testing react router */
@@ -13,6 +15,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
+<<<<<<< HEAD
     <BrowserRouter>
       <div>
         <Header />
@@ -22,6 +25,13 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
+=======
+    <div>
+      <Header />
+      <WeatherCard />
+      <TodayTemp />
+    </div>
+>>>>>>> main
   );
 }
 
