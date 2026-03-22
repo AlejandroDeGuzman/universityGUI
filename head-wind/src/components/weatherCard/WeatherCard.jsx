@@ -36,7 +36,7 @@ const currentWeather = ({ current_weather, current_condition, feels_like_value }
 };
 
 // weather details section with headwind, tailwind, humidity, and visibility
-const weatherDetails = ({ headwind_value, tailwind_value, humidity_value, visibility_value }) => {
+const weatherDetails = ({ headwind_value, tailwind_value, humidity_value, wind_dir }) => {
     return (
         <div className="weather-details">
             <div className="headwind-detail">
@@ -65,7 +65,7 @@ const weatherDetails = ({ headwind_value, tailwind_value, humidity_value, visibi
                     <img className="visibility-icon" alt="Visibility" src={visibilityIcon} />
                     <div className="weather-detail__label">Visibility</div>
                 </div>
-                <div className="weather-detail__value">{visibility_value}</div>
+                <div className="weather-detail__value">{wind_dir}</div>
             </div>
         </div>
     )
@@ -82,6 +82,22 @@ const runningCondition = (current_condition) => {
     }
 }
 
+// helper funcs for calc headwind and tailwind
+function degToCompass(num) {
+    const val = Math.floor((num / 22.5) + 0.5);
+    const arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+        "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+    return arr[val % 16];
+}
+
+function compassToDeg(compass) {
+    const mapping = {
+        N: 0, NNE: 22.5, NE: 45, ENE: 67.5, E: 90, ESE: 112.5,
+        SE: 135, SSE: 157.5, S: 180, SSW: 202.5, SW: 225, WSW: 247.5,
+        W: 270, WNW: 292.5, NW: 315, NNW: 337.5
+    };
+    return mapping[compass.toUpperCase()] ?? 0;
+}
 
 export function WeatherCard() {
     const [latLongData, setLatLongData] = useState(null);
@@ -93,7 +109,7 @@ export function WeatherCard() {
     useEffect(() => {
         const getBasicWeatherData = async () => {
             try {
-                const latLongData = await fetchLatitudeLongitude("E14");
+                const latLongData = await fetchLatitudeLongitude("RG4");
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
@@ -111,18 +127,29 @@ export function WeatherCard() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
-    // Variables for current weather section //
+    const windSpeed = weatherAPIData.windSpeed;
+    const windDeg = weatherAPIData.windDeg;
+
+    // ASSUMPTION: travelling in N
+    const travelDeg = compassToDeg("N");
+    const relativeRad = ((windDeg - travelDeg) * Math.PI) / 180;
+    const windAlongTravel = windSpeed * Math.cos(relativeRad);
+    const tailwind = windAlongTravel > 0 ? windAlongTravel : 0;
+    const headwind = windAlongTravel < 0 ? -windAlongTravel : 0;
+    const windCompass = degToCompass(windDeg);
+
     const weatherData = {
         current_location: latLongData.country + ", " + latLongData.city,
         current_weather: Math.round(weatherAPIData.currentTemp) + "°C",
         current_condition: weatherAPIData.currentWeather + ", " + weatherAPIData.currentCondition,
         feels_like_value: Math.round(weatherAPIData.feelsLikeTemp) + "°C",
-        headwind_value: 'NW',
-        tailwind_value: 'NW',
+        headwind_value: headwind + "m/s",
+        tailwind_value: tailwind + "m/s",
         humidity_value: weatherAPIData.humidity + "%",
-        visibility_value: '9.5 km',
+        wind_dir: windCompass + " " + weatherAPIData.windDeg,
         // running_condition: 'Mostly cloudy'
     };
+
     return (
         <div className="weather-card">
             <div className="location">

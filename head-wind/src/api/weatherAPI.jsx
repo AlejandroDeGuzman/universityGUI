@@ -28,6 +28,9 @@ export const fetchWeatherData = async (lat, lon) => {
         feelsLikeTemp: data.main.feels_like,
         currentWeather: data.weather[0].main,
         currentCondition: data.weather[0].description,
-        humidity: data.main.humidity
+        humidity: data.main.humidity,
+        windSpeed: data.wind.speed,
+        windDeg: data.wind.deg,
+        gust: data.wind.gust
     };
 }
