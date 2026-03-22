@@ -19,16 +19,17 @@ function App() {
             <div>
                 <Header />
                 <Routes>
-                    <Route path="/" element={<WeatherCard />} />
+                    <Route path="/" element={
+                        <>
+                            <WeatherCard />
+                            <TodayTemp />
+                        </>
+                    }
+                    />
                     <Route path="/test-page" element={<AlternateRoute />} />
                 </Routes>
             </div>
         </BrowserRouter>
-        // <div>
-        //   <Header />
-        //   <WeatherCard />
-        //   <TodayTemp />
-        // </div>
     );
 }
 
