@@ -1,27 +1,15 @@
-import headwindIcon from "../../assets/headwind.png";
+// import { Link } from "react-router-dom";
+import windSpeedIcon from "../../assets/windspeed.png";
 import tailwindIcon from "../../assets/tailwind.png";
 import humidityIcon from "../../assets/humidity.png";
 import visibilityIcon from "../../assets/visibility.png";
 import locationIcon from "../../assets/location_icon.png";
 import "./WeatherCard.css";
-
-
-// Variables for current weather section //
-const weatherData = {
-    current_location: 'London, United Kingdom',
-    current_weather: '7°',
-    current_condition: 'Mostly cloudy',
-    feels_like_value: '5°',
-    headwind_value: 'NW',
-    tailwind_value: 'NW',
-    humidity_value: '85%',
-    visibility_value: '9.5 km',
-    // running_condition: 'Mostly cloudy'
-};
- 
+import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
+import { useState, useEffect } from "react";
 
 // current location section
-const currentLocation = ({current_location}) => {
+const currentLocation = ({ current_location }) => {
     return (
         <>
             <img className="location-icon" alt="Location" src={locationIcon} />
@@ -30,9 +18,8 @@ const currentLocation = ({current_location}) => {
     )
 };
 
-
 // current temperature and feels-like section
-const currentWeather = ({current_weather, current_condition, feels_like_value}) => {
+const currentWeather = ({ current_weather, current_condition, feels_like_value }) => {
     return (
         <div className="current-weather">
             <h1 className="current_temperature">{current_weather}</h1>
@@ -45,22 +32,22 @@ const currentWeather = ({current_weather, current_condition, feels_like_value}) 
 };
 
 // weather details section with headwind, tailwind, humidity, and visibility
-const weatherDetails = ({headwind_value, tailwind_value, humidity_value, visibility_value}) => {
+const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visibility }) => {
     return (
         <div className="weather-details">
-            <div className="headwind-detail">
-                <div className="headwind_label">
-                    <img className="headwind-icon" alt="Headwind" src={headwindIcon} />
-                    <div className="weather-detail__label">Headwind</div>
+            <div className="windspeed-detail">
+                <div className="windspeed_label">
+                    <img className="windspeed-icon" alt="Windspeed" src={windSpeedIcon} />
+                    <div className="weather-detail__label">Wind Speed</div>
                 </div>
-                <div className="weather-detail__value">{headwind_value}</div>
+                <div className="weather-detail__value">{wind_speed_value}</div>
             </div>
-            <div className="tailwind-detail">
-                <div className="tailwind_label">
-                    <img className="tailwind-icon" alt="Tailwind" src={tailwindIcon} />
+            <div className="winddir-detail">
+                <div className="winddir_label">
+                    <img className="winddir-icon" alt="WindDirection" src={tailwindIcon} />
                     <div className="weather-detail__label">Tailwind</div>
                 </div>
-                <div className="weather-detail__value">{tailwind_value}</div>
+                <div className="weather-detail__value">{wind_dir_value}</div>
             </div>
             <div className="humidity-detail">
                 <div className="humidity_label">
@@ -74,44 +61,123 @@ const weatherDetails = ({headwind_value, tailwind_value, humidity_value, visibil
                     <img className="visibility-icon" alt="Visibility" src={visibilityIcon} />
                     <div className="weather-detail__label">Visibility</div>
                 </div>
-                <div className="weather-detail__value">{visibility_value}</div>
+                <div className="weather-detail__value">{visibility}</div>
             </div>
         </div>
     )
 };
 
-// to be modified 
-const runningCondition = (current_condition) =>{
-    if (current_condition === 'Mostly cloudy') {
-        return 'Good';
-    } else if (current_condition === 'Rainy') {
-        return 'Bad';
-    } else {
-        return 'Unknown';
-    }
+function getRunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
+    let score = 100;
+
+    // --- Temperature (ideal: ~8–15°C) ---
+    if (currentTemp < 0) score -= 30;
+    else if (currentTemp < 5) score -= 15;
+    else if (currentTemp > 25) score -= 20;
+    else if (currentTemp > 18) score -= 10;
+
+    // --- Wind (harder running) ---
+    if (windSpeed > 10) score -= 25;
+    else if (windSpeed > 6) score -= 15;
+    else if (windSpeed > 3) score -= 5;
+
+    // --- Visibility ---
+    if (visibility < 500) score -= 30;
+    else if (visibility < 2000) score -= 15;
+    else if (visibility < 5000) score -= 5;
+
+    // --- Weather conditions ---
+    if (["thunderstorm"].includes(currentCondition)) score -= 40;
+    else if (["snow"].includes(currentCondition)) score -= 25;
+    else if (["rain", "drizzle"].includes(currentCondition)) score -= 20;
+    else if (["mist", "fog", "haze"].includes(currentCondition)) score -= 15;
+
+    // Clamp score
+    score = Math.max(0, Math.min(100, score));
+
+    // --- Convert score to label ---
+    if (score >= 85) return "Excellent";
+    if (score >= 70) return "Good";
+    if (score >= 50) return "Moderate";
+    if (score >= 30) return "Poor";
+    return "Very Poor";
 }
 
+function degreesToCompass16(deg) {
+    const directions = [
+        "N", "NNE", "NE", "ENE",
+        "E", "ESE", "SE", "SSE",
+        "S", "SSW", "SW", "WSW",
+        "W", "WNW", "NW", "NNW"
+    ];
 
-export function WeatherCard() {
+    const normalizedDeg = ((deg % 360) + 360) % 360;
+    const index = Math.round(normalizedDeg / 22.5) % 16;
+
+    return directions[index];
+}
+
+export function WeatherCard({ postcode }) {
+    const [latLongData, setLatLongData] = useState(null);
+    const [weatherAPIData, setWeatherAPIData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+
+    useEffect(() => {
+        const getBasicWeatherData = async () => {
+            try {
+                const latLongData = await fetchLatitudeLongitude(postcode);
+                const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
+                setLatLongData(latLongData);
+                setWeatherAPIData(weatherAPIData);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getBasicWeatherData();
+
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+
+    const weatherData = {
+        current_location: latLongData.country + ", " + latLongData.city,
+        current_weather: Math.round(weatherAPIData.currentTemp) + "°C",
+        current_condition: weatherAPIData.currentWeather + ", " + weatherAPIData.currentCondition,
+        feels_like_value: Math.round(weatherAPIData.feelsLikeTemp) + "°C",
+        wind_speed_value: weatherAPIData.windSpeed + "m/s",
+        wind_dir_value: degreesToCompass16(weatherAPIData.windDeg) + ", " + weatherAPIData.windDeg + "°",
+        humidity_value: weatherAPIData.humidity + "%",
+        visibility: weatherAPIData.visibility / 1000 + "km",
+    };
+
     return (
         <div className="weather-card">
             <div className="location">
-                {/* <img className="location-icon" alt="Location" src={locationIcon} /> */}
                 {currentLocation(weatherData)}
-                </div>
-            <div className = "weather-card_main">
+            </div>
+            <div className="weather-card_main">
                 {currentWeather(weatherData)}
                 {weatherDetails(weatherData)}
                 <div className="running-condition">
-                    <h3>Running Condition:</h3> 
-                    <h2>{runningCondition(weatherData)}</h2>
+                    <h3>Running Condition:</h3>
+                    <h2>{getRunningCondition(weatherAPIData.currentTemp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition.toLowerCase())}</h2>
                     <ul>
-                        <li>Good: Clear, mostly clear, partly cloudy</li>
-                        <li>Bad: Rain, snow, thunderstorms</li>
-                        <li>Unknown: Other conditions</li>
+                        <li><strong>Excellent:</strong> Clear, cool, light wind</li>
+                        <li><strong>Good:</strong> Partly cloudy, mild conditions</li>
+                        <li><strong>Moderate:</strong> Cloudy, warm, or breezy</li>
+                        <li><strong>Poor:</strong> Rain, strong wind, low visibility</li>
+                        <li><strong>Very Poor:</strong> Snow, storms, extreme temps</li>
                     </ul>
-                    </div>
+                </div>
             </div>
         </div>
     )
 };
+
+export default WeatherCard;

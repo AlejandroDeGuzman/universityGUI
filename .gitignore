@@ -26,6 +26,7 @@ head-wind/coverage/
 # Editor folders
 .vscode/
 .idea/
+.env
 
 # OS files
 .DS_Store

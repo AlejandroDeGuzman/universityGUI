@@ -22,27 +22,27 @@
     -webkit-backdrop-filter: blur(10px);
   }
   
-  .today-temp-summary {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    color: white;
-    margin-bottom: 24px;
-  }
+  /* .today-temp-summary { */
+  /*   display: flex; */
+  /*   align-items: center; */
+  /*   gap: 24px; */
+  /*   color: white; */
+  /*   margin-bottom: 24px; */
+  /* } */
   
-  .now-label {
-    color: #2ea0ff;
-    font-weight: 700;
-    font-size: 1.1rem;
-  }
-  
-  .current-temp {
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1;
-    color: white;
-  }
-  
+  /* .now-label { */
+  /*   color: #2ea0ff; */
+  /*   font-weight: 700; */
+  /*   font-size: 1.1rem; */
+  /* } */
+  /**/
+  /* .current-temp { */
+  /*   font-size: 4rem; */
+  /*   font-weight: 700; */
+  /*   line-height: 1; */
+  /*   color: white; */
+  /* } */
+  /**/
   .weather-meta {
     display: flex;
     gap: 16px;
