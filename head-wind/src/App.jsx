@@ -3,6 +3,7 @@ import './App.css'
 import { WeatherCard } from "./components/weatherCard/WeatherCard";
 import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
+import ForecastCard from "./components/forecastCard/ForecastCard"
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     <div>
       <Header />
       <WeatherCard />
+      <ForecastCard/>
       <TodayTemp />
     </div>
   );
