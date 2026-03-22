@@ -15,16 +15,27 @@ import AlternateRoute from './AlternateRoute';
 
 function App() {
     const [latLongData, setLatLongData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const getLatLongData = async () => {
-            const latLongData = await fetchLatitudeLongitude("E14");
-            setLatLongData(latLongData);
+            try {
+                const latLongData = await fetchLatitudeLongitude("E14");
+                setLatLongData(latLongData);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
         };
 
         getLatLongData();
 
     }, []);
+
+
+    if (error) return <p>Error: {error.message}</p>;
 
     return (
         <BrowserRouter>
@@ -35,7 +46,7 @@ function App() {
                         <>
                             <WeatherCard />
                             <TodayTemp />
-                            {latLongData ? (
+                            {!loading && !error ? (
                                 <>
                                     <p>City: {latLongData.name}</p>
                                     <p>Latitude: {latLongData.lat}</p>
