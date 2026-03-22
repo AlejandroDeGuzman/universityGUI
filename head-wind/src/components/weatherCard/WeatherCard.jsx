@@ -1,5 +1,5 @@
 // import { Link } from "react-router-dom";
-import headwindIcon from "../../assets/headwind.png";
+import windSpeedIcon from "../../assets/windspeed.png";
 import tailwindIcon from "../../assets/tailwind.png";
 import humidityIcon from "../../assets/humidity.png";
 import visibilityIcon from "../../assets/visibility.png";
@@ -7,9 +7,6 @@ import locationIcon from "../../assets/location_icon.png";
 import "./WeatherCard.css";
 import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
 import { useState, useEffect } from "react";
-
-
-
 
 // current location section
 const currentLocation = ({ current_location }) => {
@@ -20,7 +17,6 @@ const currentLocation = ({ current_location }) => {
         </>
     )
 };
-
 
 // current temperature and feels-like section
 const currentWeather = ({ current_weather, current_condition, feels_like_value }) => {
@@ -36,22 +32,22 @@ const currentWeather = ({ current_weather, current_condition, feels_like_value }
 };
 
 // weather details section with headwind, tailwind, humidity, and visibility
-const weatherDetails = ({ headwind_value, tailwind_value, humidity_value, wind_dir }) => {
+const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visibility }) => {
     return (
         <div className="weather-details">
-            <div className="headwind-detail">
-                <div className="headwind_label">
-                    <img className="headwind-icon" alt="Headwind" src={headwindIcon} />
-                    <div className="weather-detail__label">Headwind</div>
+            <div className="windspeed-detail">
+                <div className="windspeed_label">
+                    <img className="windspeed-icon" alt="Windspeed" src={windSpeedIcon} />
+                    <div className="weather-detail__label">Wind Speed</div>
                 </div>
-                <div className="weather-detail__value">{headwind_value}</div>
+                <div className="weather-detail__value">{wind_speed_value}</div>
             </div>
-            <div className="tailwind-detail">
-                <div className="tailwind_label">
-                    <img className="tailwind-icon" alt="Tailwind" src={tailwindIcon} />
+            <div className="winddir-detail">
+                <div className="winddir_label">
+                    <img className="winddir-icon" alt="WindDirection" src={tailwindIcon} />
                     <div className="weather-detail__label">Tailwind</div>
                 </div>
-                <div className="weather-detail__value">{tailwind_value}</div>
+                <div className="weather-detail__value">{wind_dir_value}</div>
             </div>
             <div className="humidity-detail">
                 <div className="humidity_label">
@@ -65,7 +61,7 @@ const weatherDetails = ({ headwind_value, tailwind_value, humidity_value, wind_d
                     <img className="visibility-icon" alt="Visibility" src={visibilityIcon} />
                     <div className="weather-detail__label">Visibility</div>
                 </div>
-                <div className="weather-detail__value">{wind_dir}</div>
+                <div className="weather-detail__value">{visibility}</div>
             </div>
         </div>
     )
@@ -82,21 +78,19 @@ const runningCondition = (current_condition) => {
     }
 }
 
-// helper funcs for calc headwind and tailwind
-function degToCompass(num) {
-    const val = Math.floor((num / 22.5) + 0.5);
-    const arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-        "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
-    return arr[val % 16];
-}
+// helper func
+function degreesToCompass16(deg) {
+    const directions = [
+        "N", "NNE", "NE", "ENE",
+        "E", "ESE", "SE", "SSE",
+        "S", "SSW", "SW", "WSW",
+        "W", "WNW", "NW", "NNW"
+    ];
 
-function compassToDeg(compass) {
-    const mapping = {
-        N: 0, NNE: 22.5, NE: 45, ENE: 67.5, E: 90, ESE: 112.5,
-        SE: 135, SSE: 157.5, S: 180, SSW: 202.5, SW: 225, WSW: 247.5,
-        W: 270, WNW: 292.5, NW: 315, NNW: 337.5
-    };
-    return mapping[compass.toUpperCase()] ?? 0;
+    const normalizedDeg = ((deg % 360) + 360) % 360;
+    const index = Math.round(normalizedDeg / 22.5) % 16;
+
+    return directions[index];
 }
 
 export function WeatherCard() {
@@ -109,7 +103,7 @@ export function WeatherCard() {
     useEffect(() => {
         const getBasicWeatherData = async () => {
             try {
-                const latLongData = await fetchLatitudeLongitude("RG4");
+                const latLongData = await fetchLatitudeLongitude("E14");
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
@@ -127,26 +121,15 @@ export function WeatherCard() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
-    const windSpeed = weatherAPIData.windSpeed;
-    const windDeg = weatherAPIData.windDeg;
-
-    // ASSUMPTION: travelling in N
-    const travelDeg = compassToDeg("N");
-    const relativeRad = ((windDeg - travelDeg) * Math.PI) / 180;
-    const windAlongTravel = windSpeed * Math.cos(relativeRad);
-    const tailwind = windAlongTravel > 0 ? windAlongTravel : 0;
-    const headwind = windAlongTravel < 0 ? -windAlongTravel : 0;
-    const windCompass = degToCompass(windDeg);
-
     const weatherData = {
         current_location: latLongData.country + ", " + latLongData.city,
         current_weather: Math.round(weatherAPIData.currentTemp) + "°C",
         current_condition: weatherAPIData.currentWeather + ", " + weatherAPIData.currentCondition,
         feels_like_value: Math.round(weatherAPIData.feelsLikeTemp) + "°C",
-        headwind_value: headwind + "m/s",
-        tailwind_value: tailwind + "m/s",
+        wind_speed_value: weatherAPIData.windSpeed + "m/s",
+        wind_dir_value: weatherAPIData.windDeg + "°, " + degreesToCompass16(weatherAPIData.windDeg),
         humidity_value: weatherAPIData.humidity + "%",
-        wind_dir: windCompass + " " + weatherAPIData.windDeg,
+        visibility: weatherAPIData.visibility / 1000 + "km",
         // running_condition: 'Mostly cloudy'
     };
 
