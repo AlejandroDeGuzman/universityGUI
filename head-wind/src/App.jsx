@@ -1,22 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { WeatherCard } from "./components/weatherCard/WeatherCard";
 import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
 import ForecastCard from "./components/forecastCard/ForecastCard"
 
+/* testing react router */
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AlternateRoute from './AlternateRoute';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [postcode, setPostcode] = useState("RG4");
 
-  return (
-    <div>
-      <Header />
-      <WeatherCard />
-      <ForecastCard/>
-      <TodayTemp />
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <div>
+                <Header setPostcode={setPostcode} />
+                <Routes>
+                    <Route path="/" element={
+                        <>
+                            <WeatherCard postcode={postcode} />
+                            <ForecastCard />
+                            <TodayTemp postcode={postcode} />
+                        </>
+                    }
+                    />
+                    <Route path="/test-page" element={<AlternateRoute />} />
+                </Routes>
+            </div>
+        </BrowserRouter>
+    );
 }
 
 export default App

@@ -1,6 +1,6 @@
 import "./ForecastCard.css";
 import humidityIcon from "../../assets/humidity.png";
-import headwindIcon from "../../assets/headwind.png";
+import headwindIcon from "../../assets/windspeed.png";
 
 
 const DIFFICULTY = {
@@ -19,7 +19,7 @@ const placeholderData = {
   wind_type: 'head'
 }
 
-const ForecastCardItem = ({ forecast_Data }) => {
+export const ForecastCardItem = ({ forecast_Data }) => {
   return (
     <div className="forecast-card-item">
       <div className="forecast_time">{forecast_Data.forecast_time}</div>
