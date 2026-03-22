@@ -67,18 +67,42 @@ const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visi
     )
 };
 
-// to be modified 
-const runningCondition = (current_condition) => {
-    if (current_condition === 'Mostly cloudy') {
-        return 'Good';
-    } else if (current_condition === 'Rainy') {
-        return 'Bad';
-    } else {
-        return 'Unknown';
-    }
+function getRunningCondition(temp, windSpeed, visibility, weatherMain) {
+    let score = 100;
+
+    // --- Temperature (ideal: ~8–15°C) ---
+    if (temp < 0) score -= 30;
+    else if (temp < 5) score -= 15;
+    else if (temp > 25) score -= 20;
+    else if (temp > 18) score -= 10;
+
+    // --- Wind (harder running) ---
+    if (windSpeed > 10) score -= 25;
+    else if (windSpeed > 6) score -= 15;
+    else if (windSpeed > 3) score -= 5;
+
+    // --- Visibility ---
+    if (visibility < 500) score -= 30;
+    else if (visibility < 2000) score -= 15;
+    else if (visibility < 5000) score -= 5;
+
+    // --- Weather conditions ---
+    if (["thunderstorm"].includes(weatherMain)) score -= 40;
+    else if (["snow"].includes(weatherMain)) score -= 25;
+    else if (["rain", "drizzle"].includes(weatherMain)) score -= 20;
+    else if (["mist", "fog", "haze"].includes(weatherMain)) score -= 15;
+
+    // Clamp score
+    score = Math.max(0, Math.min(100, score));
+
+    // --- Convert score to label ---
+    if (score >= 85) return "Excellent";
+    if (score >= 70) return "Good";
+    if (score >= 50) return "Moderate";
+    if (score >= 30) return "Poor";
+    return "Very Poor";
 }
 
-// helper func
 function degreesToCompass16(deg) {
     const directions = [
         "N", "NNE", "NE", "ENE",
@@ -143,7 +167,7 @@ export function WeatherCard() {
                 {weatherDetails(weatherData)}
                 <div className="running-condition">
                     <h3>Running Condition:</h3>
-                    <h2>{runningCondition(weatherData)}</h2>
+                    <h2>{getRunningCondition(weatherAPIData.temp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition)}</h2>
                     <ul>
                         <li>Good: Clear, mostly clear, partly cloudy</li>
                         <li>Bad: Rain, snow, thunderstorms</li>
