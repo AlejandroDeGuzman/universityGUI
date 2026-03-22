@@ -5,20 +5,10 @@ import humidityIcon from "../../assets/humidity.png";
 import visibilityIcon from "../../assets/visibility.png";
 import locationIcon from "../../assets/location_icon.png";
 import "./WeatherCard.css";
+import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
+import { useState, useEffect } from "react";
 
 
-// Variables for current weather section //
-const weatherData = {
-    current_location: 'London, United Kingdom',
-    current_weather: '7°',
-    current_condition: 'Mostly cloudy',
-    feels_like_value: '5°',
-    headwind_value: 'NW',
-    tailwind_value: 'NW',
-    humidity_value: '85%',
-    visibility_value: '9.5 km',
-    // running_condition: 'Mostly cloudy'
-};
 
 
 // current location section
@@ -94,10 +84,48 @@ const runningCondition = (current_condition) => {
 
 
 export function WeatherCard() {
+    const [latLongData, setLatLongData] = useState(null);
+    const [weatherAPIData, setWeatherAPIData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+
+    useEffect(() => {
+        const getBasicWeatherData = async () => {
+            try {
+                const latLongData = await fetchLatitudeLongitude("E14");
+                const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
+                setLatLongData(latLongData);
+                setWeatherAPIData(weatherAPIData);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getBasicWeatherData();
+
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+
+    // Variables for current weather section //
+    const weatherData = {
+        current_location: latLongData.country + ", " + latLongData.city,
+        current_weather: Math.round(weatherAPIData.currentTemp) + "°C",
+        current_condition: weatherAPIData.currentWeather + ", " + weatherAPIData.currentCondition,
+        feels_like_value: Math.round(weatherAPIData.feelsLikeTemp) + "°C",
+        headwind_value: 'NW',
+        tailwind_value: 'NW',
+        humidity_value: weatherAPIData.humidity + "%",
+        visibility_value: '9.5 km',
+        // running_condition: 'Mostly cloudy'
+    };
     return (
         <div className="weather-card">
             <div className="location">
-                {/* <img className="location-icon" alt="Location" src={locationIcon} /> */}
                 {currentLocation(weatherData)}
             </div>
             <div className="weather-card_main">
@@ -113,7 +141,6 @@ export function WeatherCard() {
                     </ul>
                 </div>
             </div>
-            {/* <Link className="explore-alternate-routes" to="/test-page">Explore alternate routes</Link> */}
         </div>
     )
 };
