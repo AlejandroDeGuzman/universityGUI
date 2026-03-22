@@ -15,7 +15,6 @@ import AlternateRoute from './AlternateRoute';
 
 function App() {
     const [latLongData, setLatLongData] = useState(null);
-    // const [count, setCount] = useState(0)
 
     useEffect(() => {
         const getLatLongData = async () => {

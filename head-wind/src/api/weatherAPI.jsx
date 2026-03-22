@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 export const fetchLatitudeLongitude = async (zipCode) => {
     const url = `https://api.openweathermap.org/geo/1.0/zip?zip=${zipCode},GB&appid=${import.meta.env.VITE_OPENWEATHER_KEY}`;
 
