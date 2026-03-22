@@ -67,14 +67,14 @@ const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visi
     )
 };
 
-function getRunningCondition(temp, windSpeed, visibility, weatherMain) {
+function getRunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
     let score = 100;
 
     // --- Temperature (ideal: ~8–15°C) ---
-    if (temp < 0) score -= 30;
-    else if (temp < 5) score -= 15;
-    else if (temp > 25) score -= 20;
-    else if (temp > 18) score -= 10;
+    if (currentTemp < 0) score -= 30;
+    else if (currentTemp < 5) score -= 15;
+    else if (currentTemp > 25) score -= 20;
+    else if (currentTemp > 18) score -= 10;
 
     // --- Wind (harder running) ---
     if (windSpeed > 10) score -= 25;
@@ -87,10 +87,10 @@ function getRunningCondition(temp, windSpeed, visibility, weatherMain) {
     else if (visibility < 5000) score -= 5;
 
     // --- Weather conditions ---
-    if (["thunderstorm"].includes(weatherMain)) score -= 40;
-    else if (["snow"].includes(weatherMain)) score -= 25;
-    else if (["rain", "drizzle"].includes(weatherMain)) score -= 20;
-    else if (["mist", "fog", "haze"].includes(weatherMain)) score -= 15;
+    if (["thunderstorm"].includes(currentCondition)) score -= 40;
+    else if (["snow"].includes(currentCondition)) score -= 25;
+    else if (["rain", "drizzle"].includes(currentCondition)) score -= 20;
+    else if (["mist", "fog", "haze"].includes(currentCondition)) score -= 15;
 
     // Clamp score
     score = Math.max(0, Math.min(100, score));
@@ -117,7 +117,7 @@ function degreesToCompass16(deg) {
     return directions[index];
 }
 
-export function WeatherCard() {
+export function WeatherCard({ postcode }) {
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -127,7 +127,7 @@ export function WeatherCard() {
     useEffect(() => {
         const getBasicWeatherData = async () => {
             try {
-                const latLongData = await fetchLatitudeLongitude("E14");
+                const latLongData = await fetchLatitudeLongitude(postcode);
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
@@ -166,7 +166,7 @@ export function WeatherCard() {
                 {weatherDetails(weatherData)}
                 <div className="running-condition">
                     <h3>Running Condition:</h3>
-                    <h2>{getRunningCondition(weatherAPIData.temp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition)}</h2>
+                    <h2>{getRunningCondition(weatherAPIData.currentTemp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition.toLowerCase())}</h2>
                     <ul>
                         <li><strong>Excellent:</strong> Clear, cool, light wind</li>
                         <li><strong>Good:</strong> Partly cloudy, mild conditions</li>

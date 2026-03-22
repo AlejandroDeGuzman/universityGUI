@@ -1,7 +1,8 @@
 import "./TodayTemp.css";
+import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
+import { useState, useEffect } from "react";
 import {
     ResponsiveContainer,
-    LineChart,
     Line,
     XAxis,
     YAxis,
@@ -28,22 +29,44 @@ const maxTemp = Math.max(...temps);
 const midTemp = Math.round((minTemp + maxTemp) / 2);
 
 
-function TodayTemp() {
+export function TodayTemp({ postcode }) {
+    const [data, setData] = useState([]);
+    const [latLongData, setLatLongData] = useState(null);
+    const [weatherAPIData, setWeatherAPIData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const getBasicWeatherData = async () => {
+            try {
+                const latLongData = await fetchLatitudeLongitude(postcode);
+                const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
+                setLatLongData(latLongData);
+                setWeatherAPIData(weatherAPIData);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getBasicWeatherData();
+
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+
     return (
         <div className="today-temp-section">
-            <h1 className="today-temp-title">Today's Temperature</h1>
             <div className="today-temp-card">
-                <div className="today-temp-summary">
-                    <span className="now-label">Now</span>
-                    <span className="current-temp">10°C</span>
-                </div>
                 <div className="weather-meta">
-                    <span>85% humiditiy</span>
-                    <span>10 km/h wind</span>
+                    <span>{"Humidity: " + weatherAPIData.humidity + "%"}</span>
+                    <span>{"Wind Speed: " + weatherAPIData.windSpeed + "m/s"}</span>
                 </div>
 
                 <div className="temperature-chart">
-                    <ResponsiveContainer wdith="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={hourlyTemps} margin={{ top: 80, right: 20, left: 0, bottom: 10 }}>
                             <XAxis dataKey="time" stroke="#ffffff" orientation="top" axisLine={false} tickLine={false} />
                             <YAxis
@@ -85,9 +108,9 @@ function TodayTemp() {
                 </div>
 
                 <div className="temperature-footer">
-                    <span>Low <span className="temp-value">2°C</span></span>
-                    <span>High <span className="temp-value">11°C</span></span>
-                    <span>Feels like <span className="temp-value">7°C</span></span>
+                    <span>Low <span className="temp-value">{Math.round(weatherAPIData.minTemp) + "°C"}</span></span>
+                    <span>High <span className="temp-value">{Math.round(weatherAPIData.maxTemp) + "°C"}</span></span>
+                    <span>Feels like <span className="temp-value">{Math.round(weatherAPIData.feelsLikeTemp) + "°C"}</span></span>
                 </div>
             </div>
         </div>

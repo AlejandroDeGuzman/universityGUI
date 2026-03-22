@@ -10,15 +10,17 @@ import AlternateRoute from './AlternateRoute';
 
 
 function App() {
+    const [postcode, setPostcode] = useState("RG4");
+
     return (
         <BrowserRouter>
             <div>
-                <Header />
+                <Header setPostcode={setPostcode} />
                 <Routes>
                     <Route path="/" element={
                         <>
-                            <WeatherCard />
-                            <TodayTemp />
+                            <WeatherCard postcode={postcode} />
+                            <TodayTemp postcode={postcode} />
                         </>
                     }
                     />

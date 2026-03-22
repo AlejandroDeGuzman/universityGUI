@@ -31,6 +31,8 @@ export const fetchWeatherData = async (lat, lon) => {
         humidity: data.main.humidity,
         windSpeed: data.wind.speed,
         windDeg: data.wind.deg,
-        visibility: data.visibility
+        visibility: data.visibility,
+        minTemp: data.main.temp_min,
+        maxTemp: data.main.temp_max
     };
 }
