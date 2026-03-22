@@ -23,7 +23,7 @@ h1{
     font-size: 20px;
 }
 
-.home_button:hover {
+.home_button:hover{
     background-color: #646cff;
     color: white;
     cursor: pointer;
@@ -33,7 +33,7 @@ h1{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 4rem;
+    gap: 2rem;
 }
 
 .start_session_button{
@@ -46,7 +46,7 @@ h1{
     font-size: 15px;
 }
 
-.start_session_icon {
+.start_session_icon{
     height: 30px;
     width: 30px;
     margin-left: 1.7rem;
@@ -58,7 +58,7 @@ h1{
     cursor: pointer;
 }
 
-.route_sidebar {
+.route_sidebar{
     gap: 0.2rem;
     border-radius: 1.8rem;
     padding: 1.2rem;
@@ -66,16 +66,129 @@ h1{
     flex-direction: row;
 }
 
-.route1_header, .route2_header, .route3_header {
+
+/**** Route details (Extended Menu) ****/
+/* 1. wrapper */
+.route_item{
+    cursor: pointer;
+    position: relative;
+}
+
+/* 2. collapsed header */
+.route_header {
     display: flex;
     flex-direction: row;
-    gap: 1rem;
+    align-items: center;
     justify-content: center;
-    width: 12rem;
+    gap: 1.7rem;
+    padding: 0.7rem;
+    width: 13rem;
     border: solid 0.7px white;
     border-radius: 0.9rem;
 }
 
+/* 3. extended menu */
+.route_header.open {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+}
+
+/* Left side of header(route name, distance, estimated time) */
+.route_header_left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+ 
+.route_name {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    font-size: 16px;
+}
+ 
+.route_main_details {
+    display: flex;
+    gap: 0.3rem;
+    font-size: 11px;
+    opacity: 0.6;
+    font-size: 14px;
+
+}
+ 
+.details_divider {
+    opacity: 0.4;
+}
+ 
+/* Condition badge */
+.condition_badge {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+    border-radius: 1rem;
+}
+ 
+.badge-ideal { background: #d4edda; color: #1a5c2a; }
+.badge-good  { background: #fff3cd; color: #7a4f00; }
+.badge-tough { background: #fde8e8; color: #7a1a1a; }
+ 
+/* Extended details panel */
+.route_expanded {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+    opacity: 0;
+    width: 14rem;
+    border: solid 0.7px white;
+    border-top: none;
+    border-radius: 0 0 0.9rem 0.9rem;
+    position: absolute;
+    top: 100%;
+    /* left: 0;
+    z-index: 10; */
+}
+ 
+.route_item:hover .route_header {
+    background-color: white;
+    color: black;
+}
+
+.route_item:hover .route_expanded {
+    max-height: 200px;
+    opacity: 1;
+}
+
+.details_inner {
+    display: flex;
+    flex-direction: column;
+    padding: 0.4rem 0.75rem 0.6rem;
+}
+ 
+.route_detail_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+}
+ 
+.route_detail_item:last-child {
+    border-bottom: none;
+}
+ 
+.detail_label {
+    color: grey;
+    font-weight: bold;
+}
+ 
+.detail_value {
+    font-weight: 500;
+}
+
+
+/**** Map ****/
 .map_placeholder {
     border: solid 0.7px white;
     border-radius: 1.8rem;
