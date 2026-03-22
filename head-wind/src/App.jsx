@@ -1,22 +1,57 @@
-import { useState } from 'react'
-import headwindIcon from "./assets/headwind_icon.png";
+import { useEffect, useState } from 'react'
 import './App.css'
 import { WeatherCard } from "./components/weatherCard/WeatherCard";
 import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
 
 
+// testing weatherAPI.jsx
+import { fetchLatitudeLongitude } from './api/weatherAPI';
+
+/* testing react router */
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AlternateRoute from './AlternateRoute';
+
+
 function App() {
-  const [count, setCount] = useState(0)
+    const [latLongData, setLatLongData] = useState(null);
 
+    useEffect(() => {
+        const getLatLongData = async () => {
+            const latLongData = await fetchLatitudeLongitude("E14");
+            setLatLongData(latLongData);
+        };
 
-  return (
-    <div>
-      <Header />
-      <WeatherCard />
-      <TodayTemp />
-    </div>
-  );
+        getLatLongData();
+
+    }, []);
+
+    return (
+        <BrowserRouter>
+            <div>
+                <Header />
+                <Routes>
+                    <Route path="/" element={
+                        <>
+                            <WeatherCard />
+                            <TodayTemp />
+                            {latLongData ? (
+                                <>
+                                    <p>City: {latLongData.name}</p>
+                                    <p>Latitude: {latLongData.lat}</p>
+                                    <p>Longitude: {latLongData.lon}</p>
+                                </>
+                            ) : (
+                                <p>Loading...</p>
+                            )}
+                        </>
+                    }
+                    />
+                    <Route path="/test-page" element={<AlternateRoute />} />
+                </Routes>
+            </div>
+        </BrowserRouter>
+    );
 }
 
 export default App
