@@ -20,8 +20,8 @@ function App() {
                     <Route path="/" element={
                         <>
                             <WeatherCard postcode={postcode} />
-                            <ForecastCard />
-                            <TodayTemp postcode={postcode} />
+                            {/* <ForecastCard /> */}
+                            {/* <TodayTemp postcode={postcode} /> */}
                         </>
                     }
                     />
