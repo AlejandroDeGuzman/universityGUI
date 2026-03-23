@@ -37,7 +37,7 @@ export const fetchWeatherData = async (lat, lon) => {
     };
 }
 
-export const fetchWeatherDataPoints = async (lat, lon) => {
+export const fetch24HourWeatherDataPoints = async (lat, lon) => {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m&timezone=auto`;
 
     const response = await fetch(url);

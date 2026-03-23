@@ -1,5 +1,5 @@
 import "./TodayTemp.css";
-import { fetchLatitudeLongitude, fetchWeatherData, fetchWeatherDataPoints } from "../../api/weatherAPI";
+import { fetchLatitudeLongitude, fetchWeatherData, fetch24HourWeatherDataPoints } from "../../api/weatherAPI";
 import { useState, useEffect } from "react";
 import {
     ResponsiveContainer,
@@ -23,7 +23,7 @@ export function TodayTemp({ postcode }) {
             try {
                 const latLongData = await fetchLatitudeLongitude(postcode);
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
-                const weatherDataPoints = await fetchWeatherDataPoints(latLongData.lat, latLongData.lon);
+                const weatherDataPoints = await fetch24HourWeatherDataPoints(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
                 setWeatherDataPoints(weatherDataPoints);
