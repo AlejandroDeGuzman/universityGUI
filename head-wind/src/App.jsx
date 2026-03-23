@@ -6,7 +6,7 @@ import TodayTemp from './components/todayTemp/TodayTemp';
 import ForecastCard from "./components/forecastCard/ForecastCard"
 
 /* testing react router */
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
 
 function App() {
