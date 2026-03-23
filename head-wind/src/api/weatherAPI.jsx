@@ -36,3 +36,31 @@ export const fetchWeatherData = async (lat, lon) => {
         maxTemp: data.main.temp_max
     };
 }
+
+export const fetchWeatherDataPoints = async (lat, lon) => {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m&timezone=auto`;
+
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error("Failed to fetch weather data.");
+    }
+
+    const data = await response.json();
+
+    const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
+
+    const times = data.hourly.time;
+    const temps = data.hourly.temperature_2m;
+
+    return times
+        .map((time, i) => ({
+            date: time.split("T")[0],
+            hour: time.split("T")[1].slice(0, 5),
+            temp: Math.round(temps[i])
+        }))
+        .filter(item => item.date === today)
+        .map(item => ({
+            time: item.hour,
+            temp: item.temp
+        }));
+};

@@ -10,7 +10,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
 
 function App() {
-    const [postcode, setPostcode] = useState("RG4");
+    const [postcode, setPostcode] = useState("E14");
 
     return (
         <BrowserRouter>

@@ -1,5 +1,5 @@
 import "./TodayTemp.css";
-import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
+import { fetchLatitudeLongitude, fetchWeatherData, fetchWeatherDataPoints } from "../../api/weatherAPI";
 import { useState, useEffect } from "react";
 import {
     ResponsiveContainer,
@@ -11,38 +11,22 @@ import {
     Tooltip,
 } from "recharts";
 
-const hourlyTemps = [
-    { time: "12am", temp: 7 },
-    { time: "4AM", temp: 6 },
-    { time: "8AM", temp: 5 },
-    { time: "NOW", temp: 10 },
-    { time: "12PM", temp: 11 },
-    { time: "4PM", temp: 10 },
-    { time: "8PM", temp: 6 },
-    { time: "11PM", temp: 2 },
-];
-
-const temps = hourlyTemps.map((d) => d.temp);
-
-const minTemp = Math.min(...temps);
-const maxTemp = Math.max(...temps);
-const midTemp = Math.round((minTemp + maxTemp) / 2);
-
-
 export function TodayTemp({ postcode }) {
-    const [data, setData] = useState([]);
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [weatherDataPoints, setWeatherDataPoints] = useState([]);
 
     useEffect(() => {
         const getBasicWeatherData = async () => {
             try {
                 const latLongData = await fetchLatitudeLongitude(postcode);
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
+                const weatherDataPoints = await fetchWeatherDataPoints(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
+                setWeatherDataPoints(weatherDataPoints);
             } catch (err) {
                 setError(err);
             } finally {
@@ -56,6 +40,17 @@ export function TodayTemp({ postcode }) {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
+
+    const temps = weatherDataPoints.map(d => d.temp);
+
+    const minTemp = Math.min(...temps);
+    const maxTemp = Math.max(...temps);
+    const midTemp = Math.round((minTemp + maxTemp) / 2);
+    const padding = 2;
+
+    const domainMin = minTemp - padding;
+    const domainMax = maxTemp + padding;
+    const hourlyTemps = weatherDataPoints;
 
     return (
         <div className="today-temp-section">
@@ -71,9 +66,8 @@ export function TodayTemp({ postcode }) {
                             <XAxis dataKey="time" stroke="#ffffff" orientation="top" axisLine={false} tickLine={false} />
                             <YAxis
                                 stroke="#ffffff"
-                                domain={["dataMin-3", "dataMax+3"]}
-                                axisLine={false} tickLine={false}
-                                ticks={[minTemp, midTemp, maxTemp]}
+                                domain={[domainMin, domainMax]}
+                                ticks={[Math.round(minTemp), Math.round(midTemp), Math.round(maxTemp)]}
                                 tickFormatter={(value) => `${value}°`}
                             />
 
@@ -108,8 +102,8 @@ export function TodayTemp({ postcode }) {
                 </div>
 
                 <div className="temperature-footer">
-                    <span>Low <span className="temp-value">{Math.round(weatherAPIData.minTemp) + "°C"}</span></span>
-                    <span>High <span className="temp-value">{Math.round(weatherAPIData.maxTemp) + "°C"}</span></span>
+                    <span>Low <span className="temp-value">{minTemp + "°C"}</span></span>
+                    <span>High <span className="temp-value">{maxTemp + "°C"}</span></span>
                     <span>Feels like <span className="temp-value">{Math.round(weatherAPIData.feelsLikeTemp) + "°C"}</span></span>
                 </div>
             </div>

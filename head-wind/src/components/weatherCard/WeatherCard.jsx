@@ -45,7 +45,7 @@ const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visi
             <div className="winddir-detail">
                 <div className="winddir_label">
                     <img className="winddir-icon" alt="WindDirection" src={tailwindIcon} />
-                    <div className="weather-detail__label">Tailwind</div>
+                    <div className="weather-detail__label">Wind Direction</div>
                 </div>
                 <div className="weather-detail__value">{wind_dir_value}</div>
             </div>
@@ -96,6 +96,7 @@ function getRunningCondition(currentTemp, windSpeed, visibility, currentConditio
     score = Math.max(0, Math.min(100, score));
 
     // --- Convert score to label ---
+    console.log(score);
     if (score >= 85) return "Excellent";
     if (score >= 70) return "Good";
     if (score >= 50) return "Moderate";

@@ -22,40 +22,16 @@
     -webkit-backdrop-filter: blur(10px);
   }
   
-  /* .today-temp-summary { */
-  /*   display: flex; */
-  /*   align-items: center; */
-  /*   gap: 24px; */
-  /*   color: white; */
-  /*   margin-bottom: 24px; */
-  /* } */
-  
-  /* .now-label { */
-  /*   color: #2ea0ff; */
-  /*   font-weight: 700; */
-  /*   font-size: 1.1rem; */
-  /* } */
-  /**/
-  /* .current-temp { */
-  /*   font-size: 4rem; */
-  /*   font-weight: 700; */
-  /*   line-height: 1; */
-  /*   color: white; */
-  /* } */
-  /**/
   .weather-meta {
     display: flex;
     gap: 16px;
     font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.9);
   }
-  
-  
 
   .temperature-chart {
     height: 360px;
     margin: 20px 0 30px;
-    /*background: rgba(255, 255, 255, 0.08); */
     background: transparent;
     border-radius: 14px;
     padding: 10px;
