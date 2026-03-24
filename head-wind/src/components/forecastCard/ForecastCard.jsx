@@ -45,7 +45,6 @@ export const ForecastCardItem = ({ forecast_Data }) => {
     )
 }
 
-<<<<<<< HEAD
 export function ForecastCard({ postcode }) {
     const [latLongData, setLatLongData] = useState(null);
     const [forecast, setForecastData] = useState([]);
@@ -72,10 +71,6 @@ export function ForecastCard({ postcode }) {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
-=======
-export function ForecastCard({postcode}) {
-    if (!postcode) return null;
->>>>>>> main
     
     return (
         <div className="forecast-card">
@@ -88,7 +83,6 @@ export function ForecastCard({postcode}) {
             </div>
             <br />
             <hr className="divider" />
-            {/* <br /> */}
         </div>
     )
 }
