@@ -5,8 +5,6 @@ import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
 import ForecastCard from "./components/forecastCard/ForecastCard";
 import LocationCard from "./components/locationCard/locationCard";
-
-/* testing react router */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
 
@@ -23,7 +21,7 @@ function App() {
         <BrowserRouter>
             <div>
                 <Header setPostcode={setPostcode} />
-                <p style={{ color: "white" }}>Current postcode: {postcode}</p>
+                {/* <p style={{ color: "white" }}>Current postcode: {postcode}</p> */}
 
                 <Routes>
                     <Route path="/" element={
