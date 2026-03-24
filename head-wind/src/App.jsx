@@ -23,8 +23,6 @@ function App() {
         <BrowserRouter>
             <div>
                 <Header setPostcode={setPostcode} />
-                <p style={{ color: "white" }}>Current postcode: {postcode}</p>
-
                 <Routes>
                     <Route path="/" element={
                         <>

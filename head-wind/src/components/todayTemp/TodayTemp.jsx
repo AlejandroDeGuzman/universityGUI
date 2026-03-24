@@ -21,6 +21,9 @@ export function TodayTemp({ postcode }) {
     useEffect(() => {
         const getBasicWeatherData = async () => {
             try {
+                setError(null);
+                setLoading(true);
+
                 const latLongData = await fetchLatitudeLongitude(postcode);
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
                 const weatherDataPoints = await fetch24HourWeatherDataPoints(latLongData.lat, latLongData.lon);
@@ -36,10 +39,11 @@ export function TodayTemp({ postcode }) {
 
         getBasicWeatherData();
 
-    }, []);
+    }, [postcode]);
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    /*if (error) return <p>Error: {error.message}</p>;*/
+    if (error) return null;
 
     const temps = weatherDataPoints.map(d => d.temp);
 
@@ -63,7 +67,8 @@ export function TodayTemp({ postcode }) {
                 <div className="temperature-chart">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={hourlyTemps} margin={{ top: 80, right: 20, left: 0, bottom: 10 }}>
-                            <XAxis dataKey="time" stroke="#ffffff" orientation="top" axisLine={false} tickLine={false} />
+                        
+
                             <YAxis
                                 stroke="#ffffff"
                                 domain={[domainMin, domainMax]}
