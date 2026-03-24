@@ -67,8 +67,19 @@ export function TodayTemp({ postcode }) {
                 <div className="temperature-chart">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={hourlyTemps} margin={{ top: 80, right: 20, left: 0, bottom: 10 }}>
-                        
-
+                            
+                            <XAxis
+                                dataKey="time"
+                                stroke="#ffffff"
+                                orientation="top"
+                                axisLine={false}
+                                tickLine={false}
+                                tickMargin={10}
+                                interval={0}
+                                ticks={hourlyTemps
+                                    .filter((_, index) => index % 2 === 0)
+                                    .map((point) => point.time)}
+                            />
                             <YAxis
                                 stroke="#ffffff"
                                 domain={[domainMin, domainMax]}
