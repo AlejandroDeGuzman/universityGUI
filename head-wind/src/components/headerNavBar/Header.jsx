@@ -29,7 +29,6 @@ function Header() {
 
                 <ul className={`nav-menu ${open ? "show" : ""}`}>
                     <li><a href="/">Home</a></li>
-                    <li><a href="/">About</a></li>
                     <li><a href="/test-page">Alternative Routes</a></li>
                 </ul>
 

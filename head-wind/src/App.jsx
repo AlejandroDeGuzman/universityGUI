@@ -22,7 +22,6 @@ function App() {
             <div>
                 <Header setPostcode={setPostcode} />
                 {/* <p style={{ color: "white" }}>Current postcode: {postcode}</p> */}
-
                 <Routes>
                     <Route path="/" element={
                         <>
