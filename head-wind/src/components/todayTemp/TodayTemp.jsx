@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 // shows weather details when hovered over data points on the graph 
-const ToolTipDetail = ({ active, payload, label}) => {
+const ToolTipDetail = ({ active, payload, label }) => {
     if (!active || !payload?.length)
         return null;
     const d = payload[0].payload;
@@ -23,7 +23,7 @@ const ToolTipDetail = ({ active, payload, label}) => {
             <p>🌧️ Rain chance: {d.rain}%</p>
             <p>💨 Wind: {d.wind} km/h</p>
             <p>☀️ UV: {d.uv}</p>
-        </div> 
+        </div>
     )
 }
 
@@ -84,7 +84,7 @@ export function TodayTemp({ postcode }) {
                 <div className="temperature-chart">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={hourlyTemps} margin={{ top: 80, right: 20, left: 0, bottom: 10 }}>
-                            
+
                             <XAxis
                                 dataKey="time"
                                 stroke="#ffffff"
@@ -92,10 +92,8 @@ export function TodayTemp({ postcode }) {
                                 axisLine={false}
                                 tickLine={false}
                                 tickMargin={10}
-                                interval={0}
-                                ticks={hourlyTemps
-                                    .filter((_, index) => index % 2 === 0)
-                                    .map((point) => point.time)}
+                                minTickGap={25}
+                                tick={{ fontSize: 12 }}
                             />
                             <YAxis
                                 stroke="#ffffff"
@@ -104,7 +102,7 @@ export function TodayTemp({ postcode }) {
                                 tickFormatter={(value) => `${value}°`}
                             />
 
-                            <Tooltip content={<ToolTipDetail />} cursor={false} /> 
+                            <Tooltip content={<ToolTipDetail />} cursor={false} />
 
                             <Area
                                 type="monotone"
