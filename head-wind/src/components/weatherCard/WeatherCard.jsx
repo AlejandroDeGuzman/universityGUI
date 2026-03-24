@@ -128,11 +128,15 @@ export function WeatherCard({ postcode }) {
     useEffect(() => {
         const getBasicWeatherData = async () => {
             try {
+                setLoading(true);
+                setError(null);
+
                 const latLongData = await fetchLatitudeLongitude(postcode);
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
             } catch (err) {
+                console.error(err);
                 setError(err);
             } finally {
                 setLoading(false);
@@ -141,11 +145,15 @@ export function WeatherCard({ postcode }) {
 
         getBasicWeatherData();
 
-    }, []);
+    }, [postcode]);
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-
+    if (error) { return(
+        <div className="weather-error">
+            We couldn’t find weather data for that postcode. Please check it and try again.
+        </div>
+    );}
+    
     const weatherData = {
         current_location: latLongData.country + ", " + latLongData.city,
         current_weather: Math.round(weatherAPIData.currentTemp) + "°C",

@@ -41,7 +41,9 @@ export const ForecastCardItem = ({ forecast_Data }) => {
     )
 }
 
-export function ForecastCard() {
+export function ForecastCard({postcode}) {
+    if (!postcode) return null;
+    
     return (
         <div className="forecast-card">
             <br />
