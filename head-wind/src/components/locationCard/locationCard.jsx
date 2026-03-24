@@ -17,6 +17,11 @@ function LocationCard({setPostcode}){
 
         setPostcode(cleanedInput);
         setInput("");
+
+        window.scrollTo({
+            top:0 ,
+            behaviour: "smooth"
+        });
     }
 
     return (
