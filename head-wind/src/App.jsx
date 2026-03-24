@@ -3,14 +3,19 @@ import './App.css'
 import { WeatherCard } from "./components/weatherCard/WeatherCard";
 import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
-import ForecastCard from "./components/forecastCard/ForecastCard"
-
-/* testing react router */
+import ForecastCard from "./components/forecastCard/ForecastCard";
+import LocationCard from "./components/locationCard/locationCard";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
 
 function App() {
-    const [postcode, setPostcode] = useState("E14");
+    const [postcode, setPostcode] = useState(() => {
+        return localStorage.getItem("postcode") || "E14";
+    });
+
+    useEffect(() => {
+        localStorage.setItem("postcode", postcode);
+    }, [postcode]);
 
     return (
         <BrowserRouter>
@@ -22,6 +27,7 @@ function App() {
                             <WeatherCard postcode={postcode} />
                             <ForecastCard postcode={postcode} />
                             <TodayTemp postcode={postcode} />
+                            <LocationCard setPostcode={setPostcode} />
                         </>
                     }
                     />
