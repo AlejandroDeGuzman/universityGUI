@@ -1,0 +1,68 @@
+html{
+    scroll-behavior: smooth;
+}
+
+.locationCard {
+    margin: 40px auto;
+    width: 90%;
+    max-width: 900px;
+    padding: 20px 25px;
+    border-radius: 20px;
+    /*background: rgba(255,255,255,0.12);*/
+    background: transparent;
+    backdrop-filter: blur(10px);
+  }
+  
+.location-title {
+color: white;
+margin-bottom: 15px;
+}
+
+.input-container {
+display: flex;
+gap: 10px;
+}
+
+.input-container {
+display: flex;
+gap: 12px;
+}
+
+.location-input {
+flex: 1;
+padding: 12px;
+border-radius: 10px;
+border: none;
+border-radius: 2rem;
+}
+  
+.submit-button {
+    /*
+padding: 12px 20px;
+border-radius: 10px;
+background: #02274C;
+color: white;
+border: none;
+cursor: pointer; */
+padding: 0.6rem;
+border: none;
+border-radius: 2rem;
+width: 10rem;
+font-size: 16px;
+color: white;
+background-color: rgba(255, 255, 255, 0.2);
+}
+
+.submit-button:hover{
+    background-color: #1a3049;
+    border: solid 0.5px #1a3049;
+    color: white;
+    cursor: pointer;
+}
+
+
+
+  
+.submit-button:hover {
+opacity: 0.9;
+}
