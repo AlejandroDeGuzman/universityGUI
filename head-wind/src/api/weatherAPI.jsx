@@ -38,7 +38,7 @@ export const fetchWeatherData = async (lat, lon) => {
 }
 
 export const fetch24HourWeatherDataPoints = async (lat, lon) => {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,windspeed_10m,uv_index&timezone=auto`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -56,11 +56,17 @@ export const fetch24HourWeatherDataPoints = async (lat, lon) => {
         .map((time, i) => ({
             date: time.split("T")[0],
             hour: time.split("T")[1].slice(0, 5),
-            temp: Math.round(temps[i])
+            temp: Math.round(temps[i]), // hourly temp data
+            rain: data.hourly.precipitation_probability[i], // rain chance
+            wind: Math.round(data.hourly.windspeed_10m[i]), // wind speed
+            uv: data.hourly.uv_index[i] // UV index
         }))
         .filter(item => item.date === today)
         .map(item => ({
-            time: item.hour,
-            temp: item.temp
+            time: item.hour, 
+            temp: item.temp, 
+            rain: item.rain,
+            wind: item.wind,
+            uv: item.uv
         }));
 };

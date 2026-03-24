@@ -1,8 +1,8 @@
 .weather-card {
     display: flex;
     flex-direction: column;
-    margin: 1.5rem auto;
-    width: 85%;
+    margin: 2.5rem auto;
+    width: 90%;
 }
 
 .weather-card .location {
@@ -122,6 +122,7 @@
     cursor: pointer;
 }
 
+
 .weather-error {
     width: 85%;
     margin: 1.5rem auto;
@@ -134,4 +135,158 @@
     text-align: center;
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+    .weather-card_main {
+        display: flex;
+        flex-direction: row;      
+        flex-wrap: wrap;        
+        justify-content: center;
+        gap: 2rem;
+    }
+    .current-weather {
+        flex: 1 1 100%;           
+        text-align: center;
+    }
+    .weather-details {
+        display: grid;
+        grid-template-columns: repeat(2, 180px);
+        grid-auto-rows: 110px;
+        gap: 1.2rem;
+        justify-content: center;
+    }
+    .windspeed-detail, 
+    .winddir-detail, 
+    .humidity-detail, 
+    .visibility-detail {
+        width: 100%;
+        height: 110px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .running-condition {
+        flex: 1 1 100%;          
+        max-width: 600px;
+        text-align: center;
+    }
+    .running-condition ul li {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
 
+@media (min-width: 481px) and (max-width: 768px) {
+    .weather-card_main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    .weather-details {
+        display: grid;
+        grid-template-columns: repeat(2, 160px); 
+        grid-auto-rows: 110px;
+        gap: 1.2rem;
+        padding: 1rem;
+        justify-content: center; 
+    }
+    .windspeed-detail, 
+    .winddir-detail, 
+    .humidity-detail, 
+    .visibility-detail {
+        width: 100%;
+        height: 110px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+    .windspeed-icon, 
+    .winddir-icon, 
+    .humidity-icon, 
+    .visibility-icon {
+        width: 18px;
+        height: 18px;
+    }
+    .windspeed-detail .windspeed_label, 
+    .winddir-detail .winddir_label, 
+    .humidity-detail .humidity_label, 
+    .visibility-detail .visibility_label {
+        font-size: 0.95rem;
+        gap: 0.3rem;
+    }
+    .running-condition {
+        font-size: 0.95rem;
+        max-width: 500px;
+        text-align: center;
+    }
+    .running-condition ul li {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+  /* styles for phones */
+    .weather-card_main {
+        flex-wrap: wrap;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .weather-card {
+        /* background-color: red; */
+        align-items: center;
+    }
+    .current-weather{
+        /* background-color: purple; */
+    }
+    .weather-details {
+        /* background-color: grey; */
+        justify-content: space-between;  
+        padding: 1rem;
+        display: grid;
+        grid-template-columns: repeat(2, 125px);
+        grid-auto-rows: 100px;
+        gap: 1rem;
+    }
+    .windspeed-detail, .winddir-detail, .humidity-detail, .visibility-detail {
+        height: 100px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+    }
+
+    .windspeed-icon, .winddir-icon, .humidity-icon, .visibility-icon {
+        width: 15px;
+        height: 15px;
+    }
+
+    .windspeed-detail .windspeed_label, .winddir-detail .winddir_label, .humidity-detail .humidity_label, .visibility-detail .visibility_label {
+        display: flex;
+        flex-direction: row;
+        font-size: 0.85rem;
+        font-weight: bold;
+        gap: 0.1rem;
+    }
+    .running-condition {
+        font-size: 0.85rem;
+        /* background-color: grey; */
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .running-condition ul li {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}

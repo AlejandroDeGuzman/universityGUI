@@ -5,8 +5,6 @@ import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
 import ForecastCard from "./components/forecastCard/ForecastCard";
 import LocationCard from "./components/locationCard/locationCard";
-
-/* testing react router */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
 

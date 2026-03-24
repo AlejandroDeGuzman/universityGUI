@@ -11,6 +11,22 @@ import {
     Tooltip,
 } from "recharts";
 
+// shows weather details when hovered over data points on the graph 
+const ToolTipDetail = ({ active, payload, label}) => {
+    if (!active || !payload?.length)
+        return null;
+    const d = payload[0].payload;
+
+    return (
+        <div style={{ background: "rgba(40,40,40,0.9)", borderRadius: 10, padding: 10, color: "white" }}>
+            <p>🌡️ {d.temp}°C</p>
+            <p>🌧️ Rain chance: {d.rain}%</p>
+            <p>💨 Wind: {d.wind} km/h</p>
+            <p>☀️ UV: {d.uv}</p>
+        </div> 
+    )
+}
+
 export function TodayTemp({ postcode }) {
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
@@ -39,7 +55,7 @@ export function TodayTemp({ postcode }) {
 
         getBasicWeatherData();
 
-    }, [postcode]);
+    }, [postcodepostcode]); //refresh data if user changes postcode
 
     if (loading) return <p>Loading...</p>;
     /*if (error) return <p>Error: {error.message}</p>;*/
@@ -87,16 +103,8 @@ export function TodayTemp({ postcode }) {
                                 tickFormatter={(value) => `${value}°`}
                             />
 
-                            <Tooltip
-                                cursor={false}
-                                contentStyle={{
-                                    backgroundColor: "rgba(40,40,40,0.9)",
-                                    border: "none",
-                                    borderRadius: "10px",
-                                    color: "white"
-                                }}
-                                labelStyle={{ color: "#aaa" }}
-                            />
+                            <Tooltip content={<ToolTipDetail />} cursor={false} /> 
+
                             <Area
                                 type="monotone"
                                 dataKey="temp"
@@ -109,9 +117,9 @@ export function TodayTemp({ postcode }) {
                                 type="monotone"
                                 dataKey="temp"
                                 stroke="#58bfff"
-                                strokeWidth={4}
-                                dot={{ r: 5 }}
-                                activeDot={{ r: 8 }}
+                                strokeWidth={2}
+                                dot={{ r: 4 }}
+                                activeDot={{ r: 6 }}
                             />
                         </AreaChart>
                     </ResponsiveContainer>
