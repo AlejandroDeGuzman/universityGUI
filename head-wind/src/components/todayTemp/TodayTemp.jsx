@@ -70,6 +70,7 @@ export function TodayTemp({ postcode }) {
 
     return (
         <div className="today-temp-section">
+            <h1>Today's Temperature</h1>
             <div className="today-temp-card">
                 <div className="weather-meta">
                     <span>{"Humidity: " + weatherAPIData.humidity + "%"}</span>
