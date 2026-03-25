@@ -61,7 +61,7 @@ h1{
     gap: 1.7rem;
     padding: 0.7rem;
     width: 13rem;
-    border: solid 0.7px white;
+    border: solid 1px white;
     border-radius: 0.9rem;
 }
 
@@ -110,7 +110,7 @@ h1{
     transition: max-height 0.35s ease, opacity 0.25s ease;
     opacity: 0;
     width: 13.5rem;
-    border: solid 0.7px #161c22;
+    border: solid 1px #161c22;
     border-top: none;
     border-radius: 0 0 0.9rem 0.9rem;
     position: absolute;
@@ -167,7 +167,7 @@ h1{
 
 /**** Map ****/
 .map_placeholder {
-    border: solid 0.7px white;
+    border: solid 1px white;
     border-radius: 1.8rem;
     height: 500px;
 }
@@ -252,7 +252,7 @@ h1{
         gap: 1.7rem;
         padding: 0.7rem;
         width: 13rem;
-        border: solid 0.7px white;
+        border: solid 1px white;
         border-radius: 0.9rem;
     }
 
@@ -301,7 +301,7 @@ h1{
         transition: max-height 0.35s ease, opacity 0.25s ease;
         opacity: 0;
         width: 13.5rem;
-        border: solid 0.7px #161c22;
+        border: solid 1px #161c22;
         border-top: none;
         border-radius: 0 0 0.9rem 0.9rem;
         position: absolute;
@@ -357,7 +357,7 @@ h1{
 
     /**** Map ****/
     .map_placeholder {
-        border: solid 0.7px white;
+        border: solid 1px white;
         border-radius: 1.8rem;
         height: 500px;
     }

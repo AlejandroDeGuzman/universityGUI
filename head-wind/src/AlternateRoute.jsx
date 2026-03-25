@@ -46,8 +46,8 @@ const AltRouteHeader = () => {
 }
 
 // Route selection sidebar component
-const RouteSideBar = ({ selectedRoute, setSelectedRoute}) => {
-   // extended menu with route details
+const RouteSideBar = ({ selectedRoute, setSelectedRoute }) => {
+    // extended menu with route details
     const RouteItem = ({ routeKey, routeNum, data }) => {
         const isSelected = selectedRoute === routeKey;
 
@@ -98,7 +98,7 @@ const RouteSideBar = ({ selectedRoute, setSelectedRoute}) => {
 }
 
 // route map component (placeholder for now)
-const RouteMap = ({selectedRoute}) => {
+const RouteMap = ({ selectedRoute }) => {
     return (
         <div className="route_map">
             <div className="map_header">
@@ -106,7 +106,7 @@ const RouteMap = ({selectedRoute}) => {
                     {selectedRoute ? `Route ${selectedRoute.slice(-1)}` : "Route 1"}
                 </div>
             </div>
-            <div className="map_placeholder">Map Placeholder</div>
+            <div className="map_placeholder"></div>
         </div>
     )
 }
