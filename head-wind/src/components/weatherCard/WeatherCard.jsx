@@ -161,7 +161,7 @@ export function WeatherCard({ postcode }) {
         current_weather: Math.round(weatherAPIData.currentTemp) + "°C",
         current_condition: weatherAPIData.currentWeather + ", " + weatherAPIData.currentCondition,
         feels_like_value: Math.round(weatherAPIData.feelsLikeTemp) + "°C",
-        wind_speed_value: weatherAPIData.windSpeed + "m/s",
+        wind_speed_value: (weatherAPIData.windSpeed * 3.6).toFixed(1) + " km/h (now)",
         wind_dir_value: degreesToCompass16(weatherAPIData.windDeg) + ", " + weatherAPIData.windDeg + "°",
         humidity_value: weatherAPIData.humidity + "%",
         visibility: weatherAPIData.visibility / 1000 + "km",
