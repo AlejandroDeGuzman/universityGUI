@@ -1,19 +1,16 @@
 .weather-card {
+    align-items: center;
     display: flex;
     flex-direction: column;
     margin: 2.5rem auto;
-    width: 90%;
+    width: 100%;
 }
 
 .weather-card .location {
     display: flex;
     align-items: center;
     font-size: 1.5rem;
-    margin-left: 5rem;
-    margin-right: auto;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    text-align: right;
+    
 }
 
 .weather-card .location .location-icon {
