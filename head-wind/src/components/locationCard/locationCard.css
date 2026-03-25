@@ -14,8 +14,10 @@ html{
   }
   
 .location-title {
-color: white;
-margin-bottom: 15px;
+    font-size: 2rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 15px;
 }
 
 .input-container {
