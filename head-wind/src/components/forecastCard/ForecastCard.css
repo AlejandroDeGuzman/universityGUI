@@ -32,19 +32,15 @@
 }
 
 .forecast-card-item:hover{
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .forecast-card_main {
-    width: 85%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    padding: 0 1rem;
-<<<<<<< HEAD
-    margin: 0 auto;
-=======
->>>>>>> main
+    padding: 1rem;
 }
 
 .alt-route {
