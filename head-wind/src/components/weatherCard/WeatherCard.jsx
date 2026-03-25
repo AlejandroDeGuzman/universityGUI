@@ -148,12 +148,14 @@ export function WeatherCard({ postcode }) {
     }, [postcode]);
 
     if (loading) return <p>Loading...</p>;
-    if (error) { return(
-        <div className="weather-error">
-            We couldn’t find weather data for that postcode. Please check it and try again.
-        </div>
-    );}
-    
+    if (error) {
+        return (
+            <div className="weather-error">
+                We couldn’t find weather data for that postcode. Please check it and try again.
+            </div>
+        );
+    }
+
     const weatherData = {
         current_location: latLongData.country + ", " + latLongData.city,
         current_weather: Math.round(weatherAPIData.currentTemp) + "°C",
