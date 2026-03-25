@@ -21,7 +21,7 @@ const ToolTipDetail = ({ active, payload, label }) => {
         <div style={{ background: "rgba(40,40,40,0.9)", borderRadius: 10, padding: 10, color: "white" }}>
             <p>🌡️ {d.temp}°C</p>
             <p>🌧️ Rain chance: {d.rain}%</p>
-            <p>💨 Wind: {d.wind} km/h</p>
+            <p>💨 Wind (avg): {d.wind} km/h</p>
             <p>☀️ UV: {d.uv}</p>
         </div>
     )
@@ -77,8 +77,7 @@ export function TodayTemp({ postcode }) {
             <h1>Today's Temperature</h1>
             <div className="today-temp-card">
                 <div className="weather-meta">
-                    <span>{"Humidity: " + weatherAPIData.humidity + "%"}</span>
-                    <span>{"Wind Speed: " + weatherAPIData.windSpeed + "m/s"}</span>
+                    <span>{"Current Humidity: " + weatherAPIData.humidity + "%"}</span>
                 </div>
 
                 <div className="temperature-chart">
