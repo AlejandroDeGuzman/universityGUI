@@ -135,7 +135,7 @@
 @media (min-width: 769px) and (max-width: 1024px) {
     .weather-card_main {
         display: flex;
-        flex-direction: row;      
+        flex-direction: column;      
         flex-wrap: wrap;        
         justify-content: center;
         gap: 2rem;
