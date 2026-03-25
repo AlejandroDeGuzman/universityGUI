@@ -1,4 +1,4 @@
-import { fetchLatitudeLongitude, fetch5DayWeather, getWeatherCondition } from "../../api/weatherAPI";
+import { fetchLatitudeLongitude, fetch7DayWeather, getWeatherCondition } from "../../api/weatherAPI";
 import { useState, useEffect } from "react";
 import humidityIcon from "../../assets/humidity.png";
 import headwindIcon from "../../assets/windspeed.png";
@@ -55,7 +55,7 @@ export function ForecastCard({ postcode }) {
         const getForecast = async () => {
             try {
                 const latLongData = await fetchLatitudeLongitude(postcode);
-                const forecast = await fetch5DayWeather(latLongData.lat, latLongData.lon);
+                const forecast = await fetch7DayWeather(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setForecastData(forecast);
             } catch (err) {
@@ -71,14 +71,14 @@ export function ForecastCard({ postcode }) {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
-    
+
     return (
         <div className="forecast-card">
             <hr className="divider" />
             <div className="forecast-header">Daily Forecast</div>
             <div className="forecast-card_main">
                 {forecast.map((day, i) => (
-                    <ForecastCardItem key={i} forecast_Data={day} />  
+                    <ForecastCardItem key={i} forecast_Data={day} />
                 ))}
             </div>
             <br />

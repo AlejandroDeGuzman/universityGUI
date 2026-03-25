@@ -66,16 +66,15 @@ export const fetch24HourWeatherDataPoints = async (lat, lon) => {
         }))
         .filter(item => item.date === today)
         .map(item => ({
-            time: item.hour, 
-            temp: item.temp, 
+            time: item.hour,
+            temp: item.temp,
             rain: item.rain,
             wind: item.wind,
             uv: item.uv
         }));
 };
 
-// fetch weather for 5 days 
-export const fetch5DayWeather = async (lat, lon) => {
+export const fetch7DayWeather = async (lat, lon) => {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_probability_max,windspeed_10m_max`;
 
     const response = await fetch(url);
@@ -84,8 +83,8 @@ export const fetch5DayWeather = async (lat, lon) => {
     }
 
     const data = await response.json();
-    
-    return data.daily.time.map((time,i) => ({
+
+    return data.daily.time.map((time, i) => ({
         forecast_time: new Date(time).toLocaleDateString("en-GB", { weekday: "short" }),
         max_temp: `${Math.round(data.daily.temperature_2m_max[i])}°`,
         avg_temp: `${Math.round((data.daily.temperature_2m_max[i] + data.daily.temperature_2m_min[i]) / 2)}°`,
