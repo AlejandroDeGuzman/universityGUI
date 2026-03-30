@@ -1,5 +1,5 @@
 import "./TodayTemp.css";
-import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
+import { fetchLatitudeLongitude, fetchWeatherData, fetch24HourWeatherDataPoints } from "../../api/weatherAPI";
 import { useState, useEffect } from "react";
 import {
     ResponsiveContainer,
@@ -11,38 +11,41 @@ import {
     Tooltip,
 } from "recharts";
 
-const hourlyTemps = [
-    { time: "12am", temp: 7 },
-    { time: "4AM", temp: 6 },
-    { time: "8AM", temp: 5 },
-    { time: "NOW", temp: 10 },
-    { time: "12PM", temp: 11 },
-    { time: "4PM", temp: 10 },
-    { time: "8PM", temp: 6 },
-    { time: "11PM", temp: 2 },
-];
+// shows weather details when hovered over data points on the graph 
+const ToolTipDetail = ({ active, payload, label }) => {
+    if (!active || !payload?.length)
+        return null;
+    const d = payload[0].payload;
 
-const temps = hourlyTemps.map((d) => d.temp);
-
-const minTemp = Math.min(...temps);
-const maxTemp = Math.max(...temps);
-const midTemp = Math.round((minTemp + maxTemp) / 2);
-
+    return (
+        <div style={{ background: "rgba(40,40,40,0.9)", borderRadius: 10, padding: 10, color: "white" }}>
+            <p>🌡️ {d.temp}°C</p>
+            <p>🌧️ Rain chance: {d.rain}%</p>
+            <p>💨 Wind (avg): {d.wind} km/h</p>
+            <p>☀️ UV: {d.uv}</p>
+        </div>
+    )
+}
 
 export function TodayTemp({ postcode }) {
-    const [data, setData] = useState([]);
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [weatherDataPoints, setWeatherDataPoints] = useState([]);
 
     useEffect(() => {
         const getBasicWeatherData = async () => {
             try {
+                setError(null);
+                setLoading(true);
+
                 const latLongData = await fetchLatitudeLongitude(postcode);
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
+                const weatherDataPoints = await fetch24HourWeatherDataPoints(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
+                setWeatherDataPoints(weatherDataPoints);
             } catch (err) {
                 setError(err);
             } finally {
@@ -52,41 +55,54 @@ export function TodayTemp({ postcode }) {
 
         getBasicWeatherData();
 
-    }, []);
+    }, [postcode]); //refresh data if user changes postcode
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    /*if (error) return <p>Error: {error.message}</p>;*/
+    if (error) return null;
+
+    const temps = weatherDataPoints.map(d => d.temp);
+
+    const minTemp = Math.min(...temps);
+    const maxTemp = Math.max(...temps);
+    const midTemp = Math.round((minTemp + maxTemp) / 2);
+    const padding = 2;
+
+    const domainMin = minTemp - padding;
+    const domainMax = maxTemp + padding;
+    const hourlyTemps = weatherDataPoints;
 
     return (
         <div className="today-temp-section">
+            <h1>Today's Temperature</h1>
             <div className="today-temp-card">
                 <div className="weather-meta">
-                    <span>{"Humidity: " + weatherAPIData.humidity + "%"}</span>
-                    <span>{"Wind Speed: " + weatherAPIData.windSpeed + "m/s"}</span>
+                    <span>{"Current Humidity: " + weatherAPIData.humidity + "%"}</span>
                 </div>
 
                 <div className="temperature-chart">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={hourlyTemps} margin={{ top: 80, right: 20, left: 0, bottom: 10 }}>
-                            <XAxis dataKey="time" stroke="#ffffff" orientation="top" axisLine={false} tickLine={false} />
+
+                            <XAxis
+                                dataKey="time"
+                                stroke="#ffffff"
+                                orientation="top"
+                                axisLine={false}
+                                tickLine={false}
+                                tickMargin={10}
+                                minTickGap={25}
+                                tick={{ fontSize: 12 }}
+                            />
                             <YAxis
                                 stroke="#ffffff"
-                                domain={["dataMin-3", "dataMax+3"]}
-                                axisLine={false} tickLine={false}
-                                ticks={[minTemp, midTemp, maxTemp]}
+                                domain={[domainMin, domainMax]}
+                                ticks={[Math.round(minTemp), Math.round(midTemp), Math.round(maxTemp)]}
                                 tickFormatter={(value) => `${value}°`}
                             />
 
-                            <Tooltip
-                                cursor={false}
-                                contentStyle={{
-                                    backgroundColor: "rgba(40,40,40,0.9)",
-                                    border: "none",
-                                    borderRadius: "10px",
-                                    color: "white"
-                                }}
-                                labelStyle={{ color: "#aaa" }}
-                            />
+                            <Tooltip content={<ToolTipDetail />} cursor={false} />
+
                             <Area
                                 type="monotone"
                                 dataKey="temp"
@@ -99,17 +115,17 @@ export function TodayTemp({ postcode }) {
                                 type="monotone"
                                 dataKey="temp"
                                 stroke="#58bfff"
-                                strokeWidth={4}
-                                dot={{ r: 5 }}
-                                activeDot={{ r: 8 }}
+                                strokeWidth={2}
+                                dot={{ r: 4 }}
+                                activeDot={{ r: 6 }}
                             />
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
 
                 <div className="temperature-footer">
-                    <span>Low <span className="temp-value">{Math.round(weatherAPIData.minTemp) + "°C"}</span></span>
-                    <span>High <span className="temp-value">{Math.round(weatherAPIData.maxTemp) + "°C"}</span></span>
+                    <span>Low <span className="temp-value">{minTemp + "°C"}</span></span>
+                    <span>High <span className="temp-value">{maxTemp + "°C"}</span></span>
                     <span>Feels like <span className="temp-value">{Math.round(weatherAPIData.feelsLikeTemp) + "°C"}</span></span>
                 </div>
             </div>

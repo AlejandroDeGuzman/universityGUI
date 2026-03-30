@@ -45,7 +45,7 @@ const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visi
             <div className="winddir-detail">
                 <div className="winddir_label">
                     <img className="winddir-icon" alt="WindDirection" src={tailwindIcon} />
-                    <div className="weather-detail__label">Tailwind</div>
+                    <div className="weather-detail__label">Wind Direction</div>
                 </div>
                 <div className="weather-detail__value">{wind_dir_value}</div>
             </div>
@@ -96,6 +96,7 @@ function getRunningCondition(currentTemp, windSpeed, visibility, currentConditio
     score = Math.max(0, Math.min(100, score));
 
     // --- Convert score to label ---
+    console.log(score);
     if (score >= 85) return "Excellent";
     if (score >= 70) return "Good";
     if (score >= 50) return "Moderate";
@@ -127,11 +128,15 @@ export function WeatherCard({ postcode }) {
     useEffect(() => {
         const getBasicWeatherData = async () => {
             try {
+                setLoading(true);
+                setError(null);
+
                 const latLongData = await fetchLatitudeLongitude(postcode);
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
             } catch (err) {
+                console.error(err);
                 setError(err);
             } finally {
                 setLoading(false);
@@ -140,17 +145,23 @@ export function WeatherCard({ postcode }) {
 
         getBasicWeatherData();
 
-    }, []);
+    }, [postcode]);
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    if (error) {
+        return (
+            <div className="weather-error">
+                We couldn’t find weather data for that postcode. Please check it and try again.
+            </div>
+        );
+    }
 
     const weatherData = {
         current_location: latLongData.country + ", " + latLongData.city,
         current_weather: Math.round(weatherAPIData.currentTemp) + "°C",
         current_condition: weatherAPIData.currentWeather + ", " + weatherAPIData.currentCondition,
         feels_like_value: Math.round(weatherAPIData.feelsLikeTemp) + "°C",
-        wind_speed_value: weatherAPIData.windSpeed + "m/s",
+        wind_speed_value: (weatherAPIData.windSpeed * 3.6).toFixed(1) + " km/h (now)",
         wind_dir_value: degreesToCompass16(weatherAPIData.windDeg) + ", " + weatherAPIData.windDeg + "°",
         humidity_value: weatherAPIData.humidity + "%",
         visibility: weatherAPIData.visibility / 1000 + "km",

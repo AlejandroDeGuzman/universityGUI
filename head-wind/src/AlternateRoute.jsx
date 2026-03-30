@@ -12,6 +12,13 @@ import "./altRouteMain.css";
 const ORIGIN = { lat: 51.5074, lng: -0.1278 }; // Central London
 const DESTINATION = { lat: 51.5154, lng: -0.0722 }; // Allgate East
 
+////// More weathers to add ////////
+// Sunny
+// Heavy rain
+// Thunderstorm
+////////////////////////////////////
+
+
 // Home button component
 const AltRouteHeader = () => {
     return (
