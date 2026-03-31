@@ -3,7 +3,7 @@
   background-color: #02274C;
   width: 100%;
   position: relative;
-  height: 70px;
+  height: 5rem;
   /* border: 2px solid red; */
 }
 
@@ -11,6 +11,12 @@
   align-items: center;
   display: flex;
   flex-direction: row;
+}
+
+.temp-button {
+  margin-left: auto;
+  margin-right: 0.5rem;
+  
 }
 
 .logo {

@@ -1,0 +1,52 @@
+.temp-toggle {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background-color: rgb(17, 17, 58);
+  color: white;
+  border-radius: 999px;
+  min-width: 3.5rem;
+  height: 2.4rem;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.temp-toggle__label {
+  display: inline-block;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.temp-toggle:hover {
+  background-color: rgb(26, 26, 82);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.temp-toggle:active {
+  transform: scale(0.96);
+}
+
+.temp-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 600px) {
+  .temp-toggle {
+    min-width: 3rem;
+    height: 2.1rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
