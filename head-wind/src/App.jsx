@@ -10,9 +10,12 @@ import AlternateRoute from './AlternateRoute';
 
 function App() {
     const background = {
-      backgroundImage: `linear-gradient(rgba(14, 29, 46, 0.75)), url(${backgroundImage})`,
-      backgroundSize: 'cover',
-      width: '100vw',
+        backgroundImage: `linear-gradient(rgba(14, 29, 46, 0.75)), url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        width: '100%',
+        minHeight: '100vh',
     };
 
     const [postcode, setPostcode] = useState(() => {
