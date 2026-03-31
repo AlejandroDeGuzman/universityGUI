@@ -72,23 +72,23 @@ const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visi
 export function RunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
     let score = 100;
 
-    // --- Temperature (ideal: ~8–15°C) ---
+    // Temperature (ideal: ~8–15°C) 
     if (currentTemp < 0) score -= 30;
     else if (currentTemp < 5) score -= 15;
     else if (currentTemp > 25) score -= 20;
     else if (currentTemp > 18) score -= 10;
 
-    // --- Wind (harder running) ---
+    // Wind (harder running) 
     if (windSpeed > 10) score -= 25;
     else if (windSpeed > 6) score -= 15;
     else if (windSpeed > 3) score -= 5;
 
-    // --- Visibility ---
+    // Visibility 
     if (visibility < 500) score -= 30;
     else if (visibility < 2000) score -= 15;
     else if (visibility < 5000) score -= 5;
 
-    // --- Weather conditions ---
+    // Weather conditions 
     if (["thunderstorm"].includes(currentCondition)) score -= 40;
     else if (["snow"].includes(currentCondition)) score -= 25;
     else if (["rain", "drizzle"].includes(currentCondition)) score -= 20;
@@ -97,12 +97,11 @@ export function RunningCondition(currentTemp, windSpeed, visibility, currentCond
     // Clamp score
     score = Math.max(0, Math.min(100, score));
 
-    // --- Convert score to label ---
-    console.log(score);
-    if (score >= 85) return {label: "Excellent", color: "limegreen", statusClass:"condition-excellent"};
-    if (score >= 70) return {label: "Good", color: "#ffd519", statusClass:"condition-good"};
-    if (score >= 50) return {label: "Moderate", color: "orange", statusClass:"condition-moderate"};
-    if (score >= 30) return {label: "Poor", color: "red", statusClass:"condition-poor"};
+    // Convert score to label 
+    if (score >= 85) return { label: "Excellent", color: "limegreen", statusClass: "condition-excellent" };
+    if (score >= 70) return { label: "Good", color: "#ffd519", statusClass: "condition-good" };
+    if (score >= 50) return { label: "Moderate", color: "orange", statusClass: "condition-moderate" };
+    if (score >= 30) return { label: "Poor", color: "red", statusClass: "condition-poor" };
     return "Very Poor";
 }
 
@@ -122,7 +121,7 @@ function degreesToCompass16(deg) {
 
 
 // MAIN WEATHER CARD COMPONENT //
-export function WeatherCard({ postcode, setPostcode}) {
+export function WeatherCard({ postcode, setPostcode }) {
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);

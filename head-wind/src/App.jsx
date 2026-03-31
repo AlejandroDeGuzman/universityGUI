@@ -1,20 +1,13 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import backgroundImage from "./assets/background.png";
-import { WeatherCard } from "./components/weatherCard/WeatherCard";
-import Header from './components/headerNavBar/Header';
-import TodayTemp from './components/todayTemp/TodayTemp';
-import ForecastCard from "./components/forecastCard/ForecastCard";
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AlternateRoute from './AlternateRoute';
+
+import Header from './components/headerNavBar/Header';
+import Background from './components/background/Background';
+
+import Home from './pages/home/Home';
+import AlternateRoute from './pages/alternateRoutes/AlternateRoute';
 
 function App() {
-    const background = {
-      backgroundImage: `linear-gradient(rgba(14, 29, 46, 0.75)), url(${backgroundImage})`,
-      backgroundSize: 'cover',
-      width: '100vw',
-    };
-
     const [postcode, setPostcode] = useState(() => {
         return localStorage.getItem("postcode") || "E14";
     });
@@ -25,22 +18,29 @@ function App() {
 
     return (
         <BrowserRouter>
-            <div style={background}>
+            <Background>
                 <Header setPostcode={setPostcode} />
+
                 <Routes>
-                    <Route path="/" element={
-                        <>
-                            <WeatherCard postcode={postcode} setPostcode={setPostcode} />
-                            <ForecastCard postcode={postcode} />
-                            <TodayTemp postcode={postcode} />
-                        </>
-                    }
+                    <Route
+                        path="/"
+                        element={
+                            <Home
+                                postcode={postcode}
+                                setPostcode={setPostcode}
+                            />
+                        }
                     />
-                    <Route path="/test-page" element={<AlternateRoute />} />
+
+                    <Route
+                        path="/test-page"
+                        element={<AlternateRoute />}
+                    />
                 </Routes>
-            </div>
+
+            </Background>
         </BrowserRouter>
     );
 }
 
-export default App
+export default App;
