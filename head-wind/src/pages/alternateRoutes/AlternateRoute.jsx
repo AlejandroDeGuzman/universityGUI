@@ -5,8 +5,8 @@ import {
     AdvancedMarker,
     useMap,
 } from "@vis.gl/react-google-maps";
-import startButton from "./assets/start_button.png";
-import "./altRouteMain.css";
+import startButton from "../../assets/start_button.png";
+import "./AlternateRoute.css";
 
 //example coordinates, change this part to test
 const ORIGIN = { lat: 51.5074, lng: -0.1278 }; // Central London
