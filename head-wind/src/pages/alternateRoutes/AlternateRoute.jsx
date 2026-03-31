@@ -205,7 +205,7 @@ const AlternateRoute = () => {
                 setLoading(true);
                 setError("");
                 const data = await getRoutes(ORIGIN, DESTINATION);
-                console.log("routes API data:", data) // to check if there are any errors //
+                // console.log("routes API data:", data) // to check if there are any errors //
 
                 const formattedRoutes = (data.routes || []).map((route) => ({
                     distanceMeters: route.distanceMeters,
