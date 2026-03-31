@@ -6,52 +6,37 @@ html{
     margin: 0 auto;
     width: 90%;
     max-width: 900px;
-    padding: 20px 25px;
-    border-radius: 20px;
-    background: transparent;
-    backdrop-filter: blur(10px);
+    padding: 0.5rem;
   }
   
-.location-title {
-    font-size: 2rem;
-    text-align: center;
+/* .location-title {
+    font-size: 1rem;
+    margin-left: 2rem;
     color: white;
-    margin-bottom: 15px;
-}
+    margin-bottom: 0.5rem;
+} */
 
 .input-container {
-display: flex;
-gap: 10px;
-}
-
-.input-container {
-display: flex;
-gap: 12px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
 }
 
 .location-input {
-flex: 1;
-padding: 12px;
-border-radius: 10px;
-border: none;
-border-radius: 2rem;
+    padding: 12px;
+    border-radius: 1.2rem;
+    border: none;
+    width: 12rem;
 }
   
 .submit-button {
-    /*
-padding: 12px 20px;
-border-radius: 10px;
-background: #02274C;
-color: white;
-border: none;
-cursor: pointer; */
-padding: 0.6rem;
-border: none;
-border-radius: 2rem;
-width: 10rem;
-font-size: 16px;
-color: white;
-background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.6rem;
+    border: none;
+    border-radius: 1.2rem;
+    width: 8rem;
+    font-size: 16px;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .submit-button:hover{
@@ -62,14 +47,14 @@ background-color: rgba(255, 255, 255, 0.2);
 }
   
 .submit-button:hover {
-opacity: 0.9;
+    opacity: 0.9;
 }
 
 @media (max-width: 480px) {
     .locationCard {
-        margin: 20px auto;
+        margin: 1rem auto;
         width: 92%;
-        padding: 16px;
+        /* padding: 16px; */
         border-radius: 16px;
     }
 
@@ -95,7 +80,7 @@ opacity: 0.9;
     }
 
     .submit-button {
-        width: 100%; 
+        width: 75%; 
         padding: 10px;
         font-size: 14px;
         border-radius: 1.5rem;

@@ -6,6 +6,7 @@ import visibilityIcon from "../../assets/visibility.png";
 import locationIcon from "../../assets/location_icon.png";
 import "./WeatherCard.css";
 import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
+import LocationCard from "../locationCard/locationCard.jsx"
 import { useState, useEffect } from "react";
 
 // current location section
@@ -17,46 +18,6 @@ const currentLocation = ({ current_location }) => {
         </>
     )
 };
-
-// set location
-function LocationCard({setPostcode}){
-    const [input, setInput] = useState("");
-
-    const handleSubmit = () => {
-        const cleanedInput = input.trim().toUpperCase();
-        if (!cleanedInput) {
-            alert("Please enter a valid postcode.");
-            return;
-        }
-        if (cleanedInput.length < 2 || cleanedInput.length > 8) {
-            alert("Please enter a valid postcode");
-            return;
-        }
-
-        setPostcode(cleanedInput);
-        setInput("");
-
-        window.scrollTo({
-            top:0 ,
-            behaviour: "smooth"
-        });
-    }
-    return (
-        <div className="locationCard">
-            <h2 className="location-title">Set Location</h2>
-            <div className="input-container">
-                <input
-                    type="text"
-                    placeholder="Enter postcode"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    className = "location-input"
-                />
-                <button onClick={handleSubmit} className="submit-button">Set Location</button>
-            </div>
-        </div>
-    )
-}
 
 // current temperature and feels-like section
 const currentWeather = ({ current_weather, current_condition, feels_like_value }) => {
