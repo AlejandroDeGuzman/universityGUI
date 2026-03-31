@@ -6,6 +6,7 @@ import visibilityIcon from "../../assets/visibility.png";
 import locationIcon from "../../assets/location_icon.png";
 import "./WeatherCard.css";
 import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
+import LocationCard from "../locationCard/locationCard.jsx"
 import { useState, useEffect } from "react";
 
 // current location section
@@ -67,26 +68,27 @@ const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visi
     )
 };
 
-function getRunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
+// calculate the score to determine running condition
+export function RunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
     let score = 100;
 
-    // --- Temperature (ideal: ~8–15°C) ---
+    // Temperature (ideal: ~8–15°C) 
     if (currentTemp < 0) score -= 30;
     else if (currentTemp < 5) score -= 15;
     else if (currentTemp > 25) score -= 20;
     else if (currentTemp > 18) score -= 10;
 
-    // --- Wind (harder running) ---
+    // Wind (harder running) 
     if (windSpeed > 10) score -= 25;
     else if (windSpeed > 6) score -= 15;
     else if (windSpeed > 3) score -= 5;
 
-    // --- Visibility ---
+    // Visibility 
     if (visibility < 500) score -= 30;
     else if (visibility < 2000) score -= 15;
     else if (visibility < 5000) score -= 5;
 
-    // --- Weather conditions ---
+    // Weather conditions 
     if (["thunderstorm"].includes(currentCondition)) score -= 40;
     else if (["snow"].includes(currentCondition)) score -= 25;
     else if (["rain", "drizzle"].includes(currentCondition)) score -= 20;
@@ -95,12 +97,11 @@ function getRunningCondition(currentTemp, windSpeed, visibility, currentConditio
     // Clamp score
     score = Math.max(0, Math.min(100, score));
 
-    // --- Convert score to label ---
-    console.log(score);
-    if (score >= 85) return "Excellent";
-    if (score >= 70) return "Good";
-    if (score >= 50) return "Moderate";
-    if (score >= 30) return "Poor";
+    // Convert score to label 
+    if (score >= 85) return { label: "Excellent", color: "limegreen", statusClass: "condition-excellent" };
+    if (score >= 70) return { label: "Good", color: "#ffd519", statusClass: "condition-good" };
+    if (score >= 50) return { label: "Moderate", color: "orange", statusClass: "condition-moderate" };
+    if (score >= 30) return { label: "Poor", color: "red", statusClass: "condition-poor" };
     return "Very Poor";
 }
 
@@ -118,7 +119,9 @@ function degreesToCompass16(deg) {
     return directions[index];
 }
 
-export function WeatherCard({ postcode }) {
+
+// MAIN WEATHER CARD COMPONENT //
+export function WeatherCard({ postcode, setPostcode }) {
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -167,17 +170,32 @@ export function WeatherCard({ postcode }) {
         visibility: weatherAPIData.visibility / 1000 + "km",
     };
 
+    // get running condition values
+    const getRunningCondition = RunningCondition(
+        weatherAPIData.currentTemp,
+        weatherAPIData.windSpeed,
+        weatherAPIData.visibility,
+        weatherAPIData.currentCondition.toLowerCase()
+    );
+
     return (
         <div className="weather-card">
             <div className="location">
-                {currentLocation(weatherData)}
+                <div className="current_location">
+                    {currentLocation(weatherData)}
+                </div>
+                <div className="set_location">
+                    <LocationCard setPostcode={setPostcode} />
+                </div>
             </div>
             <div className="weather-card_main">
                 {currentWeather(weatherData)}
                 {weatherDetails(weatherData)}
                 <div className="running-condition">
                     <h3>Running Condition:</h3>
-                    <h2>{getRunningCondition(weatherAPIData.currentTemp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition.toLowerCase())}</h2>
+                    <h2 className={getRunningCondition.statusClass}>
+                        {getRunningCondition.label}
+                    </h2>
                     <ul>
                         <li><strong>Excellent:</strong> Clear, cool, light wind</li>
                         <li><strong>Good:</strong> Partly cloudy, mild conditions</li>
