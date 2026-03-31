@@ -30,6 +30,8 @@ function App() {
                             <Home
                                 postcode={postcode}
                                 setPostcode={setPostcode}
+                                unit={unit}
+                                setUnit={setUnit}
                             />
                         }
                     />

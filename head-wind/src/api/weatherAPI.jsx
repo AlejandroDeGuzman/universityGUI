@@ -86,9 +86,9 @@ export const fetch7DayWeather = async (lat, lon) => {
 
     return data.daily.time.map((time, i) => ({
         forecast_time: new Date(time).toLocaleDateString("en-GB", { weekday: "short" }),
-        max_temp: `${Math.round(data.daily.temperature_2m_max[i])}°`,
-        avg_temp: `${Math.round((data.daily.temperature_2m_max[i] + data.daily.temperature_2m_min[i]) / 2)}°`,
-        min_temp: `${Math.round(data.daily.temperature_2m_min[i])}°`,
+        max_temp: Math.round(data.daily.temperature_2m_max[i]),
+        avg_temp: Math.round((data.daily.temperature_2m_max[i] + data.daily.temperature_2m_min[i]) / 2),
+        min_temp: Math.round(data.daily.temperature_2m_min[i]),
         weatherCode: data.daily.weathercode[i],
         rain: `${data.daily.precipitation_probability_max[i]}%`,
         wind: `${Math.round(data.daily.windspeed_10m_max[i])} km/h`

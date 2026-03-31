@@ -11,16 +11,18 @@ import {
     Area,
     Tooltip,
 } from "recharts";
+import { convertTemp } from "../../utils/temperature";
+
 
 // shows weather details when hovered over data points on the graph 
-const ToolTipDetail = ({ active, payload }) => {
+const ToolTipDetail = ({ active, payload, unit }) => {
     if (!active || !payload?.length)
         return null;
     const d = payload[0].payload;
 
     return (
         <div style={{ background: "rgba(40,40,40,0.9)", borderRadius: 10, padding: 10, color: "white" }}>
-            <p>🌡️ {d.temp}°C</p>
+            <p>🌡️ {d.temp + "°" + unit} </p>
             <p>🌧️ Rain chance: {d.rain}%</p>
             <p>💨 Wind (avg): {d.wind} km/h</p>
             <p>☀️ UV: {d.uv}</p>
@@ -33,7 +35,7 @@ const CustomizedDot = (props) => {
 
     // import logic from WeatherCard
     const condition = RunningCondition( 
-        payload.temp, 
+        payload.rawTemp ?? payload.temp,
         payload.wind, 
         payload.visibility || 10000, 
         payload.condition || ""
@@ -51,7 +53,7 @@ const CustomizedDot = (props) => {
     );
 };
 
-export function TodayTemp({ postcode }) {
+export function TodayTemp({ postcode , unit}) {
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -85,7 +87,13 @@ export function TodayTemp({ postcode }) {
     /*if (error) return <p>Error: {error.message}</p>;*/
     if (error) return null;
 
-    const temps = weatherDataPoints.map(d => d.temp);
+    const displayTemps = weatherDataPoints.map((d) => ({
+        ...d,
+        rawTemp: d.temp,
+        temp: Math.round(convertTemp(d.temp, unit)),
+    }));
+
+    const temps = displayTemps.map((d) => d.temp);
 
     const minTemp = Math.min(...temps);
     const maxTemp = Math.max(...temps);
@@ -94,7 +102,7 @@ export function TodayTemp({ postcode }) {
 
     const domainMin = minTemp - padding;
     const domainMax = maxTemp + padding;
-    const hourlyTemps = weatherDataPoints;
+    const hourlyTemps = displayTemps;
 
     return (
         <div className="today-temp-section">
@@ -121,13 +129,11 @@ export function TodayTemp({ postcode }) {
                             <YAxis
                                 stroke="#2a4457"
                                 domain={[domainMin, domainMax]}
-                                ticks={[Math.round(minTemp), Math.round(midTemp), Math.round(maxTemp)]}
+                                ticks={[minTemp, midTemp, maxTemp]}
                                 tickFormatter={(value) => `${value}°`}
                             />
 
-                            <Tooltip 
-                                content={<ToolTipDetail />} cursor={false} 
-                            />
+                            <Tooltip content={<ToolTipDetail unit={unit} />} cursor={false} />
 
                             <Area
                                 type="monotone"
@@ -150,9 +156,9 @@ export function TodayTemp({ postcode }) {
                 </div>
 
                 <div className="temperature-footer">
-                    <span>Low <span className="temp-value">{minTemp + "°C"}</span></span>
-                    <span>High <span className="temp-value">{maxTemp + "°C"}</span></span>
-                    <span>Feels like <span className="temp-value">{Math.round(weatherAPIData.feelsLikeTemp) + "°C"}</span></span>
+                    <span>Low <span className="temp-value">{minTemp}°{unit}</span></span>
+                    <span>High <span className="temp-value">{maxTemp}°{unit}</span></span>
+                    <span>Feels like <span className="temp-value">{Math.round(convertTemp(weatherAPIData.feelsLikeTemp, unit))}°{unit}</span></span>
                 </div>
             </div>
         </div>

@@ -123,7 +123,7 @@ function degreesToCompass16(deg) {
 
 
 // MAIN WEATHER CARD COMPONENT //
-export function WeatherCard({ postcode, setPostcode }) {
+export function WeatherCard({ postcode, setPostcode, unit }) {
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -163,9 +163,9 @@ export function WeatherCard({ postcode, setPostcode }) {
 
     const weatherData = {
         current_location: latLongData.country + ", " + latLongData.city,
-        current_weather: Math.round(weatherAPIData.currentTemp) + "°C",
+        current_weather: Math.round(convertTemp(weatherAPIData.currentTemp, unit)) + '°' + unit,
         current_condition: weatherAPIData.currentWeather + ", " + weatherAPIData.currentCondition,
-        feels_like_value: Math.round(weatherAPIData.feelsLikeTemp) + "°C",
+        feels_like_value: Math.round(convertTemp(weatherAPIData.feelsLikeTemp, unit)) + '°' + unit,
         wind_speed_value: (weatherAPIData.windSpeed * 3.6).toFixed(1) + " km/h (now)",
         wind_dir_value: degreesToCompass16(weatherAPIData.windDeg) + ", " + weatherAPIData.windDeg + "°",
         humidity_value: weatherAPIData.humidity + "%",

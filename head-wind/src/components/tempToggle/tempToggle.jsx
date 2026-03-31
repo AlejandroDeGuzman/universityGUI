@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./tempToggle.css"
 
-export default function TemperatureToggle() {
-  const [unit, setUnit] = useState("C");
+export default function TemperatureToggle({unit, setUnit}) {
 
   return (
     <button className="temp-toggle"
