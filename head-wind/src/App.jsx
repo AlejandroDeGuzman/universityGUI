@@ -5,20 +5,11 @@ import { WeatherCard } from "./components/weatherCard/WeatherCard";
 import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
 import ForecastCard from "./components/forecastCard/ForecastCard";
+import Background from './components/background/Background';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
 
 function App() {
-    const background = {
-        backgroundImage: `linear-gradient(rgba(14, 29, 46, 0.75)), url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        width: '100%',
-        height: '100%',
-        paddingBottom: '40px',
-    };
-
     const [postcode, setPostcode] = useState(() => {
         return localStorage.getItem("postcode") || "E14";
     });
@@ -29,7 +20,7 @@ function App() {
 
     return (
         <BrowserRouter>
-            <div style={background}>
+            <Background>
                 <Header setPostcode={setPostcode} />
                 <Routes>
                     <Route path="/" element={
@@ -42,7 +33,7 @@ function App() {
                     />
                     <Route path="/test-page" element={<AlternateRoute />} />
                 </Routes>
-            </div>
+            </Background>
         </BrowserRouter>
     );
 }
