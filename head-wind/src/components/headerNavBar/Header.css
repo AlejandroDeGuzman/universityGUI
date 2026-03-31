@@ -2,15 +2,22 @@
 .navbar {
   background-color: #02274C;
   width: 100%;
-  position: relative;
+  position: fixed;   
+  top: 0;
   height: 70px;
-  /* border: 2px solid red; */
+  z-index: 1000;
 }
 
 .nav-container {
   align-items: center;
   display: flex;
   flex-direction: row;
+}
+
+.temp-button {
+  margin-left: auto;
+  margin-right: 0.5rem;
+  
 }
 
 .logo {

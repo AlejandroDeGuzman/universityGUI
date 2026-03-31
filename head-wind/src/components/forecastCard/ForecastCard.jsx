@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import humidityIcon from "../../assets/humidity.png";
 import headwindIcon from "../../assets/windspeed.png";
 import "./ForecastCard.css";
+import { convertTemp } from "../../utils/temperature";
 
 // colour code for difficulty for running
 const DIFFICULTY = {
@@ -17,17 +18,25 @@ const DIFFICULTY = {
     Foggy: { color: "#ecbf89" },
 };
 
+
+
+
 // individual forecast temperature 
-export const ForecastCardItem = ({ forecast_Data }) => {
+export const ForecastCardItem = ({ forecast_Data, unit }) => {
     const condition = getWeatherCondition(forecast_Data.weatherCode);
+    const forecastTemps = {
+        low : Math.round(convertTemp(forecast_Data.min_temp, unit)),
+        avg : Math.round(convertTemp(forecast_Data.avg_temp, unit )),
+        high : Math.round(convertTemp(forecast_Data.max_temp, unit))
+        };
 
     return (
         <div className="forecast-card-item">
             <div className="forecast_time">{forecast_Data.forecast_time}</div>
             <div className="forecast_temp">
-                <div className="forecast_low">{forecast_Data.min_temp}</div>
-                <div className="forecast_avg">{forecast_Data.avg_temp}</div>
-                <div className="forecast_high">{forecast_Data.max_temp}</div>
+                <div className="forecast_low">{forecastTemps.low + '°'}</div>
+                <div className="forecast_avg">{forecastTemps.avg + '°'}</div>
+                <div className="forecast_high">{forecastTemps.high + '°'}</div>
             </div>
             <div className="image-text">
                 <div className="difficulty-dot" style={{ backgroundColor: DIFFICULTY[condition]?.color }} />
@@ -45,7 +54,7 @@ export const ForecastCardItem = ({ forecast_Data }) => {
     )
 }
 
-export function ForecastCard({ postcode }) {
+export function ForecastCard({ postcode , unit}) {
     const [latLongData, setLatLongData] = useState(null);
     const [forecast, setForecastData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -78,7 +87,7 @@ export function ForecastCard({ postcode }) {
             <div className="forecast-header">Daily Forecast</div>
             <div className="forecast-card_main">
                 {forecast.map((day, i) => (
-                    <ForecastCardItem key={i} forecast_Data={day} />
+                    <ForecastCardItem key={i} forecast_Data={day} unit={unit} />
                 ))}
             </div>
             <br />

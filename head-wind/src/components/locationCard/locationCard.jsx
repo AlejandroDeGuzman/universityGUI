@@ -23,11 +23,9 @@ function LocationCard({setPostcode}){
             behaviour: "smooth"
         });
     }
-
     return (
         <div className="locationCard">
-            <h2 className="location-title">Set Location</h2>
-
+            {/* <p className="location-title">Set Location</p> */}
             <div className="input-container">
                 <input
                     type="text"
@@ -36,10 +34,8 @@ function LocationCard({setPostcode}){
                     onChange={(e) => setInput(e.target.value)}
                     className = "location-input"
                 />
-
                 <button onClick={handleSubmit} className="submit-button">Set Location</button>
             </div>
-
         </div>
     )
 }
