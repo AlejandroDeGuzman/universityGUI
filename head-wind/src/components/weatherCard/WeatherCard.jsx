@@ -8,6 +8,8 @@ import "./WeatherCard.css";
 import { fetchLatitudeLongitude, fetchWeatherData } from "../../api/weatherAPI";
 import LocationCard from "../locationCard/locationCard.jsx"
 import { useState, useEffect } from "react";
+import { convertTemp } from "../../utils/temperature.js";
+
 
 // current location section
 const currentLocation = ({ current_location }) => {

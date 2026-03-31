@@ -11,15 +11,17 @@ function App() {
     const [postcode, setPostcode] = useState(() => {
         return localStorage.getItem("postcode") || "E14";
     });
+    const [unit, setUnit] = useState("C")
 
     useEffect(() => {
         localStorage.setItem("postcode", postcode);
     }, [postcode]);
 
+
     return (
         <BrowserRouter>
             <Background>
-                <Header setPostcode={setPostcode} />
+                <Header unit={unit} setUnit={setUnit}/>
 
                 <Routes>
                     <Route

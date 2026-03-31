@@ -4,7 +4,7 @@ import logo from "../../assets/headwind_icon.png";
 import hamburger from "../../assets/hamburger.png";
 import TemperatureToggle from "../tempToggle/tempToggle";
 
-function Header() {
+function Header(unit, setUnit) {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -38,7 +38,7 @@ function Header() {
                     </div>
 
                     <div className="temp-button">
-                        <TemperatureToggle/>
+                        <TemperatureToggle unit={unit} setUnit={setUnit}/>
                     </div>
                 </div>
 
