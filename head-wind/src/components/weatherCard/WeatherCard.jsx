@@ -18,6 +18,46 @@ const currentLocation = ({ current_location }) => {
     )
 };
 
+// set location
+function LocationCard({setPostcode}){
+    const [input, setInput] = useState("");
+
+    const handleSubmit = () => {
+        const cleanedInput = input.trim().toUpperCase();
+        if (!cleanedInput) {
+            alert("Please enter a valid postcode.");
+            return;
+        }
+        if (cleanedInput.length < 2 || cleanedInput.length > 8) {
+            alert("Please enter a valid postcode");
+            return;
+        }
+
+        setPostcode(cleanedInput);
+        setInput("");
+
+        window.scrollTo({
+            top:0 ,
+            behaviour: "smooth"
+        });
+    }
+    return (
+        <div className="locationCard">
+            <h2 className="location-title">Set Location</h2>
+            <div className="input-container">
+                <input
+                    type="text"
+                    placeholder="Enter postcode"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    className = "location-input"
+                />
+                <button onClick={handleSubmit} className="submit-button">Set Location</button>
+            </div>
+        </div>
+    )
+}
+
 // current temperature and feels-like section
 const currentWeather = ({ current_weather, current_condition, feels_like_value }) => {
     return (
@@ -67,7 +107,8 @@ const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visi
     )
 };
 
-export function getRunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
+// calculate the score to determine running condition
+export function RunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
     let score = 100;
 
     // --- Temperature (ideal: ~8–15°C) ---
@@ -98,9 +139,9 @@ export function getRunningCondition(currentTemp, windSpeed, visibility, currentC
     // --- Convert score to label ---
     console.log(score);
     if (score >= 85) return {label: "Excellent", color: "limegreen", statusClass:"condition-excellent"};
-    if (score >= 70) return {label: "Good", color: "#ffd519", statusClass:"condition-excellent"};
-    if (score >= 50) return {label: "Moderate", color: "orange", statusClass:"condition-excellent"};
-    if (score >= 30) return {label: "Poor", color: "red", statusClass:"condition-excellent"};
+    if (score >= 70) return {label: "Good", color: "#ffd519", statusClass:"condition-good"};
+    if (score >= 50) return {label: "Moderate", color: "orange", statusClass:"condition-moderate"};
+    if (score >= 30) return {label: "Poor", color: "red", statusClass:"condition-poor"};
     return "Very Poor";
 }
 
@@ -118,7 +159,9 @@ function degreesToCompass16(deg) {
     return directions[index];
 }
 
-export function WeatherCard({ postcode }) {
+
+// MAIN WEATHER CARD COMPONENT //
+export function WeatherCard({ postcode, setPostcode}) {
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -167,18 +210,31 @@ export function WeatherCard({ postcode }) {
         visibility: weatherAPIData.visibility / 1000 + "km",
     };
 
+    // get running condition values
+    const getRunningCondition = RunningCondition(
+        weatherAPIData.currentTemp,
+        weatherAPIData.windSpeed,
+        weatherAPIData.visibility,
+        weatherAPIData.currentCondition.toLowerCase()
+    );
+
     return (
         <div className="weather-card">
             <div className="location">
-                {currentLocation(weatherData)}
+                <div className="current_location">
+                    {currentLocation(weatherData)}
+                </div>
+                <div className="set_location">
+                    <LocationCard setPostcode={setPostcode} />
+                </div>
             </div>
             <div className="weather-card_main">
                 {currentWeather(weatherData)}
                 {weatherDetails(weatherData)}
                 <div className="running-condition">
                     <h3>Running Condition:</h3>
-                    <h2 className={getRunningCondition(weatherAPIData.currentTemp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition.toLowerCase()).statusClass}>
-                        {getRunningCondition(weatherAPIData.currentTemp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition.toLowerCase()).label}
+                    <h2 className={getRunningCondition.statusClass}>
+                        {getRunningCondition.label}
                     </h2>
                     <ul>
                         <li><strong>Excellent:</strong> Clear, cool, light wind</li>

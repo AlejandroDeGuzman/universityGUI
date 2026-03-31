@@ -1,7 +1,7 @@
+import { useState, useEffect } from "react";
 import "./TodayTemp.css";
 import { fetchLatitudeLongitude, fetchWeatherData, fetch24HourWeatherDataPoints } from "../../api/weatherAPI";
-// import weatherCard from "../WeatherCard/WeatherCard.jsx";
-import { useState, useEffect } from "react";
+import { RunningCondition } from "../weatherCard/WeatherCard";
 import {
     ResponsiveContainer,
     Line,
@@ -11,7 +11,6 @@ import {
     Area,
     Tooltip,
 } from "recharts";
-import { getRunningCondition } from "../weatherCard/WeatherCard";
 
 // shows weather details when hovered over data points on the graph 
 const ToolTipDetail = ({ active, payload }) => {
@@ -33,7 +32,7 @@ const CustomizedDot = (props) => {
     const { cx, cy, payload } = props;
 
     // import logic from WeatherCard
-    const condition = getRunningCondition( 
+    const condition = RunningCondition( 
         payload.temp, 
         payload.wind, 
         payload.visibility || 10000, 

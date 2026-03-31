@@ -7,11 +7,9 @@
 }
 
 .weather-card .location {
-    padding-bottom: 15px;
     display: flex;
     align-items: center;
     font-size: 1.5rem;
-    
 }
 
 .weather-card .location .location-icon {
@@ -117,7 +115,6 @@
 .condition-good {color: #ffd519};
 .condition-moderate {color: orange};
 .condition-poor {color: rgb(225, 74, 74)};
-
 
 .current-weather .feels_like .feels_like_button:hover{
     background-color: #1a3049;
