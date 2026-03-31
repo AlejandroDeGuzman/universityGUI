@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import backgroundImage from "./assets/background.png";
 import { WeatherCard } from "./components/weatherCard/WeatherCard";
 import Header from './components/headerNavBar/Header';
 import TodayTemp from './components/todayTemp/TodayTemp';
@@ -9,6 +10,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AlternateRoute from './AlternateRoute';
 
 function App() {
+    const background = {
+      backgroundImage: `linear-gradient(rgba(14, 29, 46, 0.75)), url(${backgroundImage})`,
+      backgroundSize: 'cover',
+    };
+
     const [postcode, setPostcode] = useState(() => {
         return localStorage.getItem("postcode") || "E14";
     });
@@ -19,7 +25,7 @@ function App() {
 
     return (
         <BrowserRouter>
-            <div>
+            <div style={background}>
                 <Header setPostcode={setPostcode} />
                 <Routes>
                     <Route path="/" element={

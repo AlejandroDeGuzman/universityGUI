@@ -1,5 +1,6 @@
 import "./TodayTemp.css";
 import { fetchLatitudeLongitude, fetchWeatherData, fetch24HourWeatherDataPoints } from "../../api/weatherAPI";
+// import weatherCard from "../WeatherCard/WeatherCard.jsx";
 import { useState, useEffect } from "react";
 import {
     ResponsiveContainer,
@@ -10,9 +11,10 @@ import {
     Area,
     Tooltip,
 } from "recharts";
+import { getRunningCondition } from "../weatherCard/WeatherCard";
 
 // shows weather details when hovered over data points on the graph 
-const ToolTipDetail = ({ active, payload, label }) => {
+const ToolTipDetail = ({ active, payload }) => {
     if (!active || !payload?.length)
         return null;
     const d = payload[0].payload;
@@ -26,6 +28,29 @@ const ToolTipDetail = ({ active, payload, label }) => {
         </div>
     )
 }
+
+const CustomizedDot = (props) => {
+    const { cx, cy, payload } = props;
+
+    // import logic from WeatherCard
+    const condition = getRunningCondition( 
+        payload.temp, 
+        payload.wind, 
+        payload.visibility || 10000, 
+        payload.condition || ""
+    );
+
+    return (
+        <circle 
+            cx={cx} 
+            cy={cy} 
+            r={4} 
+            fill={condition.color} 
+            stroke="white" 
+            strokeWidth={2}
+        />
+    );
+};
 
 export function TodayTemp({ postcode }) {
     const [latLongData, setLatLongData] = useState(null);
@@ -86,7 +111,7 @@ export function TodayTemp({ postcode }) {
 
                             <XAxis
                                 dataKey="time"
-                                stroke="#ffffff"
+                                stroke="#2a4457"
                                 orientation="top"
                                 axisLine={false}
                                 tickLine={false}
@@ -95,13 +120,15 @@ export function TodayTemp({ postcode }) {
                                 tick={{ fontSize: 12 }}
                             />
                             <YAxis
-                                stroke="#ffffff"
+                                stroke="#2a4457"
                                 domain={[domainMin, domainMax]}
                                 ticks={[Math.round(minTemp), Math.round(midTemp), Math.round(maxTemp)]}
                                 tickFormatter={(value) => `${value}°`}
                             />
 
-                            <Tooltip content={<ToolTipDetail />} cursor={false} />
+                            <Tooltip 
+                                content={<ToolTipDetail />} cursor={false} 
+                            />
 
                             <Area
                                 type="monotone"
@@ -116,7 +143,7 @@ export function TodayTemp({ postcode }) {
                                 dataKey="temp"
                                 stroke="#58bfff"
                                 strokeWidth={2}
-                                dot={{ r: 4 }}
+                                dot={<CustomizedDot />}
                                 activeDot={{ r: 6 }}
                             />
                         </AreaChart>

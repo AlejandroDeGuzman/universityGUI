@@ -67,7 +67,7 @@ const weatherDetails = ({ wind_speed_value, wind_dir_value, humidity_value, visi
     )
 };
 
-function getRunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
+export function getRunningCondition(currentTemp, windSpeed, visibility, currentCondition) {
     let score = 100;
 
     // --- Temperature (ideal: ~8–15°C) ---
@@ -97,10 +97,10 @@ function getRunningCondition(currentTemp, windSpeed, visibility, currentConditio
 
     // --- Convert score to label ---
     console.log(score);
-    if (score >= 85) return "Excellent";
-    if (score >= 70) return "Good";
-    if (score >= 50) return "Moderate";
-    if (score >= 30) return "Poor";
+    if (score >= 85) return {label: "Excellent", color: "limegreen", statusClass:"condition-excellent"};
+    if (score >= 70) return {label: "Good", color: "#ffd519", statusClass:"condition-excellent"};
+    if (score >= 50) return {label: "Moderate", color: "orange", statusClass:"condition-excellent"};
+    if (score >= 30) return {label: "Poor", color: "red", statusClass:"condition-excellent"};
     return "Very Poor";
 }
 
@@ -177,7 +177,9 @@ export function WeatherCard({ postcode }) {
                 {weatherDetails(weatherData)}
                 <div className="running-condition">
                     <h3>Running Condition:</h3>
-                    <h2>{getRunningCondition(weatherAPIData.currentTemp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition.toLowerCase())}</h2>
+                    <h2 className={getRunningCondition(weatherAPIData.currentTemp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition.toLowerCase()).statusClass}>
+                        {getRunningCondition(weatherAPIData.currentTemp, weatherAPIData.windSpeed, weatherAPIData.visibility, weatherAPIData.currentCondition.toLowerCase()).label}
+                    </h2>
                     <ul>
                         <li><strong>Excellent:</strong> Clear, cool, light wind</li>
                         <li><strong>Good:</strong> Partly cloudy, mild conditions</li>

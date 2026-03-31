@@ -42,31 +42,31 @@ const StartSession = () => {
 
 // Route selection sidebar component
 const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute}) => {
-    return (
-    <>
-      {routes.map((route, index) => (
-        <div
-          key={index}
-          className={`route_card ${
-            selectedRouteIndex === index ? "active_route" : ""
-          }`}
-          onClick={() => onSelectedRoute(index)}
-        >
+        return (
+        <>
+            {routes.map((route, index) => (
+                <div
+                    key={index}
+                    className={`route_card ${
+                        selectedRouteIndex === index ? "active_route" : ""
+                    }`}
+                    onClick={() => onSelectedRoute(index)}
+                >
           <div className="route_card_header">
             <p className="route_name">Route {index + 1}</p>
             <p className="route_distance">{route.distanceKm} km</p>
-          </div>
+                        </div>
 
           <div className="route_details">
-            <div className="route_detail_item">
+                        <div className="route_detail_item">
               Estimated Time: {route.durationText}
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
       ))}
     </>
-  );
-};
+        );
+    };
 
 const RouteLines = ({ routes, selectedRouteIndex, onRouteClick}) => {
     const map = useMap();
@@ -116,7 +116,7 @@ const RouteMap = ({routes, selectedRouteIndex, onRouteClick}) => {
             <div className="map_header">
                 <div className="selected_route">Route {selectedRouteIndex + 1}</div>
                 <div className="timeStamp">{selectedRoute ? selectedRoute.durationText : "00:00:00"}</div>
-            </div>
+                </div>
             <div className="map_canvas_wrapper">
                 <APIProvider
                     apiKey={import.meta.env.VITE_MAPS_KEY}

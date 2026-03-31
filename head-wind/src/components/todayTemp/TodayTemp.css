@@ -10,7 +10,7 @@
 
 .today-temp-title {
     text-align: center;
-    color: white;
+    color: #2a4457;
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 30px;
@@ -18,19 +18,19 @@
 }
 
 .today-temp-card {
-    background: transparent;
+    background: rgba(245, 245, 245, 0.73);
     border: 1px solid white;
     border-radius: 28px;
     padding: 28px 32px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
+    /* -webkit-backdrop-filter: blur(10px); */
 }
 
 .weather-meta {
     display: flex;
     gap: 16px;
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: #2a4457;
 }
 
 .temperature-chart {
@@ -44,12 +44,12 @@
 .temperature-footer {
     display: flex;
     justify-content: space-between;
-    color: rgba(255, 255, 255, 0.95);
+    color: #2a4457;
     font-size: 1.1rem;
 }
 
 .temp-value {
-    color: #58bfff;
+    color: #007dca;
     font-weight: 600;
 }
 
