@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import {
     APIProvider,
     Map,
@@ -9,9 +9,30 @@ import "./AlternateRoute.css";
 import { fetch24HourWeatherDataPoints } from "../../api/weatherAPI";
 import { convertTemp } from '../../utils/temperature';
 
-//example coordinates, change this part to test
-const ORIGIN = { lat: 51.5074, lng: -0.1278 }; // Central London
-const DESTINATION = { lat: 51.5154, lng: -0.0722 }; // Allgate East
+const ORIGIN = {lat: 51.5074, lng: -0.1278};
+const DESTINATION = {lat: 51.5154, lng: -0.0722};
+
+function geocodeToPostcode(postcode){
+    return new Promise((resolve, reject) => {
+        if(!window.google){
+            reject(new Error("Google maps has not loaded in yet"));
+            return;
+        }
+        const geocoder = new window.google.maps.Geocoder();
+        geocoder.geocode({address: postcode, region:"uk"}, (results, status) =>{
+            if(status === "OK" && results[0]){
+                const location = results[0].geometry.location;
+                resolve({
+                    lat: location.lat(),
+                    lng: location.lng(),
+                });
+            }else{
+                reject(new Error(`Could not find postcode: ${postcode}`));
+            }
+        })
+    })
+}
+
 
 
 // Header component
@@ -91,7 +112,9 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather }) 
                                     <span key={i} className="weather_badge">{tag}</span>
                                 ))}
                             </div>
-                            <span className="route_badge">{getRouteBadge(route, index)}</span>
+                            {getRouteBadge(route, index) && (
+                                <span className="route_badge">{getRouteBadge(route, index)}</span>
+                            )}
                         </div>
                     </div>
                 );
@@ -137,9 +160,8 @@ const RouteLines = ({ routes, selectedRouteIndex, onRouteClick }) => {
 
 
 // route map component
-const RouteMap = ({ routes, selectedRouteIndex, onRouteClick }) => {
+const RouteMap = ({ routes, selectedRouteIndex, onRouteClick, originCoords, destCoords }) => {
     const selectedRoute = routes[selectedRouteIndex];
-    const center = useMemo(() => ORIGIN, []);
     return (
         <div className="route_map">
             <div className="map_header">
@@ -147,26 +169,21 @@ const RouteMap = ({ routes, selectedRouteIndex, onRouteClick }) => {
                 <div className="timeStamp">{selectedRoute ? selectedRoute.durationText : "00:00:00"}</div>
             </div>
             <div className="map_canvas_wrapper">
-                <APIProvider
-                    apiKey={import.meta.env.VITE_MAPS_KEY}
-                    libraries={["geometry", "marker"]}
-                >
                     <Map
-                        defaultCenter={center}
-                        defaultZoom={13}
+                        center={originCoords}
+                        zoom={13}
                         mapId="DEMO_MAP_ID"
                         gestureHandling="greedy"
                         style={{ width: "100%", height: "100%" }}
                     >
-                        <AdvancedMarker position={ORIGIN} title="Start" />
-                        <AdvancedMarker position={DESTINATION} title="Start" />
+                        <AdvancedMarker position={originCoords} title="Start" />
+                        <AdvancedMarker position={destCoords} title="Destination" />
                         <RouteLines
                             routes={routes}
                             selectedRouteIndex={selectedRouteIndex}
                             onRouteClick={onRouteClick}
                         />
                     </Map>
-                </APIProvider>
             </div>
         </div>
 
@@ -265,31 +282,70 @@ const AlternateRoute = ({ unit }) => {
     // weather 
     const [weatherData, setWeatherData] = useState([]);
     const [error, setError] = useState("");
+    //postcode
+    const [startPostcode, setStartPostcode] = useState("");
+    const [endPostcode, setEndPostcode] = useState("");
+    const [originCoords, setOriginCoords] = useState(ORIGIN);
+    const [destCoords, setDestCoords] = useState(DESTINATION);
 
-    useEffect(() => {
-        async function loadRoutes() {
-            try {
+
+    useEffect(()=>{
+        async function loadDefaultRoute(){
+            try{
                 setLoading(true);
                 setError("");
                 const data = await getRoutes(ORIGIN, DESTINATION);
-                console.log("routes API data:", data) // to check if there are any errors //
 
-                const formattedRoutes = (data.routes || []).map((route) => ({
+                const formattedRoutes = (data.routes || []).map((route)=> ({
                     distanceMeters: route.distanceMeters,
-                    distanceKm: (route.distanceMeters / 1000).toFixed(2),
+                    distanceKm: (route.distanceMeters/1000).toFixed(2),
                     durationText: formatDuration(route.duration),
                     polyline: route.polyline.encodedPolyline,
                     labels: route.routeLabels || [],
                 }));
+
                 setRoutes(formattedRoutes);
-            } catch (err) {
+                setSelectedRouteIndex(0);
+                const weather = await fetch24HourWeatherDataPoints(ORIGIN.lat, ORIGIN.lng);
+                setWeatherData(weather);
+            }catch(err){
                 setError(err.message);
-            } finally {
+            }finally{
                 setLoading(false);
             }
         }
-        loadRoutes();
+        loadDefaultRoute();
     }, []);
+
+    async function handleFindRoutes() {
+        try{
+            setLoading(true);
+            setError("");
+            const origin = await geocodeToPostcode(startPostcode);
+            const destination = await geocodeToPostcode(endPostcode);
+            setOriginCoords(origin);
+            setDestCoords(destination);
+            const data = await getRoutes(origin, destination);
+
+            const formattedRoutes = (data.routes || []).map((route)=> ({
+                distanceMeters: route.distanceMeters,
+                distanceKm: (route.distanceMeters/1000).toFixed(2),
+                durationText: formatDuration(route.duration),
+                polyline: route.polyline.encodedPolyline,
+                labels: route.routeLabels || [],
+            }));
+
+            setRoutes(formattedRoutes);
+            setSelectedRouteIndex(0);
+            const weather = await fetch24HourWeatherDataPoints(origin.lat, origin.lng);
+            setWeatherData(weather);
+        }catch(err){
+            setError(err.message);
+        }finally{
+            setLoading(false);
+        } 
+    }
+    
 
     useEffect(() => {
         async function loadWeather() {
@@ -306,33 +362,56 @@ const AlternateRoute = ({ unit }) => {
     const currentWeather = weatherData[new Date().getHours()] || null;
 
     return (
-        <div className="alternate_route_container">
-            <div className="altroute-title">
-                < AltRouteHeader />
-            </div>
-            <WeatherSummary weather={currentWeather} unit={unit} />
-            <div className="routes_container">
-                {loading && <p>Loading routes...</p>}
-                {error && <p>Error: {error}</p>}
-                {!loading && !error && routes.length > 0 && (
-                    <RouteSideBar
-                        routes={routes}
-                        selectedRouteIndex={selectedRouteIndex}
-                        onSelectedRoute={setSelectedRouteIndex}
-                        weather={currentWeather}
+        <APIProvider
+            apiKey={import.meta.env.VITE_MAPS_KEY}
+            libraries={["geometry", "marker"]}
+        >
+            <div className="alternate_route_container">
+                <div className="altroute-title">
+                    < AltRouteHeader />
+                </div>
+                <div className="postcode_form">
+                    <input
+                        type="text"
+                        placeholder="Enter starting postcode"
+                        value={startPostcode}
+                        onChange={(e)=> setStartPostcode(e.target.value)}
                     />
-                )}
-            </div>
-            <div className="map_placeholder_container">
-                {!loading && !error && routes.length > 0 && (
-                    <RouteMap
-                        routes={routes}
-                        selectedRouteIndex={selectedRouteIndex}
-                        onRouteClick={setSelectedRouteIndex}
+                    <input
+                        type="text"
+                        placeholder="Enter Destination postcode"
+                        value={endPostcode}
+                        onChange={(e)=> setEndPostcode(e.target.value)}
                     />
-                )}
+                    <button onClick={handleFindRoutes}>Find Routes</button>
+                </div>
+                <WeatherSummary weather={currentWeather} unit={unit} />
+                <div className="routes_container">
+                    {loading && <p>Loading routes...</p>}
+                    {error && <p>Error: {error}</p>}
+                    {!loading && !error && routes.length > 0 && (
+                        <RouteSideBar
+                            routes={routes}
+                            selectedRouteIndex={selectedRouteIndex}
+                            onSelectedRoute={setSelectedRouteIndex}
+                            weather={currentWeather}
+                        />
+                    )}
+                </div>
+                <div className="map_placeholder_container">
+                    {!loading && !error && routes.length > 0 && (
+                        <RouteMap
+                            routes={routes}
+                            selectedRouteIndex={selectedRouteIndex}
+                            onRouteClick={setSelectedRouteIndex}
+                            originCoords={originCoords}
+                            destCoords={destCoords}
+                        />
+                    )}
+                </div>
             </div>
-        </div>
+        </APIProvider>
+
     );
 }
 
