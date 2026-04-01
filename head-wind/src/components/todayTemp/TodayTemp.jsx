@@ -53,6 +53,29 @@ const CustomizedDot = (props) => {
     );
 };
 
+const GraphLegend = () => {
+    return (
+        <div className="graph_legend">
+                <div className="legend_item">
+                    <span className="legend_dot" style={{ backgroundColor: "rgb(183, 255, 89)" }}></span>
+                    <span>Excellent</span>
+                </div>
+                <div className="legend_item">
+                    <span className="legend_dot" style={{ backgroundColor: "#ffd519" }}></span>
+                    <span>Good</span>
+                </div> 
+                <div className="legend_item">
+                    <span className="legend_dot" style={{ backgroundColor: "rgb(237, 122, 21)" }}></span>
+                    <span>Moderate</span>
+                </div>
+                <div className="legend_item">
+                    <span className="legend_dot" style={{ backgroundColor: "rgb(225, 74, 74)" }}></span>
+                    <span>Poor</span>
+                </div> 
+        </div>
+    )
+}
+
 export function TodayTemp({ postcode , unit}) {
     const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
@@ -84,7 +107,6 @@ export function TodayTemp({ postcode , unit}) {
     }, [postcode]); //refresh data if user changes postcode
 
     if (loading) return <p>Loading...</p>;
-    /*if (error) return <p>Error: {error.message}</p>;*/
     if (error) return null;
 
     const displayTemps = weatherDataPoints.map((d) => ({
@@ -110,6 +132,7 @@ export function TodayTemp({ postcode , unit}) {
             <div className="today-temp-card">
                 <div className="weather-meta">
                     <span>{"Current Humidity: " + weatherAPIData.humidity + "%"}</span>
+                    <GraphLegend />
                 </div>
 
                 <div className="temperature-chart">
