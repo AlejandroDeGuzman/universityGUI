@@ -7,6 +7,41 @@
     margin: 0 auto;
 }
 
+.postcode_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0 auto 0.5rem auto;
+    width: fit-content;
+}
+
+.postcode_form input,
+.postcode_form button {
+    border: 1px solid #d0d0d0;
+    background-color: rgba(245, 245, 245, 0.167);
+    color: white;
+    border-radius: 1.7rem;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.postcode_form input {
+    width: 11rem;
+}
+
+.postcode_form input::placeholder {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.postcode_form input:focus,
+.postcode_form button:focus {
+    border-color: #91cc7d;
+    box-shadow: 0 0 0 2px rgba(145, 204, 125, 0.2);
+}
+
 .altroute-title {
     text-align: center;
 }
@@ -138,6 +173,18 @@
         padding: 15px;
     }
 
+    .postcode_form {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.6rem;
+    }
+
+    .postcode_form input,
+    .postcode_form button {
+        font-size: 0.95rem;
+        padding: 0.7rem 0.9rem;
+    }
+
     .weather_summary {
         gap: 1rem;
         flex-wrap: wrap;
@@ -180,6 +227,19 @@
     .alternate_route_container {
         width: 90%;
         padding: 12px;
+    }
+
+    .postcode_form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.6rem;
+    }
+
+    .postcode_form input,
+    .postcode_form button {
+        width: 100%;
+        font-size: 0.9rem;
+        padding: 0.7rem 0.9rem;
     }
 
     .weather_summary {
