@@ -44,7 +44,7 @@ function Header({unit, setUnit}) {
 
                 <ul className={`nav-menu ${open ? "show" : ""}`}>
                     <li><a href="/">Home</a></li>
-                    <li><a href="/test-page">Alternative Routes</a></li>
+                    <li><a href="/alternate-routes">Alternative Routes</a></li>
                 </ul>
             </nav>
         </header>
