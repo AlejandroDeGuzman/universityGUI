@@ -63,12 +63,16 @@ export function ForecastCard({ postcode , unit}) {
     useEffect(() => {
         const getForecast = async () => {
             try {
+                setLoading(true);
+                setError(null);
                 const latLongData = await fetchLatitudeLongitude(postcode);
                 const forecast = await fetch7DayWeather(latLongData.lat, latLongData.lon);
                 setLatLongData(latLongData);
                 setForecastData(forecast);
             } catch (err) {
                 setError(err);
+                setForecastData([]);
+
             } finally {
                 setLoading(false);
             }
@@ -79,7 +83,8 @@ export function ForecastCard({ postcode , unit}) {
     }, [postcode]);
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    if (error) return null;
+
 
     return (
         <div className="forecast-card">
