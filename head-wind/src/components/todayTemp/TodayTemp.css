@@ -8,15 +8,6 @@
   width: 85%;
 }
 
-.today-temp-title {
-  text-align: center;
-  color: #2a4457;
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-}
-
 .today-temp-card {
   background: rgba(245, 245, 245, 0.73);
   border: 1px solid white;
@@ -26,9 +17,29 @@
 
 .weather-meta {
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
   font-size: 1.1rem;
   color: #2a4457;
+  margin: 0.5rem 1.5rem;
+}
+
+.graph_legend {
+  display: flex;
+  gap: 3rem;
+  font-size: smaller;
+}
+
+.graph_legend .legend_item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+}
+
+.graph_legend .legend_item .legend_dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
 }
 
 .temperature-chart {
@@ -51,35 +62,48 @@
   font-weight: 600;
 }
 
+@media (min-width: 481px) and (max-width: 1024px) {
+  .weather-meta {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .graph_legend {
+      gap: 1rem;
+    }
+
+    .graph_legend .legend_item {
+      gap: 0.3rem;
+    }
+}
+
 @media (max-width: 480px) {
   .today-temp-section {
   margin: 20px auto;
   width: 92%; 
   }
 
-  .today-temp-title {
-    text-align: center;
-    color: white;
-    font-size: 2rem; 
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-
   .today-temp-card {
-    background: rgba(245, 245, 245, 0.73);
-    border: 1px solid white;
     border-radius: 16px; 
     padding: 16px; 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
   }
 
   .weather-meta {
-    display: flex;
-    justify-content: space-between;
     font-size: 0.9rem; 
-    gap: 8px;
+    gap: 1rem;
     flex-wrap: wrap; 
+  }
+
+  .graph_legend {
+    gap: 0.8rem;
+  }
+
+  .graph_legend .legend_item {
+    gap: 0.2rem;
+  }
+
+  .graph_legend .legend_item .legend_dot {
+    width: 10px;
+    height: 10px;
   }
 
   .temperature-chart {
@@ -89,15 +113,8 @@
   }
 
   .temperature-footer {
-    display: flex;
-    justify-content: space-between;
     font-size: 0.9rem;
     gap: 6px;
     flex-wrap: wrap; 
-  }
-
-  .temp-value {
-    color: #58bfff;
-    font-weight: 600;
   }
 }
