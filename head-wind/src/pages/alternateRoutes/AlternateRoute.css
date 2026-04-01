@@ -24,13 +24,12 @@
     border-radius: 1.7rem;
     padding: 0.8rem 1rem;
     font-size: 1rem;
-    box-sizing: border-box;
     outline: none;
     transition: 0.2s ease;
 }
 
 .postcode_form input {
-    width: clamp(14rem, 22vw, 16rem);
+    width: 11rem;
 }
 
 .postcode_form input::placeholder {
@@ -124,39 +123,14 @@
     border-radius: 1.2rem;
     background-color: #91cc7d;
     color: #161c22;
+    width: 4.5rem;
     padding: 0.5rem;
     text-align: center;
     font-weight: 500;
 }
 
-.route_badge {
-    min-width: 4.5rem;
-}
-
-.weather_badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    margin-top: 0.45rem;
-}
-
 .weather_badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    max-width: 100%;
-    padding: 0.42rem 0.8rem;
-    border: 1px solid rgba(254, 217, 72, 0.35);
-    border-radius: 999px;
-    background: linear-gradient(135deg, #ffe992 0%, #ffd24a 100%);
-    box-shadow: 0 8px 18px rgba(254, 217, 72, 0.18);
-    color: #3a2b00;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    line-height: 1.2;
-    text-align: left;
+    background-color: #fed948;
 }
 
 .route_badges {
