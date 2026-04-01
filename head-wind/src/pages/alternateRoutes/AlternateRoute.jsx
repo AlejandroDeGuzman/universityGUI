@@ -5,60 +5,101 @@ import {
     AdvancedMarker,
     useMap,
 } from "@vis.gl/react-google-maps";
-import startButton from "../../assets/start_button.png";
 import "./AlternateRoute.css";
+import { fetch24HourWeatherDataPoints } from "../../api/weatherAPI";
+import { convertTemp } from '../../utils/temperature';
 
 //example coordinates, change this part to test
 const ORIGIN = { lat: 51.5074, lng: -0.1278 }; // Central London
 const DESTINATION = { lat: 51.5154, lng: -0.0722 }; // Allgate East
 
-// Home button component
+
+// Header component
 const AltRouteHeader = () => {
     return (
-        // <button className="home_button">Home</button>
         <h1>Alternate Routes</h1>
     )
 }
 
-const StartSession = () => {
-    return (
-        <button className="start_session_button">
-            <img
-                className="start_session_icon"
-                alt="Start Session Button"
-                src={startButton}
-            />
-            Start Session
-        </button>
-    );
-};
 
 // Route selection sidebar component
-const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute }) => {
+const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather }) => {
+    const getWeatherTags = (route, index) => {
+        // weather condition badge
+        const tags = [];
+
+        if (!weather) return tags;
+
+        const { temp, rain, wind, uv } = weather;
+        // console.log("weather values:", { temp, rain, wind, uv });
+        const isFastest = index === 0; // Google maps returns the fastest route first 
+
+        //// rain logic ////
+        if (rain > 30) { // heavy rain
+            if (isFastest) tags.push("Mimimise rain exposure 🌧️"); // less exposure to heavy rain if the fastest route is chosen
+            else if (index === 1) tags.push("Potentially Sheltered ☂️"); // if the route is not the fastest, the alternate route may have more shelter from rain
+        } else if (rain > 15 && rain <= 50) { // moderate rain
+            if (isFastest) tags.push("Mimimise rain exposure 🌧️"); // less exposure to moderate rain if fastest route is chosen
+        }
+
+        //// heat + uv logic ////
+        if (temp > 22 || uv >= 4) { // high temp and UV index
+            if (isFastest) tags.push("Minimise sun exposure ☀️"); // less exposure to sun if the fastest route is chosen
+            if (index === 1) tags.push("Maximised shade 🌳"); // alternate route may have more shade
+        }
+
+        //// coldness logic ////
+        if (temp < 8) {
+            if (isFastest) tags.push("Miminal cold exposure ❄️"); // less exposure to cold if the fastest route is chosen
+            if (index > 0) tags.push("Colder route 🏃‍♀️"); // longer route so more exposure to cold
+        }
+
+        //// headwind logic ////
+        if (wind > 15) {
+            if (index === 1) tags.push("Sheltered choice 🏢"); // alternate route is more sheltered
+        }
+        return tags;
+    };
+
+    const minDistance = Math.min(...routes.map(r => r.distanceMeters));
+    const getRouteBadge = (route, index) => {
+        if (index === 0) return "Best";
+        if (route.distanceMeters === minDistance) return "Shortest";
+    };
+
     return (
         <>
-            {routes.map((route, index) => (
-                <div
-                    key={index}
-                    className={`route_card ${selectedRouteIndex === index ? "active_route" : ""
-                        }`}
-                    onClick={() => onSelectedRoute(index)}
-                >
-                    <div className="route_card_header">
-                        <p className="route_name">Route {index + 1}</p>
-                        <p className="route_distance">{route.distanceKm} km</p>
-                    </div>
+            {routes.map((route, index) => {
+                const weatherTags = getWeatherTags(route, index);
 
-                    <div className="route_details">
-                        <div className="route_detail_item">
-                            Estimated Time: {route.durationText}
+                return (
+                    <div
+                        key={index}
+                        className={`route_card ${selectedRouteIndex === index ? "active_route" : ""
+                            }`}
+                        onClick={() => onSelectedRoute(index)}
+                    >
+                        <div className="route_header">
+                            <div className="route_header_left">
+                                <p className="route_name">Route {index + 1}</p>
+                                <div className="route_details">
+                                    <span>{route.distanceKm} km</span>
+                                    <span className="details_divider">·</span>
+                                    <span>{route.durationText}</span>
+                                </div>
+                                {weatherTags.map((tag, i) => (
+                                    <span key={i} className="weather_badge">{tag}</span>
+                                ))}
+                            </div>
+                            <span className="route_badge">{getRouteBadge(route, index)}</span>
                         </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </>
     );
 };
+
 
 const RouteLines = ({ routes, selectedRouteIndex, onRouteClick }) => {
     const map = useMap();
@@ -93,10 +134,6 @@ const RouteLines = ({ routes, selectedRouteIndex, onRouteClick }) => {
 
     return null;
 };
-
-
-
-
 
 
 // route map component
@@ -192,11 +229,41 @@ async function getRoutes(origin, destination) {
 }
 
 
+const WeatherSummary = ({ weather, unit }) => {
+    if (!weather) return null;
+    const temperature = Math.round(convertTemp(weather.temp, unit)) + '°' + unit;
+
+    return (
+        <div className="weather_summary">
+            <div className="weather_item">
+                <span className="label">🌡️ Temp</span>
+                <span className="value">{temperature}</span>
+            </div>
+            <div className="weather_item">
+                <span className="label">🌧️ Rain</span>
+                <span className="value">{weather.rain}%</span>
+            </div>
+            <div className="weather_item">
+                <span className="label">💨 Wind</span>
+                <span className="value">{weather.wind} km/h</span>
+            </div>
+            <div className="weather_item">
+                <span className="label">☀️ UV</span>
+                <span className="value">{weather.uv}</span>
+            </div>
+        </div>
+    );
+};
+
+
 // MAIN COMPONENT RENDERING //
-const AlternateRoute = () => {
+const AlternateRoute = ({ unit }) => {
+    // routes calculated 
     const [routes, setRoutes] = useState([]);
     const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
     const [loading, setLoading] = useState(false);
+    // weather 
+    const [weatherData, setWeatherData] = useState([]);
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -205,11 +272,11 @@ const AlternateRoute = () => {
                 setLoading(true);
                 setError("");
                 const data = await getRoutes(ORIGIN, DESTINATION);
-                // console.log("routes API data:", data) // to check if there are any errors //
+                console.log("routes API data:", data) // to check if there are any errors //
 
                 const formattedRoutes = (data.routes || []).map((route) => ({
                     distanceMeters: route.distanceMeters,
-                    distanceKm: (route.distanceMeters / 1000).toFixed(1),
+                    distanceKm: (route.distanceMeters / 1000).toFixed(2),
                     durationText: formatDuration(route.duration),
                     polyline: route.polyline.encodedPolyline,
                     labels: route.routeLabels || [],
@@ -224,13 +291,27 @@ const AlternateRoute = () => {
         loadRoutes();
     }, []);
 
+    useEffect(() => {
+        async function loadWeather() {
+            try {
+                const data = await fetch24HourWeatherDataPoints(ORIGIN.lat, ORIGIN.lng);
+                setWeatherData(data);
+            } catch (err) {
+                setError(err.message);
+            }
+        }
+        loadWeather();
+    }, []);
+
+    const currentWeather = weatherData[new Date().getHours()] || null;
+
     return (
         <div className="alternate_route_container">
-            <div className="home_button_container">
-                <AltRouteHeader />
+            <div className="altroute-title">
+                < AltRouteHeader />
             </div>
-            <div className="start_session_container">
-                <StartSession />
+            <WeatherSummary weather={currentWeather} unit={unit} />
+            <div className="routes_container">
                 {loading && <p>Loading routes...</p>}
                 {error && <p>Error: {error}</p>}
                 {!loading && !error && routes.length > 0 && (
@@ -238,6 +319,7 @@ const AlternateRoute = () => {
                         routes={routes}
                         selectedRouteIndex={selectedRouteIndex}
                         onSelectedRoute={setSelectedRouteIndex}
+                        weather={currentWeather}
                     />
                 )}
             </div>
