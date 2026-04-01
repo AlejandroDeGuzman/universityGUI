@@ -7,16 +7,11 @@ import {
 } from "@vis.gl/react-google-maps";
 import "./AlternateRoute.css";
 import { fetch24HourWeatherDataPoints } from "../../api/weatherAPI";
+import { convertTemp } from '../../utils/temperature';
 
 //example coordinates, change this part to test
 const ORIGIN = { lat: 51.5074, lng: -0.1278 }; // Central London
 const DESTINATION = { lat: 51.5154, lng: -0.0722 }; // Allgate East
-
-////// More weathers to add ////////
-// Sunny
-// Heavy rain
-// Thunderstorm
-////////////////////////////////////
 
 
 // Header component
@@ -66,9 +61,9 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather}) =
         return tags;
     };
 
+    const minDistance = Math.min(...routes.map(r => r.distanceMeters));
     const getRouteBadge = (route, index) => {
         if (index === 0) return "Best";
-        const minDistance = Math.min(...routes.map(r => r.distanceMeters));
             if (route.distanceMeters === minDistance) return "Shortest";
     };
 
@@ -93,13 +88,9 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather}) =
                                 <span className="details_divider">·</span>
                                 <span>{route.durationText}</span>
                             </div>
-                            {weatherTags.length > 0 && (
-                                <div className="route_badges">
-                                    {getWeatherTags(route, index).map((tag, i) => (
-                                        <span key={i} className="weather_badge">{tag}</span>
-                                    ))}
-                                </div>
-                            )}
+                            {weatherTags.map((tag, i) => (
+                                <span key={i} className="weather_badge">{tag}</span>
+                            ))}
                         </div>
                         <span className="route_badge">{getRouteBadge(route, index)}</span>
                     </div>
@@ -239,13 +230,15 @@ async function getRoutes(origin, destination){
 }
 
 
-const WeatherSummary = ({ weather }) => {
+const WeatherSummary = ({ weather, unit }) => {
     if (!weather) return null;
+    const temperature = Math.round(convertTemp(weather.temp, unit)) + '°' + unit;
+
     return (
         <div className="weather_summary">
             <div className="weather_item">
                 <span className="label">🌡️ Temp</span>
-                <span className="value">{weather.temp}°C</span>
+                <span className="value">{temperature}</span>
             </div>
             <div className="weather_item">
                 <span className="label">🌧️ Rain</span>
@@ -265,7 +258,7 @@ const WeatherSummary = ({ weather }) => {
 
 
 // MAIN COMPONENT RENDERING //
-const AlternateRoute = () => {
+const AlternateRoute = ({ unit }) => {
     // routes calculated 
     const [routes, setRoutes] = useState([]);
     const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
@@ -318,7 +311,7 @@ const AlternateRoute = () => {
             <div className="altroute-title">
                 < AltRouteHeader />
             </div>
-            <WeatherSummary weather={currentWeather} />
+            <WeatherSummary weather={currentWeather} unit={unit} />
             <div className="routes_container">
                 {loading && <p>Loading routes...</p>}
                 {error && <p>Error: {error}</p>}

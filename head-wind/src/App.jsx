@@ -37,8 +37,8 @@ function App() {
                     />
 
                     <Route
-                        path="/test-page"
-                        element={<AlternateRoute />}
+                        path="/alternate-routes"
+                        element={<AlternateRoute unit={unit}/>}
                     />
                 </Routes>
 
