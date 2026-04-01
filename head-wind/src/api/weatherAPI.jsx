@@ -50,10 +50,9 @@ export const fetch24HourWeatherDataPoints = async (lat, lon) => {
 
     const data = await response.json();
 
-    const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
-
     const times = data.hourly.time;
     const temps = data.hourly.temperature_2m;
+    const today = times[0]?.split("T")[0];
 
     return times
         .map((time, i) => ({
