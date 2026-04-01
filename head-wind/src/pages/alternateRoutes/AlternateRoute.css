@@ -99,7 +99,28 @@
 .route_header_left {
     display: flex;
     flex-direction: column;
+    padding: 1rem;
+    width: 100%;
     gap: 0.3rem;
+}
+
+.route_meta_info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+    padding-top: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+.route_weather_badge {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+    padding: 10px;
 }
 
 .route_details {
@@ -118,7 +139,18 @@
     color: white;
 }
 
-.route_badge, .weather_badge{
+.weather_badge {
+    font-size: 13px;
+    border-radius: 1.2rem;
+    background-color: #91cc7d;
+    color: #161c22;
+    width: 7.5rem;
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.route_badge{
     font-size: 13px;
     border-radius: 1.2rem;
     background-color: #91cc7d;
