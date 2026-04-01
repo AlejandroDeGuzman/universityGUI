@@ -9,24 +9,24 @@ import "./AlternateRoute.css";
 import { fetch24HourWeatherDataPoints } from "../../api/weatherAPI";
 import { convertTemp } from '../../utils/temperature';
 
-const ORIGIN = {lat: 51.5074, lng: -0.1278};
-const DESTINATION = {lat: 51.5154, lng: -0.0722};
+const ORIGIN = { lat: 51.5074, lng: -0.1278 };
+const DESTINATION = { lat: 51.5154, lng: -0.0722 };
 
-function geocodeToPostcode(postcode){
+function geocodeToPostcode(postcode) {
     return new Promise((resolve, reject) => {
-        if(!window.google){
+        if (!window.google) {
             reject(new Error("Google maps has not loaded in yet"));
             return;
         }
         const geocoder = new window.google.maps.Geocoder();
-        geocoder.geocode({address: postcode, region:"uk"}, (results, status) =>{
-            if(status === "OK" && results[0]){
+        geocoder.geocode({ address: postcode, region: "uk" }, (results, status) => {
+            if (status === "OK" && results[0]) {
                 const location = results[0].geometry.location;
                 resolve({
                     lat: location.lat(),
                     lng: location.lng(),
                 });
-            }else{
+            } else {
                 reject(new Error(`Could not find postcode: ${postcode}`));
             }
         })
@@ -102,19 +102,27 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather }) 
                     >
                         <div className="route_header">
                             <div className="route_header_left">
-                                <p className="route_name">Route {index + 1}</p>
-                                <div className="route_details">
-                                    <span>{route.distanceKm} km</span>
-                                    <span className="details_divider">·</span>
-                                    <span>{route.durationText}</span>
+
+                                <div className="route_meta_info">
+                                    {getRouteBadge(route, index) && (
+                                        <span className="route_badge">{getRouteBadge(route, index)}</span>
+                                    )}
+                                    <p className="route_name">Route {index + 1}</p>
+                                    <div className="route_details">
+                                        <span>{route.distanceKm} km</span>
+                                        <span className="details_divider">·</span>
+                                        <span>{route.durationText}</span>
+                                    </div>
                                 </div>
-                                {weatherTags.map((tag, i) => (
-                                    <span key={i} className="weather_badge">{tag}</span>
-                                ))}
+
+
+                                <div className="route_weather_badge">
+                                    {weatherTags.map((tag, i) => (
+                                        <span key={i} className="weather_badge">{tag}</span>
+                                    ))}
+                                </div>
                             </div>
-                            {getRouteBadge(route, index) && (
-                                <span className="route_badge">{getRouteBadge(route, index)}</span>
-                            )}
+
                         </div>
                     </div>
                 );
@@ -169,21 +177,21 @@ const RouteMap = ({ routes, selectedRouteIndex, onRouteClick, originCoords, dest
                 <div className="timeStamp">{selectedRoute ? selectedRoute.durationText : "00:00:00"}</div>
             </div>
             <div className="map_canvas_wrapper">
-                    <Map
-                        center={originCoords}
-                        zoom={13}
-                        mapId="DEMO_MAP_ID"
-                        gestureHandling="greedy"
-                        style={{ width: "100%", height: "100%" }}
-                    >
-                        <AdvancedMarker position={originCoords} title="Start" />
-                        <AdvancedMarker position={destCoords} title="Destination" />
-                        <RouteLines
-                            routes={routes}
-                            selectedRouteIndex={selectedRouteIndex}
-                            onRouteClick={onRouteClick}
-                        />
-                    </Map>
+                <Map
+                    center={originCoords}
+                    zoom={13}
+                    mapId="DEMO_MAP_ID"
+                    gestureHandling="greedy"
+                    style={{ width: "100%", height: "100%" }}
+                >
+                    <AdvancedMarker position={originCoords} title="Start" />
+                    <AdvancedMarker position={destCoords} title="Destination" />
+                    <RouteLines
+                        routes={routes}
+                        selectedRouteIndex={selectedRouteIndex}
+                        onRouteClick={onRouteClick}
+                    />
+                </Map>
             </div>
         </div>
 
@@ -289,16 +297,16 @@ const AlternateRoute = ({ unit }) => {
     const [destCoords, setDestCoords] = useState(DESTINATION);
 
 
-    useEffect(()=>{
-        async function loadDefaultRoute(){
-            try{
+    useEffect(() => {
+        async function loadDefaultRoute() {
+            try {
                 setLoading(true);
                 setError("");
                 const data = await getRoutes(ORIGIN, DESTINATION);
 
-                const formattedRoutes = (data.routes || []).map((route)=> ({
+                const formattedRoutes = (data.routes || []).map((route) => ({
                     distanceMeters: route.distanceMeters,
-                    distanceKm: (route.distanceMeters/1000).toFixed(2),
+                    distanceKm: (route.distanceMeters / 1000).toFixed(2),
                     durationText: formatDuration(route.duration),
                     polyline: route.polyline.encodedPolyline,
                     labels: route.routeLabels || [],
@@ -308,9 +316,9 @@ const AlternateRoute = ({ unit }) => {
                 setSelectedRouteIndex(0);
                 const weather = await fetch24HourWeatherDataPoints(ORIGIN.lat, ORIGIN.lng);
                 setWeatherData(weather);
-            }catch(err){
+            } catch (err) {
                 setError(err.message);
-            }finally{
+            } finally {
                 setLoading(false);
             }
         }
@@ -318,7 +326,7 @@ const AlternateRoute = ({ unit }) => {
     }, []);
 
     async function handleFindRoutes() {
-        try{
+        try {
             setLoading(true);
             setError("");
             const origin = await geocodeToPostcode(startPostcode);
@@ -327,9 +335,9 @@ const AlternateRoute = ({ unit }) => {
             setDestCoords(destination);
             const data = await getRoutes(origin, destination);
 
-            const formattedRoutes = (data.routes || []).map((route)=> ({
+            const formattedRoutes = (data.routes || []).map((route) => ({
                 distanceMeters: route.distanceMeters,
-                distanceKm: (route.distanceMeters/1000).toFixed(2),
+                distanceKm: (route.distanceMeters / 1000).toFixed(2),
                 durationText: formatDuration(route.duration),
                 polyline: route.polyline.encodedPolyline,
                 labels: route.routeLabels || [],
@@ -339,13 +347,13 @@ const AlternateRoute = ({ unit }) => {
             setSelectedRouteIndex(0);
             const weather = await fetch24HourWeatherDataPoints(origin.lat, origin.lng);
             setWeatherData(weather);
-        }catch(err){
+        } catch (err) {
             setError(err.message);
-        }finally{
+        } finally {
             setLoading(false);
-        } 
+        }
     }
-    
+
 
     useEffect(() => {
         async function loadWeather() {
@@ -375,13 +383,13 @@ const AlternateRoute = ({ unit }) => {
                         type="text"
                         placeholder="Enter starting postcode"
                         value={startPostcode}
-                        onChange={(e)=> setStartPostcode(e.target.value)}
+                        onChange={(e) => setStartPostcode(e.target.value)}
                     />
                     <input
                         type="text"
                         placeholder="Enter Destination postcode"
                         value={endPostcode}
-                        onChange={(e)=> setEndPostcode(e.target.value)}
+                        onChange={(e) => setEndPostcode(e.target.value)}
                     />
                     <button onClick={handleFindRoutes}>Find Routes</button>
                 </div>
