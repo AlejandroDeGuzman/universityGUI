@@ -77,7 +77,6 @@ const GraphLegend = () => {
 }
 
 export function TodayTemp({ postcode , unit}) {
-    const [latLongData, setLatLongData] = useState(null);
     const [weatherAPIData, setWeatherAPIData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -92,7 +91,6 @@ export function TodayTemp({ postcode , unit}) {
                 const latLongData = await fetchLatitudeLongitude(postcode);
                 const weatherAPIData = await fetchWeatherData(latLongData.lat, latLongData.lon);
                 const weatherDataPoints = await fetch24HourWeatherDataPoints(latLongData.lat, latLongData.lon);
-                setLatLongData(latLongData);
                 setWeatherAPIData(weatherAPIData);
                 setWeatherDataPoints(weatherDataPoints);
             } catch (err) {
@@ -108,6 +106,16 @@ export function TodayTemp({ postcode , unit}) {
 
     if (loading) return <p>Loading...</p>;
     if (error) return null;
+    if (!weatherAPIData || weatherDataPoints.length === 0) {
+        return (
+            <div className="today-temp-section">
+                <h1>Today's Temperature</h1>
+                <div className="today-temp-card">
+                    <p>No hourly temperature data available right now.</p>
+                </div>
+            </div>
+        );
+    }
 
     const displayTemps = weatherDataPoints.map((d) => ({
         ...d,
