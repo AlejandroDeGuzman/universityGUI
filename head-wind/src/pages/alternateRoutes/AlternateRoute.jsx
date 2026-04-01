@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo} from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import {
     APIProvider,
     Map,
@@ -23,15 +23,15 @@ const AltRouteHeader = () => {
 
 
 // Route selection sidebar component
-const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather}) => {
+const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather }) => {
     const getWeatherTags = (route, index) => {
         // weather condition badge
-        const tags = []; 
-        
+        const tags = [];
+
         if (!weather) return tags;
 
         const { temp, rain, wind, uv } = weather;
-        console.log("weather values:", { temp, rain, wind, uv });
+        // console.log("weather values:", { temp, rain, wind, uv });
         const isFastest = index === 0; // Google maps returns the fastest route first 
 
         //// rain logic ////
@@ -49,13 +49,13 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather}) =
         }
 
         //// coldness logic ////
-        if (temp < 8) { 
+        if (temp < 8) {
             if (isFastest) tags.push("Miminal cold exposure ❄️"); // less exposure to cold if the fastest route is chosen
             if (index > 0) tags.push("Colder route 🏃‍♀️"); // longer route so more exposure to cold
         }
 
         //// headwind logic ////
-        if (wind > 15) { 
+        if (wind > 15) {
             if (index === 1) tags.push("Sheltered choice 🏢"); // alternate route is more sheltered
         }
         return tags;
@@ -64,45 +64,44 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather}) =
     const minDistance = Math.min(...routes.map(r => r.distanceMeters));
     const getRouteBadge = (route, index) => {
         if (index === 0) return "Best";
-            if (route.distanceMeters === minDistance) return "Shortest";
+        if (route.distanceMeters === minDistance) return "Shortest";
     };
 
     return (
         <>
             {routes.map((route, index) => {
-            const weatherTags = getWeatherTags(route, index);
+                const weatherTags = getWeatherTags(route, index);
 
-            return (    
-                <div
-                    key={index}
-                    className={`route_card ${
-                        selectedRouteIndex === index ? "active_route" : ""
-                    }`}
-                    onClick={() => onSelectedRoute(index)}
-                >
-                    <div className="route_header">
-                        <div className="route_header_left">
-                            <p className="route_name">Route {index + 1}</p>
-                            <div className="route_details">
-                                <span>{route.distanceKm} km</span>
-                                <span className="details_divider">·</span>
-                                <span>{route.durationText}</span>
+                return (
+                    <div
+                        key={index}
+                        className={`route_card ${selectedRouteIndex === index ? "active_route" : ""
+                            }`}
+                        onClick={() => onSelectedRoute(index)}
+                    >
+                        <div className="route_header">
+                            <div className="route_header_left">
+                                <p className="route_name">Route {index + 1}</p>
+                                <div className="route_details">
+                                    <span>{route.distanceKm} km</span>
+                                    <span className="details_divider">·</span>
+                                    <span>{route.durationText}</span>
+                                </div>
+                                {weatherTags.map((tag, i) => (
+                                    <span key={i} className="weather_badge">{tag}</span>
+                                ))}
                             </div>
-                            {weatherTags.map((tag, i) => (
-                                <span key={i} className="weather_badge">{tag}</span>
-                            ))}
+                            <span className="route_badge">{getRouteBadge(route, index)}</span>
                         </div>
-                        <span className="route_badge">{getRouteBadge(route, index)}</span>
                     </div>
-                </div>
-            );
+                );
             })}
         </>
     );
 };
 
 
-const RouteLines = ({ routes, selectedRouteIndex, onRouteClick}) => {
+const RouteLines = ({ routes, selectedRouteIndex, onRouteClick }) => {
     const map = useMap();
 
     useEffect(() => {
@@ -110,7 +109,7 @@ const RouteLines = ({ routes, selectedRouteIndex, onRouteClick}) => {
 
         const bounds = new window.google.maps.LatLngBounds();
         const polylines = [];
-        routes.forEach((route, index)=> {
+        routes.forEach((route, index) => {
             const path = window.google.maps.geometry.encoding.decodePath(route.polyline);
 
             path.forEach((point) => bounds.extend(point));
@@ -118,19 +117,19 @@ const RouteLines = ({ routes, selectedRouteIndex, onRouteClick}) => {
             const polyline = new window.google.maps.Polyline({
                 path,
                 map,
-                strokeOpacity: index === selectedRouteIndex ? 1: 0.45,
-                strokeWeight: index === selectedRouteIndex ? 6:4,
+                strokeOpacity: index === selectedRouteIndex ? 1 : 0.45,
+                strokeWeight: index === selectedRouteIndex ? 6 : 4,
                 clickable: true,
             });
             polyline.addListener("click", () => onRouteClick(index));
             polylines.push(polyline);
         });
-    if (!bounds.isEmpty()) {
-        map.fitBounds(bounds,60);
-    }
-    return () =>{
-        polylines.forEach((polyline) => polyline.setMap(null));
-    };
+        if (!bounds.isEmpty()) {
+            map.fitBounds(bounds, 60);
+        }
+        return () => {
+            polylines.forEach((polyline) => polyline.setMap(null));
+        };
     }, [map, routes, selectedRouteIndex, onRouteClick]);
 
     return null;
@@ -138,7 +137,7 @@ const RouteLines = ({ routes, selectedRouteIndex, onRouteClick}) => {
 
 
 // route map component
-const RouteMap = ({routes, selectedRouteIndex, onRouteClick}) => {
+const RouteMap = ({ routes, selectedRouteIndex, onRouteClick }) => {
     const selectedRoute = routes[selectedRouteIndex];
     const center = useMemo(() => ORIGIN, []);
     return (
@@ -146,7 +145,7 @@ const RouteMap = ({routes, selectedRouteIndex, onRouteClick}) => {
             <div className="map_header">
                 <div className="selected_route">Route {selectedRouteIndex + 1}</div>
                 <div className="timeStamp">{selectedRoute ? selectedRoute.durationText : "00:00:00"}</div>
-                </div>
+            </div>
             <div className="map_canvas_wrapper">
                 <APIProvider
                     apiKey={import.meta.env.VITE_MAPS_KEY}
@@ -157,29 +156,29 @@ const RouteMap = ({routes, selectedRouteIndex, onRouteClick}) => {
                         defaultZoom={13}
                         mapId="DEMO_MAP_ID"
                         gestureHandling="greedy"
-                        style={{width: "100%", height: "100%"}}
+                        style={{ width: "100%", height: "100%" }}
                     >
                         <AdvancedMarker position={ORIGIN} title="Start" />
                         <AdvancedMarker position={DESTINATION} title="Start" />
                         <RouteLines
-                        routes={routes}
-                        selectedRouteIndex={selectedRouteIndex}
-                        onRouteClick={onRouteClick}
+                            routes={routes}
+                            selectedRouteIndex={selectedRouteIndex}
+                            onRouteClick={onRouteClick}
                         />
                     </Map>
                 </APIProvider>
             </div>
         </div>
 
-       
+
     );
 };
 
 
 //convert seconds to minutes//
-function formatDuration(durationString){
+function formatDuration(durationString) {
     const seconds = Number(String(durationString).replace("s", ""));
-    const minutes = Math.round(seconds/60);
+    const minutes = Math.round(seconds / 60);
 
     if (minutes < 60) return `${minutes} mins`;
 
@@ -188,7 +187,7 @@ function formatDuration(durationString){
     return `${hours}h ${remainingMinutes} mins`;
 }
 
-async function getRoutes(origin, destination){
+async function getRoutes(origin, destination) {
     const response = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes",
         {
             method: "POST",
@@ -222,7 +221,7 @@ async function getRoutes(origin, destination){
             }),
         }
     );
-    if(!response.ok){
+    if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Map routing API error: ${response.status} ${errorText}`);
     }
@@ -265,11 +264,11 @@ const AlternateRoute = ({ unit }) => {
     const [loading, setLoading] = useState(false);
     // weather 
     const [weatherData, setWeatherData] = useState([]);
-    const [ error, setError] = useState("");
+    const [error, setError] = useState("");
 
     useEffect(() => {
         async function loadRoutes() {
-            try{
+            try {
                 setLoading(true);
                 setError("");
                 const data = await getRoutes(ORIGIN, DESTINATION);
@@ -277,13 +276,13 @@ const AlternateRoute = ({ unit }) => {
 
                 const formattedRoutes = (data.routes || []).map((route) => ({
                     distanceMeters: route.distanceMeters,
-                    distanceKm: (route.distanceMeters/1000).toFixed(2),
+                    distanceKm: (route.distanceMeters / 1000).toFixed(2),
                     durationText: formatDuration(route.duration),
                     polyline: route.polyline.encodedPolyline,
                     labels: route.routeLabels || [],
                 }));
                 setRoutes(formattedRoutes);
-            } catch (err){
+            } catch (err) {
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -315,21 +314,21 @@ const AlternateRoute = ({ unit }) => {
             <div className="routes_container">
                 {loading && <p>Loading routes...</p>}
                 {error && <p>Error: {error}</p>}
-                {!loading && !error && routes.length>0 && (
+                {!loading && !error && routes.length > 0 && (
                     <RouteSideBar
-                    routes={routes}
-                    selectedRouteIndex={selectedRouteIndex}
-                    onSelectedRoute={setSelectedRouteIndex}
-                    weather={currentWeather}
+                        routes={routes}
+                        selectedRouteIndex={selectedRouteIndex}
+                        onSelectedRoute={setSelectedRouteIndex}
+                        weather={currentWeather}
                     />
                 )}
             </div>
             <div className="map_placeholder_container">
-                {!loading && !error && routes.length>0 && (
+                {!loading && !error && routes.length > 0 && (
                     <RouteMap
-                    routes={routes}
-                    selectedRouteIndex={selectedRouteIndex}
-                    onRouteClick={setSelectedRouteIndex}
+                        routes={routes}
+                        selectedRouteIndex={selectedRouteIndex}
+                        onRouteClick={setSelectedRouteIndex}
                     />
                 )}
             </div>
