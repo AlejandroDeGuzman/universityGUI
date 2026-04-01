@@ -1,70 +1,106 @@
 .alternate_route_container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    width: 85%;
+    margin: 0 auto;
 }
 
-.home_button_container {
-  width: 100%;
+.altroute-title {
+    text-align: center;
 }
 
-.start_session_container {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.weather_summary {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 2rem;
 }
 
-.start_session_button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: none;
-  border-radius: 14px;
-  padding: 12px 18px;
-  cursor: pointer;
-  font-size: 16px;
+.weather_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+    border: solid 1px #d0d0d0;
+    border-radius: 1.7rem;
+    width: 10rem;
+    padding: 0.8rem;
+    justify-content: center;
+    background-color: rgba(245, 245, 245, 0.167);
 }
 
-.start_session_icon {
-  width: 20px;
-  height: 20px;
+.weather_item .value {
+    font-weight: bolder;
+}
+
+.routes_container {
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+    justify-content: center;
 }
 
 .route_card {
-  border: 1px solid #d0d0d0;
-  border-radius: 16px;
-  padding: 14px;
-  cursor: pointer;
-  transition: 0.2s ease;
+    border: 1px solid #d0d0d0;
+    background-color: rgba(245, 245, 245, 0.167);
+    border-radius: 2.5rem;
+    padding: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+    width: 20rem;
 }
 
-.route_card:hover {
-  transform: translateY(-1px);
+.route_header {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;  
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
 }
 
-.active_route {
-  border: 2px solid #000;
+.route_header_left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
 }
 
-.route_card_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.route_details {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
 }
 
-.route_name,
-.route_distance {
+.route_name{
   margin: 0;
   font-weight: 600;
 }
 
-.route_details {
-  margin-top: 8px;
+.route_card:hover, .active_route {
+    background-color: #1a3049;
+    color: white;
 }
 
-.route_detail_item {
-  font-size: 14px;
+.route_badge, .weather_badge{
+    font-size: 13px;
+    border-radius: 1.2rem;
+    background-color: #91cc7d;
+    color: #161c22;
+    width: 4.5rem;
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.weather_badge {
+    background-color: #fed948;
+}
+
+.route_badges {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .map_placeholder_container {
@@ -80,6 +116,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  padding: 0 1.5rem;
 }
 
 .selected_route,
@@ -95,193 +132,100 @@
   border: 1px solid #d0d0d0;
 }
 
-@media (max-width: 1000px) {
-    .alternate_route_container{
-        margin: 1.8rem auto;
-        width: 85%;
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
+@media (min-width: 481px) and (max-width: 1280px) {
+    .alternate_route_container {
+        width: 90%;
+        padding: 15px;
     }
 
-    h1{
-        font-size: 45px;
+    .weather_summary {
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
     }
 
-    .home_button_container{
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .home_button{
-        margin: 0 auto;
+    .weather_item {
+        width: 9rem;
         padding: 0.7rem;
-        width: 30rem;
-        border-radius: 1.6rem;
-        font-size: 20px;
     }
 
-    .home_button:hover{
-        background-color: #646cff;
-        color: white;
-        cursor: pointer;
-    }
-
-    .route_navbar{
-        display: flex;
+    .routes_container {
         flex-direction: column;
-        margin: auto;
-        gap: 3rem;
-    }
-
-    .route_sidebar{
-        gap: 0.2rem;
-        border-radius: 1.8rem;
-        padding: 1.2rem;
-        display: flex;
-        flex-direction: row;
-    }
-
-
-    /**** Route details (Extended Menu) ****/
-    /* 1. wrapper */
-    .route_item{
-        cursor: pointer;
-        position: relative;
-    }
-
-    /* 2. collapsed header */
-    .route_header {
-        display: flex;
-        flex-direction: row;
         align-items: center;
-        justify-content: center;
-        gap: 1.7rem;
-        padding: 0.7rem;
-        width: 13rem;
-        border: solid 1px white;
-        border-radius: 0.9rem;
-    }
-
-    /* Left side of header(route name, distance, estimated time) */
-    .route_header_left {
-        display: flex;
-        flex-direction: column;
-        gap: 0.1rem;
-    }
-    
-    .route_name {
-        font-size: 14px;
-        font-weight: 500;
-        margin: 0;
-        font-size: 16px;
-    }
-
-    /* distance and estimated time in header */
-    .route_main_details {
-        display: flex;
-        gap: 0.3rem;
-        font-size: 11px;
-        opacity: 0.6;
-        font-size: 14px;
-    }
-    
-    .details_divider {
-        opacity: 0.4;
-    }
-    
-    /* Condition badge (right side of route header) */
-    .condition_badge {
-        font-size: 14px;
-        font-weight: 600;
-        padding: 0.5rem 1.2rem;
-        border-radius: 1rem;
-    }
-
-    .badge-best { background: #d4edda; color: #1a5c2a; }
-    .badge-none  { background: #fff3cd00; color: #7a4f0000; }
-    
-    /* Extended details panel */
-    .route_expanded {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.35s ease, opacity 0.25s ease;
-        opacity: 0;
-        width: 13.5rem;
-        border: solid 1px #161c22;
-        border-top: none;
-        border-radius: 0 0 0.9rem 0.9rem;
-        position: absolute;
-        top: 100%;
-        background-color: #161c22;
-        margin-left: 0.35rem;
-    }
-    
-    .route_item:hover .route_header {
-        background-color: white;
-        color: black;
-    }
-
-    .route_item:hover .route_expanded {
-        max-height: 200px;
-        opacity: 1;
-    }
-
-    .details_inner {
-        display: flex;
-        flex-direction: column;
-        padding: 0.4rem 0.75rem 0.6rem;
-    }
-    
-    .route_detail_item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 14px;
-    }
-    
-    .route_detail_item:last-child {
-        border-bottom: none;
-    }
-    
-    .detail_label {
-        color: whitesmoke;
-        font-weight: bold;
-    }
-    
-    .detail_value {
-        font-weight: 500;
-    }
-
-    .route_selected .route_header, .route_item:active .route_header{
-        background-color:#8bb196;
-        border-color: #64c046;
-        box-shadow: 0 0 10px #3b5a3e;
-        color: rgb(0, 22, 2);
-    }
-
-    /**** Map ****/
-    .map_placeholder {
-        border: solid 1px white;
-        border-radius: 1.8rem;
-        height: 500px;
-    }
-
-    .route_map{
-        border-radius: 1.8rem;
-    }
-
-    .map_placeholder_container{
+        gap: 0.8rem;
         width: 80%;
         margin: 0 auto;
+        font-size: 15px;
     }
 
-    .map_header{
-        margin: 0.7rem;
-        font-weight: bold;
-        font-size: 18px;
+    .route_card {
+        width: 80%;
+        border-radius: 1.8rem;
+    }
+
+    .route_header {
         gap: 2rem;
+    }
+
+    .map_canvas_wrapper {
+        height: 380px;
+    }
+
+    .map_header {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .alternate_route_container {
+        width: 90%;
+        padding: 12px;
+    }
+
+    .weather_summary {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.8rem;
+    }
+
+    .weather_item {
+        width: 7rem;
+        padding: 0.5rem;
+        font-size: 12px;
+        gap: 0.4rem;
+    }
+
+    .routes_container {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+        width: 80%;
+        margin: 0 auto;
+        font-size: 12px;
+    }
+
+    .route_card {
+        width: 80%;
+        border-radius: 1.8rem;
+    }
+
+    .route_header {
+        gap: 1rem;
+    }
+
+    .route_badge, .weather_badge {
+        font-size: 11px;
+        padding: 0.4rem;
+        width: 4rem;
+    }
+
+    .map_canvas_wrapper {
+        height: 250px;
+        border-radius: 16px;
+    }
+
+    .map_header {
+        padding: 0 0.3rem;
+        font-size: 14px;
     }
 }
