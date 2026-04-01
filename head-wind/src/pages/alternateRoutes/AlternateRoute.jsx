@@ -60,7 +60,7 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather }) 
             if (isFastest) tags.push("Mimimise rain exposure 🌧️"); // less exposure to heavy rain if the fastest route is chosen
             else if (index === 1) tags.push("Potentially Sheltered ☂️"); // if the route is not the fastest, the alternate route may have more shelter from rain
         } else if (rain > 15 && rain <= 50) { // moderate rain
-            if (isFastest) tags.push("Mimimise rain exposure 🌧️"); // less exposure to moderate rain if fastest route is chosen
+            if (isFastest) tags.push("Minimise rain exposure 🌧️"); // less exposure to moderate rain if fastest route is chosen
         }
 
         //// heat + uv logic ////
@@ -108,9 +108,13 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather }) 
                                     <span className="details_divider">·</span>
                                     <span>{route.durationText}</span>
                                 </div>
-                                {weatherTags.map((tag, i) => (
-                                    <span key={i} className="weather_badge">{tag}</span>
-                                ))}
+                                {weatherTags.length > 0 && (
+                                    <div className="weather_badges">
+                                        {weatherTags.map((tag, i) => (
+                                            <span key={i} className="weather_badge">{tag}</span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                             {getRouteBadge(route, index) && (
                                 <span className="route_badge">{getRouteBadge(route, index)}</span>
