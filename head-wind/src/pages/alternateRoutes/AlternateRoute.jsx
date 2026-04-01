@@ -57,7 +57,7 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather }) 
 
         //// rain logic ////
         if (rain > 30) { // heavy rain
-            if (isFastest) tags.push("Mimimise rain exposure 🌧️"); // less exposure to heavy rain if the fastest route is chosen
+            if (isFastest) tags.push("Minimise rain exposure 🌧️"); // less exposure to heavy rain if the fastest route is chosen
             else if (index === 1) tags.push("Potentially Sheltered ☂️"); // if the route is not the fastest, the alternate route may have more shelter from rain
         } else if (rain > 15 && rain <= 50) { // moderate rain
             if (isFastest) tags.push("Minimise rain exposure 🌧️"); // less exposure to moderate rain if fastest route is chosen
@@ -71,7 +71,7 @@ const RouteSideBar = ({ routes, selectedRouteIndex, onSelectedRoute, weather }) 
 
         //// coldness logic ////
         if (temp < 8) {
-            if (isFastest) tags.push("Miminal cold exposure ❄️"); // less exposure to cold if the fastest route is chosen
+            if (isFastest) tags.push("Minimal cold exposure ❄️"); // less exposure to cold if the fastest route is chosen
             if (index > 0) tags.push("Colder route 🏃‍♀️"); // longer route so more exposure to cold
         }
 
