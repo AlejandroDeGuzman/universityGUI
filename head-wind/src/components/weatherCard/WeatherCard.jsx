@@ -156,8 +156,14 @@ export function WeatherCard({ postcode, setPostcode, unit }) {
     if (error) {
         return (
             <div className="weather-error">
-                We couldn’t find weather data for that postcode. Please check it and try again.
+                <p>
+                    We couldn’t find weather data for that postcode. Please check it and try again.
+                </p>
+                <div className="set_location">
+                    <LocationCard setPostcode={setPostcode} />
+                </div>
             </div>
+
         );
     }
 
